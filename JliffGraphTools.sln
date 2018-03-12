@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jliff.Graph", "Jliff.Graph\Jliff.Graph.csproj", "{8F234503-FD68-4041-B243-EF35F5EA4DF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jliff.Samples", "Jliff.Samples\Jliff.Samples.csproj", "{F399A3F3-F3A6-4F43-A85B-B7B1CFACCFDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jliff.Tests", "Jliff.Tests\Jliff.Tests.csproj", "{F06B57D8-C05A-4BF9-A255-85AC2995B21E}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F234503-FD68-4041-B243-EF35F5EA4DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F234503-FD68-4041-B243-EF35F5EA4DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F234503-FD68-4041-B243-EF35F5EA4DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F234503-FD68-4041-B243-EF35F5EA4DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F399A3F3-F3A6-4F43-A85B-B7B1CFACCFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F399A3F3-F3A6-4F43-A85B-B7B1CFACCFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F399A3F3-F3A6-4F43-A85B-B7B1CFACCFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F399A3F3-F3A6-4F43-A85B-B7B1CFACCFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F06B57D8-C05A-4BF9-A255-85AC2995B21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F06B57D8-C05A-4BF9-A255-85AC2995B21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F06B57D8-C05A-4BF9-A255-85AC2995B21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F06B57D8-C05A-4BF9-A255-85AC2995B21E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

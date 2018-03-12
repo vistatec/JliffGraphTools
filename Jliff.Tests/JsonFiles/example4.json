@@ -1,0 +1,79 @@
+{
+  "subunits": [],
+  "srcLang": "en",
+  "trgLang": "de",
+  "jliff": "2.1",
+  "files": [
+    {
+      "id": "fl",
+      "subfiles": [
+        {
+          "glossary": [
+            {
+              "translations": [
+                {
+                  "id": "1",
+                  "source": "myTermbase",
+                  "text": "Tabstopptaste"
+                },
+                {
+                  "id": "2",
+                  "source": "myTermbase",
+                  "text": "TAB-TASTE"
+                }
+              ],
+              "definition": {
+                "source": "publicTermbase",
+                "text": "A keyboard key that is traditionally used to insert tab characters into a document."
+              }
+            }
+          ],
+          "id": "u1",
+          "kind": "unit",
+          "originalData": {},
+          "subunits": [
+            {
+              "type": "segment",
+              "source": [
+                {
+                  "text": "Press the "
+                },
+                {
+                  "id": "m1",
+                  "kind": "sm"
+                },
+                {
+                  "text": "TAB key"
+                },
+                {
+                  "kind": "em"
+                },
+                {
+                  "text": "."
+                }
+              ],
+              "target": [
+                {
+                  "text": "Drücken Sie die "
+                },
+                {
+                  "id": "m2",
+                  "kind": "sm"
+                },
+                {
+                  "text": "TAB-TASTE"
+                },
+                {
+                  "kind": "ec"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

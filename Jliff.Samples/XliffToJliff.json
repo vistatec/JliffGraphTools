@@ -1,0 +1,112 @@
+{
+  "srcLang": "en",
+  "trgLang": "fr",
+  "jliff": "2.1",
+  "files": [
+    {
+      "skeleton": {
+        "ref": ""
+      },
+      "subfiles": [
+        {
+          "kind": "unit",
+          "subunits": [
+            {
+              "kind": "segment",
+              "source": [
+                {
+                  "text": "Sample segment."
+                }
+              ],
+              "target": [
+                {
+                  "text": "Exemple de segment."
+                }
+              ]
+            },
+            {
+              "kind": "ignorable",
+              "source": [],
+              "target": []
+            },
+            {
+              "kind": "segment",
+              "source": [
+                {
+                  "text": "Segment's content."
+                }
+              ],
+              "target": [
+                {
+                  "text": "Contenu du segment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "unit",
+          "subunits": [
+            {
+              "kind": "segment",
+              "source": [
+                {
+                  "text": "Bolded text"
+                }
+              ],
+              "target": []
+            }
+          ]
+        },
+        {
+          "kind": "unit",
+          "subunits": [
+            {
+              "kind": "segment",
+              "source": [
+                {
+                  "text": "Extra stuff"
+                }
+              ],
+              "target": []
+            }
+          ]
+        },
+        {
+          "kind": "unit",
+          "subunits": [
+            {
+              "kind": "segment",
+              "source": [
+                {
+                  "dataRef": "d2",
+                  "id": "1",
+                  "kind": "ec"
+                },
+                {
+                  "text": "special text"
+                },
+                {
+                  "kind": "ec"
+                },
+                {
+                  "text": " and more\n"
+                },
+                {
+                  "canReorder": "firstNo",
+                  "dataRef": "d3",
+                  "id": "2",
+                  "kind": "ph"
+                },
+                {
+                  "text": "."
+                }
+              ],
+              "target": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
