@@ -4,6 +4,8 @@ The JLIFF 2.0 Object Model contains classes and methods for creating and manipul
 ## Goals for this project
 This project was originally concieved to validate the designs and ideas of the [OASIS OMOS Technical Committee](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xliff-omos) but it is also hoped that it will provide a kind of reference implementation and foundation library for those wishing to evaluate JLIFF for their use cases, including, it is hoped, the GALA Localization Web Services Project.
 
+Technical Committee outputs such as schema definitions and example serializations can be found on [GitHub](https://github.com/oasis-tcs/xliff-omos-jliff).
+
 ## Project status
 As with the OASIS project itself, this project is a work in progress.
 

@@ -70,7 +70,10 @@ namespace UnitTests
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            schemaDef = File.ReadAllText(@"e:\dev\dotnet\jliff\unittests\testfiles\jliff-schema-0.9.5.json");
+            DirectoryInfo output = new DirectoryInfo(Directory.GetCurrentDirectory());
+            for (int i = 0; i < 3; i++)
+                output = Directory.GetParent(output.FullName);
+            schemaDef = File.ReadAllText(Path.Combine($"{output}\\Schemas\\JLIFF-2.1", "jliff-schema-2.1.json"));
         }
 
         [TestMethod]

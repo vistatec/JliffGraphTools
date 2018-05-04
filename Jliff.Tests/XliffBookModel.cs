@@ -106,7 +106,7 @@ namespace UnitTests
             DirectoryInfo output = new DirectoryInfo(Directory.GetCurrentDirectory());
             for (int i = 0; i < 3; i++)
                 output = Directory.GetParent(output.FullName);
-            schemaDef = System.IO.File.ReadAllText(Path.Combine($"{output}\\Schemas", "jliff-schema-0.9.5.json"));
+            schemaDef = System.IO.File.ReadAllText(Path.Combine($"{output}\\Schemas\\JLIFF-2.1", "jliff-schema-2.1.json"));
         }
 
         [TestMethod]

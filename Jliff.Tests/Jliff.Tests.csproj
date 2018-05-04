@@ -21,8 +21,9 @@
 
   <ItemGroup>
     <Folder Include="JsonFiles\" />
+    <Folder Include="Schemas\JLIFF-2.0\" />
+    <Folder Include="Schemas\JLIFF-2.1\" />
     <Folder Include="XlfFiles\" />
-    <Folder Include="Schemas\" />
   </ItemGroup>
 
 </Project>
