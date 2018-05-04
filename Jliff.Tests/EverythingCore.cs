@@ -62,7 +62,7 @@ namespace UnitTests
 
             JlGraph.Group g1 = jliff.Files[0].Subfiles[1] as JlGraph.Group;
             if (g1 != null)
-                g1.CanResegment = true;
+                g1.CanResegment = "yes";
 
             JlGraph.Unit tu2 = g1.Subgroups[2] as JlGraph.Unit;
             if (tu2 != null)

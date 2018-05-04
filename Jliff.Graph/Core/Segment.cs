@@ -34,7 +34,7 @@ namespace Localization.Jliff.Graph
             if (target != null) Target.Add(target);
         }
 
-        public bool CanResegment { get; set; }
+        public string CanResegment { get; set; } = "no";
 
         public string Id { get; set; }
 

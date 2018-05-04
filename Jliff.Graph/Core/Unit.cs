@@ -36,7 +36,7 @@ namespace Localization.Jliff.Graph
                         Subunits.Add(grpparobj);
         }
 
-        public bool? CanResegment { get; set; }
+        public string CanResegment { get; set; } = "no";
         public string Id { get; set; }
         public string Kind => "unit";
         public Metadata Metadata { get; set; }

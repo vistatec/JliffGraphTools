@@ -89,7 +89,7 @@ namespace UnitTests
 
             var seg = new JlGraph.Segment();
             seg.State = JlGraph.State.translated.ToString();
-            seg.CanResegment = false;
+            seg.CanResegment = "yes";
 
             var ph1 = new JlGraph.PhElement("c1");
             ph1.DataRef = "d1";

@@ -17,7 +17,7 @@ namespace Localization.Jliff.Graph
             Segments.Add(segment);
         }
 
-        public bool CanResegment { get; set; }
+        public string CanResegment { get; set; } = "no";
 
         public string Id { get; set; }
 
