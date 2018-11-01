@@ -11,6 +11,7 @@ namespace Jliff.Samples
         {
             JliffBuilder builder = new JliffBuilder("en", "fr");
             Xliff20Filter xliff20Filter = new Xliff20Filter();
+            xliff20Filter.XlfRootEvent += builder.XlfRoot;
             xliff20Filter.XlfFileEvent += builder.File;
             xliff20Filter.XlfUnitEvent += builder.Unit;
             xliff20Filter.XlfGroupEvent += builder.Group;
@@ -30,11 +31,7 @@ namespace Jliff.Samples
             for (int i = 0; i < 1; i++)
                 output = Directory.GetParent(output.FullName);
             //xliff20Filter.Filter(new StreamReader(Path.Combine($"{output}\\Jliff.Tests\\XlfFiles", "everything-core.xlf")));
-            //xliff20Filter.Filter(new StreamReader(@"e:\dev\dotnet\xlifftojliff\everything-core.xlf"));
-            xliff20Filter.Filter(new StreamReader(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\xliff_test_notes.xlf"));
-
-            //TODO: relocate lqi
-
+            xliff20Filter.Filter(new StreamReader(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\LQE_xliff_2.0.xlf"));
             builder.Serialize("XliffToJliff.json");
         }
     }

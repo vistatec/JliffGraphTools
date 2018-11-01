@@ -381,5 +381,12 @@ namespace Localization.Jliff.Graph
                 }
             }
         }
+
+        public void XlfRoot(object sender, FilterEventArgs args)
+        {
+            if (args.Attributes.Count > 0 && args.Attributes != null)
+                if (!args.Attributes["version"].Equals("2.0"))
+                    throw new ArgumentException("Expected version 2.0 XLIFF.");
+        }
     }
 }
