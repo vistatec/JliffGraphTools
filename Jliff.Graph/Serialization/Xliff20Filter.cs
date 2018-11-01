@@ -18,6 +18,9 @@ namespace Localization.Jliff.Graph
             {
                 switch (xmlReader)
                 {
+                    case XmlReader r when r.Name.Equals("xliff"):
+                        OnXlfRoot(this, FilterEventArgs.FromReader(r));
+                        break;
                     case XmlReader r when r.Name.Equals("file"):
                         OnXlfFile(this, FilterEventArgs.FromReader(r));
                         break;
@@ -89,6 +92,7 @@ namespace Localization.Jliff.Graph
                     default:
                         break;
                 }
+
                 // Try to use Read() here. Using XElement.ReadFrom() reads the whole element and also advances the reader.
                 xmlReader.Read();
             }
@@ -117,6 +121,11 @@ namespace Localization.Jliff.Graph
         public virtual void OnXlfPhElement(object sender, FilterEventArgs fliterEventArgs)
         {
             XlfPhElementEvent?.Invoke(sender, fliterEventArgs);
+        }
+
+        public virtual void OnXlfRoot(object sender, FilterEventArgs filterEventArgs)
+        {
+            XlfRootEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfScElement(object sender, FilterEventArgs filterEventArgs)
@@ -160,12 +169,12 @@ namespace Localization.Jliff.Graph
         }
 
         public event EventHandler<FilterEventArgs> XlfEcElementEvent;
-
         public event EventHandler<FilterEventArgs> XlfEmElementEvent;
         public event EventHandler<FilterEventArgs> XlfFileEvent;
         public event EventHandler<FilterEventArgs> XlfGroupEvent;
         public event EventHandler<FilterEventArgs> XlfIgnorableEvent;
         public event EventHandler<FilterEventArgs> XlfPhElementEvent;
+        public event EventHandler<FilterEventArgs> XlfRootEvent;
         public event EventHandler<FilterEventArgs> XlfScElementEvent;
         public event EventHandler<FilterEventArgs> XlfSegmentEvent;
         public event EventHandler<FilterEventArgs> XlfSkeletonEvent;
