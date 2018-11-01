@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Jliff.Graph.Modules.LocQualityIssue;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
@@ -37,15 +39,56 @@ namespace Localization.Jliff.Graph
         }
 
         public string CanResegment { get; set; } = "no";
+        public object Domains { get; set; }
         public string Id { get; set; }
         public string Kind => "unit";
+
+        public List<LocQualityIssue> LocQualityIssues { get; set; }
+
+        [JsonIgnore]
+        public string LocQualityIssuesRef { get; set; }
+
+        public string LocQualityRatingProfileRef { get; set; }
+        public float LocQualityRatingScore { get; set; }
+        public float LocQualityRatingScoreThreshold { get; set; }
+        public float LocQualityRatingVote { get; set; }
+        public float LocQualityRatingVoteThreshold { get; set; }
         public Metadata Metadata { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
+        public string Org { get; set; }
+        public string OrgRef { get; set; }
+        public string Person { get; set; }
+        public string PersonRef { get; set; }
+        public object ProfileData { get; set; }
+        public object Profiles { get; set; }
+        public string ProfileSizeInfo { get; set; }
+        public string ProfileSizeInfoRef { get; set; }
+        public string ProfileSizeRestriction { get; set; }
+        public string ProfileStorageRestriction { get; set; }
+        public List<object> ProvenanceRecords { get; set; }
+        public string ProvenanceRecordsRef { get; set; }
+        public object ResourceData { get; set; }
+        public string RevOrg { get; set; }
+        public Uri RevOrgRef { get; set; }
+        public string RevPerson { get; set; }
+        public string RevPersonRef { get; set; }
+        public string RevTool { get; set; }
+        public string RevToolRef { get; set; }
         public string SrcDir { get; set; }
+        public string SubFs { get; set; }
+        public string TaClassRef { get; set; }
+        public float TaConfidence { get; set; }
+        public string TaIdent { get; set; }
+        public Uri TaIdentRef { get; set; }
+        public string TaSource { get; set; }
+        public string Tool { get; set; }
+        public string ToolRef { get; set; }
         public bool? Translate { get; set; }
         public string TrgDir { get; set; }
         public string Type { get; set; }
+        public object Userdata { get; set; }
+        public string Validation { get; set; }
 
         public bool ShouldSerializeGlossary()
         {

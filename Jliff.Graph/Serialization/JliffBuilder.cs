@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using Jliff.Graph.Modules.LocQualityIssue;
 
 namespace Localization.Jliff.Graph
 {
@@ -8,6 +11,8 @@ namespace Localization.Jliff.Graph
         private static int filesIdx = -1;
         private static JliffDocument jliff;
         private static readonly Stack<object> stack = new Stack<object>();
+        private IMapper mapper;
+        private Dictionary<string, Unit> unitsWithLqi = new Dictionary<string, Unit>();
 
         public JliffBuilder()
         {
@@ -15,11 +20,36 @@ namespace Localization.Jliff.Graph
 
         public JliffBuilder(string srcLang, string trgLang)
         {
+            CreateMaps();
+
             jliff = new JliffDocument(srcLang, trgLang);
             stack.Push(jliff);
         }
 
+        private void CreateMaps()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<FilterEventArgs, File>()
+                    .ForMember(m => m.AnnotatorsRef, opt => opt.Condition(src => src.Attributes["its:annotatorsRef"] != null))
+                    .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Id));
+
+                cfg.CreateMap<FilterEventArgs, Unit>()
+                    .ForMember(m => m.LocQualityIssues, opt => opt.Condition(src => src.Attributes["its:locQualityIssuesRef"] != null));
+            });
+            mapper = config.CreateMapper();
+        }
+
         public JliffDocument Jliff => jliff;
+
+        public void LocQualityIssue(object sender, FilterEventArgs args)
+        {
+            if (unitsWithLqi.ContainsKey(args.Attributes["locQualityIssuesRef"]))
+            {
+                LocQualityIssue lqi = mapper.Map<LocQualityIssue>(args);
+                unitsWithLqi[args.Attributes["locQualityIssuesRef"]].LocQualityIssues.Add(lqi);
+            }
+        }
 
         public void EcElement(object sender, FilterEventArgs args)
         {
@@ -62,7 +92,7 @@ namespace Localization.Jliff.Graph
 
         public void File(object sender, FilterEventArgs args)
         {
-            if (args.NodeType.Equals("EndElement"))
+            if (args.IsEndElement)
             {
                 stack.Pop();
             }
@@ -71,7 +101,8 @@ namespace Localization.Jliff.Graph
                 JliffDocument parent = stack.Peek() as JliffDocument;
                 if (parent != null)
                 {
-                    File file = new File(args.Id);
+                    //File file = new File(args.Id);
+                    File file = mapper.Map<File>(args);
                     stack.Push(file);
                     parent.Files.Add(file);
                 }
@@ -329,7 +360,7 @@ namespace Localization.Jliff.Graph
 
         public void Unit(object sender, FilterEventArgs args)
         {
-            if (args.NodeType.Equals("EndElement"))
+            if (args.IsEndElement)
             {
                 stack.Pop();
             }
@@ -338,9 +369,11 @@ namespace Localization.Jliff.Graph
                 File parent = stack.Peek() as File;
                 if (parent != null)
                 {
-                    Unit unit = new Unit(args.Id);
+                    //Unit unit = new Unit(args.Id);
+                    Unit unit = mapper.Map<Unit>(args);
                     parent.Subfiles.Add(unit);
                     stack.Push(unit);
+                    unitsWithLqi.Add(unit.LocQualityIssuesRef, unit);
                 }
                 else
                 {

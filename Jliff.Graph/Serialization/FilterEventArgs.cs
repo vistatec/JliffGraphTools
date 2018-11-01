@@ -10,6 +10,16 @@ namespace Localization.Jliff.Graph
 
         public string Id { get; set; }
 
+        public bool IsEndElement
+        {
+            get
+            {
+                if (NodeType.Equals("EndElement"))
+                    return true;
+                return false;
+            }
+        }
+
         public string NodeType { get; set; }
 
         public string sourceOrTarget { get; set; }

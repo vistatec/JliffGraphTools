@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
+using AutoMapper;
 
 namespace Localization.Jliff.Graph
 {
     public class Xliff20Filter
     {
         private static XmlReader xmlReader;
+        private static string currentLqiRef = String.Empty;
 
         public void Filter(TextReader reader)
         {
@@ -19,6 +22,7 @@ namespace Localization.Jliff.Graph
                 switch (xmlReader)
                 {
                     case XmlReader r when r.Name.Equals("file"):
+                        // Using XElement.FromReader() would have upset the balance of reader.Read()
                         OnXlfFile(this, FilterEventArgs.FromReader(r));
                         break;
                     case XmlReader r when r.Name.Equals("skeleton"):
@@ -86,6 +90,15 @@ namespace Localization.Jliff.Graph
                         else
                             OnXlfEmElement(this, mrkArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("its:locQualityIssues"):
+                        FilterEventArgs lqiFilterEventArgs = FilterEventArgs.FromReader(r);
+                        currentLqiRef = lqiFilterEventArgs?.Attributes["xml:id"];
+                        break;
+                    case XmlReader r when r.Name.Equals("its:locQualityIssue"):
+                        FilterEventArgs lqiArgs = FilterEventArgs.FromReader(r);
+                        lqiArgs.Attributes.Add("its:locQualityIssuesRef", currentLqiRef);
+                        OnItsLocQualityIssue(this, lqiArgs);
+                        break;
                     default:
                         break;
                 }
@@ -106,6 +119,8 @@ namespace Localization.Jliff.Graph
 
         public virtual void OnXlfFile(object sender, FilterEventArgs filterEventArgs)
         {
+            // Ideally this filter would have done the mapping to the File object but the JliffBuilder needs to know if 
+            // its a start or end element in order to build the object graph
             XlfFileEvent?.Invoke(sender, filterEventArgs);
         }
 
@@ -159,6 +174,11 @@ namespace Localization.Jliff.Graph
             XlfUnitEvent?.Invoke(sender, filterEventArgs);
         }
 
+        public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
+        {
+            ItsLocQualityIssue?.Invoke(sender, filterEventArgs);
+        }
+
         public event EventHandler<FilterEventArgs> XlfEcElementEvent;
 
         public event EventHandler<FilterEventArgs> XlfEmElementEvent;
@@ -174,5 +194,6 @@ namespace Localization.Jliff.Graph
         public event EventHandler<FilterEventArgs> XlfTargetEvent;
         public event EventHandler<FilterEventArgs> XlfTextEvent;
         public event EventHandler<FilterEventArgs> XlfUnitEvent;
+        public event EventHandler<FilterEventArgs> ItsLocQualityIssue;
     }
 }
