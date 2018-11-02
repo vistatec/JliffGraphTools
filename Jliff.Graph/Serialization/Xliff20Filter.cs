@@ -32,7 +32,11 @@ namespace Localization.Jliff.Graph
                         OnXlfSkeleton(this, new FilterEventArgs());
                         break;
                     case XmlReader r when r.Name.Equals("unit"):
-                        OnXlfUnit(this, FilterEventArgs.FromReader(r));
+                        FilterEventArgs f = FilterEventArgs.FromReader(r);
+                        //f.Id = "adada";
+                        //f.sourceOrTarget = sourceOrTarget;
+                        //f.NodeType = r.NodeType.ToString();
+                        OnXlfUnit(this, f);
                         break;
                     case XmlReader r when r.Name.Equals("segment"):
                         OnXlfSegment(this, FilterEventArgs.FromReader(r));
@@ -95,7 +99,8 @@ namespace Localization.Jliff.Graph
                         break;
                     case XmlReader r when r.Name.Equals("its:locQualityIssues"):
                         FilterEventArgs lqiFilterEventArgs = FilterEventArgs.FromReader(r);
-                        currentLqiRef = lqiFilterEventArgs?.Attributes["xml:id"];
+                        if (lqiFilterEventArgs.Attributes.Count > 0)
+                            currentLqiRef = lqiFilterEventArgs?.Attributes["xml:id"];
                         break;
                     case XmlReader r when r.Name.Equals("its:locQualityIssue"):
                         FilterEventArgs lqiArgs = FilterEventArgs.FromReader(r);

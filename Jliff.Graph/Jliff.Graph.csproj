@@ -9,4 +9,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\ChangeTrack\" />
+    <Folder Include="Modules\Matches\" />
+    <Folder Include="Modules\FormatStyle\" />
+    <Folder Include="Modules\Metadata\" />
+    <Folder Include="Modules\SizeRestriction\" />
+    <Folder Include="Modules\ResourceData\" />
+    <Folder Include="Modules\Validation\" />
+  </ItemGroup>
+
 </Project>

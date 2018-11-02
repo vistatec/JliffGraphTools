@@ -8,7 +8,7 @@ namespace Localization.Jliff.Graph
     {
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
-        public string Id { get; set; }
+        //public string Id { get; set; }
 
         public bool IsEndElement
         {
