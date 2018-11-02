@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -20,8 +21,8 @@ namespace Localization.Jliff.Graph
             get
             {
                 Dictionary<string, string> atts = new Dictionary<string, string>();
-                atts.Add("CanOverlap", CanOverlap.ToString());
-                atts.Add("CanReorder", CanReorder);
+                //atts.Add("CanOverlap", CanOverlap.ToString());
+                atts.Add("CanReorder", CanReorder.ToString());
                 atts.Add("CopyOf", CopyOf);
                 atts.Add("DataRef", DataRef);
                 atts.Add("Disp", Disp);
@@ -40,11 +41,11 @@ namespace Localization.Jliff.Graph
                 foreach (KeyValuePair<string, string> att in atts)
                     switch (att.Key)
                     {
-                        case "canOverlap":
-                            CanOverlap = bool.Parse(att.Value);
-                            break;
+                        //case "canOverlap":
+                        //    CanOverlap = Enum.Parse(typeof(YesNo), att.Value);
+                        //    break;
                         case "canReorder":
-                            CanReorder = att.Value;
+                            CanReorder = (Enumerations.YesNoFirstNo) Enum.Parse(typeof(Enumerations.YesNoFirstNo), att.Value);
                             break;
                         case "copyOf":
                             CopyOf = att.Value;
@@ -75,17 +76,25 @@ namespace Localization.Jliff.Graph
         }
 
 
-        public bool CanOverlap { get; set; }
-        public string CanReorder { get; set; }
+        public Enumerations.YesNo CanCopy { get; set; }
+
+        public Enumerations.YesNo CanDelete { get; set; }
+
+        //public bool CanOverlap { get; set; }
+        public Enumerations.YesNoFirstNo CanReorder { get; set; }
         public string CopyOf { get; set; }
         public string DataRef { get; set; }
         public string Disp { get; set; }
         public string Equiv { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
         public string Id { get; set; }
 
-        public string Kind => ElementKind.ph.ToString();
-
+        public string Kind => Enumerations.ElementKind.ph.ToString();
+        public string ProfileEquivStorage { get; set; }
+        public string ProfileSizeInfo { get; set; }
+        public string ProfileSizeInfoRef { get; set; }
         public string SubFlows { get; set; }
+        public string SubFs { get; set; }
         public string SubType { get; set; }
         public string Type { get; set; }
     }

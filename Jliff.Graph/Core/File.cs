@@ -35,9 +35,51 @@ namespace Localization.Jliff.Graph
                     throw new ArgumentException();
         }
 
+        public object AnnotatorsRef { get; set; }
+        public object ChangeTrack { get; set; }
+        public string Domains { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
+
         public string Id { get; set; }
+        public string LocQualityRatingProfileRef { get; set; }
+        public float LocQualityRatingScore { get; set; }
+        public float LocQualityRatingScoreThreshold { get; set; }
+        public float LocQualityRatingVote { get; set; }
+        public float LocQualityRatingVoteThreshold { get; set; }
         public List<MetaGroup> Metadata { get; set; }
+        public string Org { get; set; }
+        public Uri OrgRef { get; set; }
         public string Original { get; set; }
+        public string Person { get; set; }
+        public Uri PersonRef { get; set; }
+        public object ProfileData { get; set; }
+        public object Profiles { get; set; }
+        public string ProfileSizeInfo { get; set; }
+        public string ProfileSizeInfoRef { get; set; }
+        public string ProfileSizeRestriction { get; set; }
+        public string ProfileStorageRestriction { get; set; }
+        public List<object> ProvenanceRecords { get; set; }
+        public Uri ProvenanceRecordsRef { get; set; }
+        public object ResourceData { get; set; }
+        public string RevOrg { get; set; }
+        public Uri RevOrgRef { get; set; }
+        public string RevPerson { get; set; }
+        public Uri RevPersonRef { get; set; }
+        public string RevTool { get; set; }
+        public Uri RevToolRef { get; set; }
         public Skeleton Skeleton { get; set; }
+        public string SrcDir { get; set; }
+        public string SubFs { get; set; }
+        public Uri TaClassRef { get; set; }
+        public float TaConfidence { get; set; }
+        public string TaIdent { get; set; }
+        public Uri TaIdentRef { get; set; }
+        public string TaSource { get; set; }
+        public string Tool { get; set; }
+        public Uri ToolRef { get; set; }
+        public Enumerations.YesNo Translate { get; set; }
+        public string TrgDir { get; set; }
+        public object Userdata { get; set; }
+        public string Validation { get; set; }
     }
 }

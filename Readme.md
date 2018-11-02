@@ -9,6 +9,9 @@ Technical Committee outputs such as schema definitions and example serialization
 ## Project status
 As with the OASIS project itself, this project is a work in progress.
 
+## Branches ##
+As of 2018-11-02 I have added a `dev` branch as a way of sharing bits of progress which have not been fully tested.
+
 ## Facilities
 * Beginnings of a fluentgraph creation syntax see [Fluent Test Method](Jliff.Tests/XliffBookModel.cs)
 * An XLIFF 2.0 filter which can be used to read XLIFF 2.0 Core XML files and raise events

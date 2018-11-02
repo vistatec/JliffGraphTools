@@ -88,7 +88,7 @@ namespace UnitTests
             u1.OriginalData.Add("d3", "[/C2]");
 
             var seg = new JlGraph.Segment();
-            seg.State = JlGraph.State.translated.ToString();
+            seg.State = JlGraph.Enumerations.State.translated.ToString();
             seg.CanResegment = "yes";
 
             var ph1 = new JlGraph.PhElement("c1");

@@ -30,7 +30,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public string Kind => ElementKind.em.ToString();
+        public string Kind => Enumerations.ElementKind.em.ToString();
 
         public string StartRef { get; set; }
     }
