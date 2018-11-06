@@ -98,6 +98,27 @@ namespace Localization.Jliff.Graph
                         else
                             OnXlfEmElement(this, mrkArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("gls:glossEntry"):
+                        OnModGlossaryEntry(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:definition"):
+                        FilterEventArgs defArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        defArgs.Text = r.Value;
+                        OnModGlossDefinition(this, defArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:term"):
+                        FilterEventArgs termArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        termArgs.Text = r.Value;
+                        OnModGlossTerm(this, termArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:translation"):
+                        FilterEventArgs transArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        transArgs.Text = r.Value;
+                        OnModGlossTranslation(this, transArgs);
+                        break;
                     case XmlReader r when r.Name.Equals("md:metadata"):
                         OnModMetadata(this, FilterEventArgs.FromReader(r));
                         break;
@@ -138,6 +159,10 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public event EventHandler<FilterEventArgs> ModGlossaryEntryEvent;
+        public event EventHandler<FilterEventArgs> ModGlossDefinitionEvent;
+        public event EventHandler<FilterEventArgs> ModGlossTermEvent;
+        public event EventHandler<FilterEventArgs> ModGlossTranslationEvent;
         public event EventHandler<FilterEventArgs> ModItsLocQualityIssue;
         public event EventHandler<FilterEventArgs> ModMetadataEvent;
         public event EventHandler<FilterEventArgs> ModMetaGroupEvent;
@@ -149,6 +174,26 @@ namespace Localization.Jliff.Graph
         public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
         {
             ModItsLocQualityIssue?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossaryEntry(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlossaryEntryEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossDefinition(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlossDefinitionEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossTerm(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlossTermEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossTranslation(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlossTranslationEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModMetadata(object sender, FilterEventArgs filterEventArgs)

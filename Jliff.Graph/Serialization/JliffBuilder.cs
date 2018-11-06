@@ -96,6 +96,42 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
+                cfg.CreateMap<FilterEventArgs, GlossaryEntry>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.Ref,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Definition>()
+                    .ForMember(m => m.Source,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Term>()
+                    .ForMember(m => m.Source,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Translation>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
                 cfg.CreateMap<FilterEventArgs, ResourceData>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
@@ -388,6 +424,86 @@ namespace Localization.Jliff.Graph
                         ResourceItem ri = mapper.Map<ResourceItem>(args);
                         rd.ResourceItems.Add(ri);
                         stack.Push(ri);
+                        break;
+                }
+            }
+        }
+
+        public void GlossaryEntry(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        GlossaryEntry e = mapper.Map<GlossaryEntry>(args);
+                        u.Glossary.Add(e);
+                        stack.Push(e);
+                        break;
+                }
+            }
+        }
+
+        public void Definition(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Definition d = mapper.Map<Definition>(args);
+                        ge.Definition = d;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
+        public void Term(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Term t = mapper.Map<Term>(args);
+                        ge.Term = t;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
+        public void Translation(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Translation t = mapper.Map<Translation>(args);
+                        ge.Translations.Add(t);
+                        //stack.Push(e);
                         break;
                 }
             }
