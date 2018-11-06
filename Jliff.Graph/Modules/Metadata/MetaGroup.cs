@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Localization.Jliff.Graph
+namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class MetaGroup : IMetadata
     {

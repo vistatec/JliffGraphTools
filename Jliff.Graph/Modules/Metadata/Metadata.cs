@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Localization.Jliff.Graph
+namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class Metadata
     {
