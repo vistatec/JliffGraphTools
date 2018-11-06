@@ -93,7 +93,7 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public bool Isolated { get; set; }
 
-        public string Kind => ElementKind.ec.ToString();
+        public string Kind => Enumerations.ElementKind.ec.ToString();
         public string StartRef { get; set; }
 
         public string SubFlows { get; set; }

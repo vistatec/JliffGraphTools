@@ -45,7 +45,7 @@ namespace Localization.Jliff.Graph
                         //    CanOverlap = Enum.Parse(typeof(YesNo), att.Value);
                         //    break;
                         case "canReorder":
-                            CanReorder = (YesNoFirstNo) Enum.Parse(typeof(YesNoFirstNo), att.Value);
+                            CanReorder = (Enumerations.YesNoFirstNo) Enum.Parse(typeof(Enumerations.YesNoFirstNo), att.Value);
                             break;
                         case "copyOf":
                             CopyOf = att.Value;
@@ -76,18 +76,18 @@ namespace Localization.Jliff.Graph
         }
 
 
-        public YesNo CanCopy { get; set; }
-        public YesNo CanDelete { get; set; }
+        public Enumerations.YesNo CanCopy { get; set; }
+        public Enumerations.YesNo CanDelete { get; set; }
         //public bool CanOverlap { get; set; }
-        public YesNoFirstNo CanReorder { get; set; }
+        public Enumerations.YesNoFirstNo CanReorder { get; set; }
         public string CopyOf { get; set; }
         public string DataRef { get; set; }
         public string Disp { get; set; }
         public string Equiv { get; set; }
-        public FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
         public string Id { get; set; }
 
-        public string Kind => ElementKind.ph.ToString();
+        public string Kind => Enumerations.ElementKind.ph.ToString();
         public string ProfileEquivStorage { get; set; }
         public string ProfileSizeInfo { get; set; }
         public string ProfileSizeInfoRef { get; set; }

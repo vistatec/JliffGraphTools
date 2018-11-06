@@ -52,8 +52,8 @@ namespace Localization.Jliff.Graph
 		public List<Domain> Domains { get; set; }
         public string Id { get; set; }
 
-        public string Kind => ElementKind.sm.ToString();
-		public FormatStyle fs { get; set; }
+        public string Kind => Enumerations.ElementKind.sm.ToString();
+		public Enumerations.FormatStyle fs { get; set; }
         public string LocaleFilterList { get; set; }
         public string LocaleFilterType { get; set; }
         public string LocQualityIssueComment { get; set; }

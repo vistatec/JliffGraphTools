@@ -120,6 +120,15 @@ namespace Localization.Jliff.Graph
                         lqiArgs.Attributes.Add("its:locQualityIssuesRef", currentLqiRef);
                         OnItsLocQualityIssue(this, lqiArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("res:resourceData"):
+                        OnModResourceData(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("res:resourceItem"):
+                        OnModResourceItem(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("res:source"):
+                        OnModResourceSource(this, FilterEventArgs.FromReader(r));
+                        break;
                     default:
                         break;
                 }
@@ -129,20 +138,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        private void OnModMetaitem(object sender, FilterEventArgs filterEventArgs)
-        {
-            ModMetaitemEvent?.Invoke(sender, filterEventArgs);
-        }
-
-        private void OnModMetaGroup(object sender, FilterEventArgs filterEventArgs)
-        {
-            ModMetaGroupEvent?.Invoke(sender, filterEventArgs);
-        }
-
         public event EventHandler<FilterEventArgs> ModItsLocQualityIssue;
         public event EventHandler<FilterEventArgs> ModMetadataEvent;
         public event EventHandler<FilterEventArgs> ModMetaGroupEvent;
-        public event EventHandler<FilterEventArgs> ModMetaitemEvent; 
+        public event EventHandler<FilterEventArgs> ModMetaitemEvent;
+        public event EventHandler<FilterEventArgs> ModResourceDataEvent;
+        public event EventHandler<FilterEventArgs> ModResourceItemEvent;
+        public event EventHandler<FilterEventArgs> ModResourceSourceEvent;
 
         public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
         {
@@ -152,6 +154,31 @@ namespace Localization.Jliff.Graph
         public virtual void OnModMetadata(object sender, FilterEventArgs filterEventArgs)
         {
             ModMetadataEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModMetaGroup(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModMetaGroupEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModMetaitem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModMetaitemEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModResourceData(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResourceDataEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModResourceItem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResourceItemEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModResourceSource(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResourceSourceEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfEcElement(object sender, FilterEventArgs filterEventArgs)

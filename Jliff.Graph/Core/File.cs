@@ -39,7 +39,7 @@ namespace Localization.Jliff.Graph
         public object AnnotatorsRef { get; set; }
         public object ChangeTrack { get; set; }
         public string Domains { get; set; }
-        public FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
 
         public string Id { get; set; }
         public string LocQualityRatingProfileRef { get; set; }
@@ -78,7 +78,7 @@ namespace Localization.Jliff.Graph
         public string TaSource { get; set; }
         public string Tool { get; set; }
         public Uri ToolRef { get; set; }
-        public YesNo Translate { get; set; }
+        public Enumerations.YesNo Translate { get; set; }
         public string TrgDir { get; set; }
         public object Userdata { get; set; }
         public string Validation { get; set; }

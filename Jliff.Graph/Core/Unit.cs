@@ -87,7 +87,7 @@ namespace Localization.Jliff.Graph
         public string TaSource { get; set; }
         public string Tool { get; set; }
         public string ToolRef { get; set; }
-        public YesNo Translate { get; set; }
+        public Enumerations.YesNo Translate { get; set; }
         public string TrgDir { get; set; }
         public string Type { get; set; }
         public object Userdata { get; set; }

@@ -46,16 +46,16 @@ namespace Localization.Jliff.Graph
                     switch (att.Key)
                     {
                         case "canCopy":
-                            CanCopy = (YesNo) Enum.Parse(typeof(YesNo), att.Value);
+                            CanCopy = (Enumerations.YesNo) Enum.Parse(typeof(Enumerations.YesNo), att.Value);
                             break;
                         case "canDelete":
-                            CanDelete = (YesNo) Enum.Parse(typeof(YesNo), att.Value);
+                            CanDelete = (Enumerations.YesNo) Enum.Parse(typeof(Enumerations.YesNo), att.Value);
                             break;
                         case "canOverlap":
-                            CanOverlap = (YesNo) Enum.Parse(typeof(YesNo), att.Value);
+                            CanOverlap = (Enumerations.YesNo) Enum.Parse(typeof(Enumerations.YesNo), att.Value);
                             break;
                         case "canReorder":
-                            CanReorder = (YesNoFirstNo) Enum.Parse(typeof(YesNoFirstNo), att.Value);
+                            CanReorder = (Enumerations.YesNoFirstNo) Enum.Parse(typeof(Enumerations.YesNoFirstNo), att.Value);
                             break;
                         case "copyOf":
                             CopyOf = att.Value;
@@ -76,7 +76,7 @@ namespace Localization.Jliff.Graph
                             Id = att.Value;
                             break;
                         case "isolated":
-                            Isolated = (YesNo) Enum.Parse(typeof(YesNo), att.Value);
+                            Isolated = (Enumerations.YesNo) Enum.Parse(typeof(Enumerations.YesNo), att.Value);
                             break;
                         case "subFlows":
                             SubFlows = att.Value;
@@ -91,20 +91,20 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public YesNo CanCopy { get; set; }
-        public YesNo CanDelete { get; set; }
-        public YesNo CanOverlap { get; set; }
-        public YesNoFirstNo CanReorder { get; set; }
+        public Enumerations.YesNo CanCopy { get; set; }
+        public Enumerations.YesNo CanDelete { get; set; }
+        public Enumerations.YesNo CanOverlap { get; set; }
+        public Enumerations.YesNoFirstNo CanReorder { get; set; }
         public string CopyOf { get; set; }
         public string DataRef { get; set; }
         public string Dir { get; set; }
         public string Disp { get; set; }
         public string Equiv { get; set; }
-        public FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
         public string Id { get; set; }
-        public YesNo Isolated { get; set; }
+        public Enumerations.YesNo Isolated { get; set; }
 
-        public string Kind => ElementKind.sc.ToString();
+        public string Kind => Enumerations.ElementKind.sc.ToString();
         public string ProfileData { get; set; }
         public string ProfileEquivStorage { get; set; }
         public string ProfileSizeInfo { get; set; }

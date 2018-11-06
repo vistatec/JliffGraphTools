@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Jliff.Graph.Modules.LocQualityIssue;
 using Localization.Jliff.Graph.Modules.Metadata;
+using Localization.Jliff.Graph.Modules.ResourceData;
 
 namespace Localization.Jliff.Graph
 {
@@ -93,6 +94,24 @@ namespace Localization.Jliff.Graph
                     .ForMember(m => m.LocQualityIssueEnabled,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, ResourceData>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, ResourceItem>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Source>()
+                    .ForMember(m => m.Href,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("href")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
                 cfg.CreateMap<FilterEventArgs, PhElement>()
@@ -329,6 +348,61 @@ namespace Localization.Jliff.Graph
                         break;
                     default:
                         throw new Exception("Was expecting a Segment or Ignorable object.");
+                        break;
+                }
+            }
+        }
+
+        public virtual void ResourceData(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case File f:
+                        ResourceData rd = mapper.Map<ResourceData>(args);
+                        f.ResourceData = rd;
+                        stack.Push(rd);
+                        break;
+                }
+            }
+        }
+
+        public virtual void ResourceItem(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ResourceData rd:
+                        ResourceItem ri = mapper.Map<ResourceItem>(args);
+                        rd.ResourceItems.Add(ri);
+                        stack.Push(ri);
+                        break;
+                }
+            }
+        }
+
+        public void ResourceSource(object sender, FilterEventArgs args)
+        {
+            if (!args.IsEndElement)
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ResourceItem ri:
+                        Source s = mapper.Map<Source>(args);
+                        ri.Source = s;
                         break;
                 }
             }
