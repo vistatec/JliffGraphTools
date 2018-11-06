@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jliff.Graph.Modules.LocQualityIssue;
+using Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
@@ -56,6 +57,7 @@ namespace Localization.Jliff.Graph
         public float LocQualityRatingScoreThreshold { get; set; }
         public float LocQualityRatingVote { get; set; }
         public float LocQualityRatingVoteThreshold { get; set; }
+        public List<Match> Matches { get; set; } = new List<Match>();
         public Metadata Metadata { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Jliff.Graph.Modules.LocQualityIssue;
+using Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
 
@@ -94,6 +95,21 @@ namespace Localization.Jliff.Graph
                     .ForMember(m => m.LocQualityIssueEnabled,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Match>()
+                    .ForMember(m => m.MatchQuality,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("matchQuality")).Value))
+                    .ForMember(m => m.Origin,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("origin")).Value))
+                    .ForMember(m => m.Similarity,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("similarity")).Value))
+                    .ForMember(m => m.Type,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
                 cfg.CreateMap<FilterEventArgs, GlossaryEntry>()
@@ -192,6 +208,26 @@ namespace Localization.Jliff.Graph
                     break;
                 default:
                     break;
+            }
+        }
+
+        public void Match(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        Match m = mapper.Map<Match>(args);
+                        u.Matches.Add(m);
+                        stack.Push(m);
+                        break;
+                }
             }
         }
 
@@ -684,6 +720,13 @@ namespace Localization.Jliff.Graph
                         i.Source.Add(source2);
                     else
                         i.Target.Add(source2);
+                    break;
+                case Match m:
+                    TextElement source3 = new TextElement(args.Text);
+                    if (args.sourceOrTarget.Equals("source"))
+                        m.Source = source3;
+                    else
+                        m.Target = source3;
                     break;
                 default:
                     //throw new Exception("Was expecting a Segment object.");

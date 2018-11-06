@@ -56,6 +56,11 @@ namespace UnitTests
             fltr.ModResourceDataEvent += bldr.ResourceData;
             fltr.ModResourceItemEvent += bldr.ResourceItem;
             fltr.ModResourceSourceEvent += bldr.ResourceSource;
+            fltr.ModGlossaryEntryEvent += bldr.GlossaryEntry;
+            fltr.ModGlossDefinitionEvent += bldr.Definition;
+            fltr.ModGlossTermEvent += bldr.Term;
+            fltr.ModGlossTranslationEvent += bldr.Translation;
+            fltr.ModTransCandMatchEvent += bldr.Match;
             fltr.Filter(new StreamReader(Path.Combine(XlfFiles, "Ocelot.xlf")));
             bldr.Serialize(Path.Combine(XlfFiles, "Ocelot.json"));
             JsonSchema schema = JsonSchema.Parse(schemaDef);

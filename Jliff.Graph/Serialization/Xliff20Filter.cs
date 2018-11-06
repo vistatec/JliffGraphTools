@@ -131,6 +131,9 @@ namespace Localization.Jliff.Graph
                         metaArgs.Text = r.Value;
                         OnModMetaitem(this, metaArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("mtc:match"):
+                        OnModTransCandMatch(this, FilterEventArgs.FromReader(r));
+                        break;
                     case XmlReader r when r.Name.Equals("its:locQualityIssues"):
                         FilterEventArgs lqiFilterEventArgs = FilterEventArgs.FromReader(r);
                         if (lqiFilterEventArgs.Attributes.Count > 0)
@@ -170,6 +173,7 @@ namespace Localization.Jliff.Graph
         public event EventHandler<FilterEventArgs> ModResourceDataEvent;
         public event EventHandler<FilterEventArgs> ModResourceItemEvent;
         public event EventHandler<FilterEventArgs> ModResourceSourceEvent;
+        public event EventHandler<FilterEventArgs> ModTransCandMatchEvent;
 
         public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
         {
@@ -224,6 +228,11 @@ namespace Localization.Jliff.Graph
         public virtual void OnModResourceSource(object sender, FilterEventArgs filterEventArgs)
         {
             ModResourceSourceEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModTransCandMatch(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModTransCandMatchEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfEcElement(object sender, FilterEventArgs filterEventArgs)

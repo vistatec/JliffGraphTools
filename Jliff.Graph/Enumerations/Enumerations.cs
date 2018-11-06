@@ -116,6 +116,17 @@
             whitespace
         }
 
+        public enum MatchType
+        {
+            am,
+            mt,
+            icm,
+            idm,
+            tb,
+            tm,
+            other
+        }
+
         public enum State
         {
             initial,
