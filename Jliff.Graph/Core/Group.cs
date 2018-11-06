@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
@@ -9,6 +10,8 @@ namespace Localization.Jliff.Graph
     {
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subgroups = new List<ISubfile>();
+
+        public Group() { }
 
         public Group(string id)
         {

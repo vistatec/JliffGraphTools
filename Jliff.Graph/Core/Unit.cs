@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jliff.Graph.Modules.LocQualityIssue;
+using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
@@ -105,6 +106,11 @@ namespace Localization.Jliff.Graph
         public bool ShouldSerializeSubunits()
         {
             return Subunits.Count > 0;
+        }
+
+        public bool ShouldSerializeLocQualityIssues()
+        {
+            return LocQualityIssues.Count > 0;
         }
     }
 }

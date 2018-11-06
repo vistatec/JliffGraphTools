@@ -49,7 +49,10 @@ namespace UnitTests
             fltr.XlfEmElementEvent += bldr.EmElement;
             fltr.XlfScElementEvent += bldr.ScElement;
             fltr.XlfEcElementEvent += bldr.EcElement;
-            fltr.ItsLocQualityIssue += bldr.LocQualityIssue;
+            fltr.ModItsLocQualityIssue += bldr.LocQualityIssue;
+            fltr.ModMetadataEvent += bldr.Metadata;
+            fltr.ModMetaGroupEvent += bldr.MetaGroup;
+            fltr.ModMetaitemEvent += bldr.Metaitem;
             fltr.Filter(new StreamReader(Path.Combine(XlfFiles, "Ocelot.xlf")));
             bldr.Serialize(Path.Combine(XlfFiles, "Ocelot.json"));
             JsonSchema schema = JsonSchema.Parse(schemaDef);

@@ -16,38 +16,38 @@ namespace Localization.Jliff.Graph
             Id = id;
         }
 
-        //[JsonIgnore]
-        //public IDictionary<string, string> Attributes
-        //{
-        //    get
-        //    {
-        //        Dictionary<string, string> atts = new Dictionary<string, string>();
-        //        atts.Add("Id", Id);
-        //        atts.Add("Translate", Translate.ToString());
-        //        atts.Add("Type", Type);
-        //        return atts;
-        //    }
+        [JsonIgnore]
+        public IDictionary<string, string> Attributes
+        {
+            get
+            {
+                Dictionary<string, string> atts = new Dictionary<string, string>();
+                atts.Add("Id", Id);
+                atts.Add("Translate", Translate.ToString());
+                atts.Add("Type", Type);
+                return atts;
+            }
 
-        //    set
-        //    {
-        //        IDictionary<string, string> atts = value;
-        //        foreach (KeyValuePair<string, string> att in atts)
-        //            switch (att.Key)
-        //            {
-        //                case "id":
-        //                    Id = att.Value;
-        //                    break;
-        //                case "translate":
-        //                    Translate = bool.Parse(att.Value);
-        //                    break;
-        //                case "type":
-        //                    Type = att.Value;
-        //                    break;
-        //            }
-        //    }
-        //}
+            set
+            {
+                IDictionary<string, string> atts = value;
+                foreach (KeyValuePair<string, string> att in atts)
+                    switch (att.Key)
+                    {
+                        case "id":
+                            Id = att.Value;
+                            break;
+                        case "translate":
+                            Translate = bool.Parse(att.Value);
+                            break;
+                        case "type":
+                            Type = att.Value;
+                            break;
+                    }
+            }
+        }
 
-		public string AllowedCharacters { get; set; }
+        public string AllowedCharacters { get; set; }
 		public AnnotatorsRef AnnotatorsRef { get; set; }
 		public List<Domain> Domains { get; set; }
         public string Id { get; set; }
@@ -69,29 +69,30 @@ namespace Localization.Jliff.Graph
         public int LocQualityRatingVoteThreshold { get; set; }
         public float MtConfidence { get; set; }
         public string Org { get; set; }
-        public Uri OrgRef { get; set; }
+        public string OrgRef { get; set; }
         public string Person { get; set; }
-        public Uri PersonRef { get; set; }
+        public string PersonRef { get; set; }
         public string ProfileStorageRestriction { get; set; }
         public string ProfileSizeRestriction { get; set; }
-        public Uri ProvenanceRecordsRef { get; set; }
-        public Uri Ref { get; set; }
+
+        public string ProvenanceRecordsRef { get; set; }
+        public string Ref { get; set; }
         public string RevOrg { get; set; }
-        public Uri RevOrgRef { get; set; }
+        public string RevOrgRef { get; set; }
         public string RevPerson { get; set; }
-        public Uri RevPersonRef { get; set; }
+        public string RevPersonRef { get; set; }
         public string RevTool { get; set; }
-        public Uri RevToolRef { get; set; }
+        public string RevToolRef { get; set; }
 		public string SubFs { get; set; }
-		public Uri TaClassRef { get; set; }
+		public string TaClassRef { get; set; }
 		public float TaConfidence { get; set; }
 		public string TaIdent { get; set; }
-		public Uri TaIdentRef { get; set; }
+		public string TaIdentRef { get; set; }
 		public string TaSource { get; set; }
         public bool Translate { get; set; }
         public float TermConfidence { get; set; }
 		public string Tool { get; set; }
-		public Uri ToolRef { get; set; }
+		public string ToolRef { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
     }
