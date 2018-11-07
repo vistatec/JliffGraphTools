@@ -262,6 +262,11 @@ namespace Localization.Jliff.Graph
             XlfIgnorableEvent?.Invoke(sender, filterEventArgs);
         }
 
+        public virtual void OnXlfOriginalData(object sender, FilterEventArgs filterEventArgs)
+        {
+            XlfOriginalDataEvent?.Invoke(sender, filterEventArgs);
+        }
+
         public virtual void OnXlfPhElement(object sender, FilterEventArgs fliterEventArgs)
         {
             XlfPhElementEvent?.Invoke(sender, fliterEventArgs);
@@ -317,6 +322,7 @@ namespace Localization.Jliff.Graph
         public event EventHandler<FilterEventArgs> XlfFileEvent;
         public event EventHandler<FilterEventArgs> XlfGroupEvent;
         public event EventHandler<FilterEventArgs> XlfIgnorableEvent;
+        public event EventHandler<FilterEventArgs> XlfOriginalDataEvent;
         public event EventHandler<FilterEventArgs> XlfPhElementEvent;
         public event EventHandler<FilterEventArgs> XlfRootEvent;
         public event EventHandler<FilterEventArgs> XlfScElementEvent;
