@@ -98,6 +98,21 @@ namespace Localization.Jliff.Graph
                         else
                             OnXlfEmElement(this, mrkArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("ctr:changeTrack"):
+                        OnModCtrChangeTrack(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:revisions"):
+                        OnModCtrRevisions(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:revision"):
+                        OnModCtrRevision(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:item"):
+                        FilterEventArgs itemArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        itemArgs.Text = r.Value;
+                        OnModCtrRevisionItemText(this, itemArgs);
+                        break;
                     case XmlReader r when r.Name.Equals("gls:glossEntry"):
                         OnModGlossaryEntry(this, FilterEventArgs.FromReader(r));
                         break;
@@ -162,17 +177,22 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public event EventHandler<FilterEventArgs> ModGlossaryEntryEvent;
-        public event EventHandler<FilterEventArgs> ModGlossDefinitionEvent;
-        public event EventHandler<FilterEventArgs> ModGlossTermEvent;
-        public event EventHandler<FilterEventArgs> ModGlossTranslationEvent;
+        public event EventHandler<FilterEventArgs> ModCtrChangeTrackEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionsEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionItemEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionItemTextEvent;
+        public event EventHandler<FilterEventArgs> ModGlsDefinitionEvent;
+        public event EventHandler<FilterEventArgs> ModGlsEntryEvent;
+        public event EventHandler<FilterEventArgs> ModGlsTermEvent;
+        public event EventHandler<FilterEventArgs> ModGlsTranslationEvent;
         public event EventHandler<FilterEventArgs> ModItsLocQualityIssue;
         public event EventHandler<FilterEventArgs> ModMetadataEvent;
         public event EventHandler<FilterEventArgs> ModMetaGroupEvent;
         public event EventHandler<FilterEventArgs> ModMetaitemEvent;
-        public event EventHandler<FilterEventArgs> ModResourceDataEvent;
-        public event EventHandler<FilterEventArgs> ModResourceItemEvent;
-        public event EventHandler<FilterEventArgs> ModResourceSourceEvent;
+        public event EventHandler<FilterEventArgs> ModResResourceDataEvent;
+        public event EventHandler<FilterEventArgs> ModResResourceItemEvent;
+        public event EventHandler<FilterEventArgs> ModResSourceEvent;
         public event EventHandler<FilterEventArgs> ModTransCandMatchEvent;
 
         public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
@@ -180,24 +200,49 @@ namespace Localization.Jliff.Graph
             ModItsLocQualityIssue?.Invoke(sender, filterEventArgs);
         }
 
+        public void OnModCtrChangeTrack(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrChangeTrackEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevision(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevisions(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionsEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevisionItem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionItemEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevisionItemText(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionItemTextEvent?.Invoke(this, filterEventArgs);
+        }
+
         public virtual void OnModGlossaryEntry(object sender, FilterEventArgs filterEventArgs)
         {
-            ModGlossaryEntryEvent?.Invoke(sender, filterEventArgs);
+            ModGlsEntryEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModGlossDefinition(object sender, FilterEventArgs filterEventArgs)
         {
-            ModGlossDefinitionEvent?.Invoke(sender, filterEventArgs);
+            ModGlsDefinitionEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModGlossTerm(object sender, FilterEventArgs filterEventArgs)
         {
-            ModGlossTermEvent?.Invoke(sender, filterEventArgs);
+            ModGlsTermEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModGlossTranslation(object sender, FilterEventArgs filterEventArgs)
         {
-            ModGlossTranslationEvent?.Invoke(sender, filterEventArgs);
+            ModGlsTranslationEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModMetadata(object sender, FilterEventArgs filterEventArgs)
@@ -217,17 +262,17 @@ namespace Localization.Jliff.Graph
 
         private void OnModResourceData(object sender, FilterEventArgs filterEventArgs)
         {
-            ModResourceDataEvent?.Invoke(sender, filterEventArgs);
+            ModResResourceDataEvent?.Invoke(sender, filterEventArgs);
         }
 
         private void OnModResourceItem(object sender, FilterEventArgs filterEventArgs)
         {
-            ModResourceItemEvent?.Invoke(sender, filterEventArgs);
+            ModResResourceItemEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModResourceSource(object sender, FilterEventArgs filterEventArgs)
         {
-            ModResourceSourceEvent?.Invoke(sender, filterEventArgs);
+            ModResSourceEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnModTransCandMatch(object sender, FilterEventArgs filterEventArgs)

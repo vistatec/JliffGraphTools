@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Jliff.Graph.Core;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;

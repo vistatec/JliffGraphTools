@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Jliff.Graph.Core;
+using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.LocQualityIssue;
 using Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Modules.Metadata;
@@ -31,6 +33,26 @@ namespace Localization.Jliff.Graph
 
         public JliffDocument Jliff => jliff;
 
+        public void ChangeTrack(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        ChangeTrack ct = mapper.Map<ChangeTrack>(args);
+                        u.ChangeTrack = ct;
+                        stack.Push(ct);
+                        break;
+                }
+            }
+        }
+
         private void CreateMaps()
         {
             var config = new MapperConfiguration(cfg =>
@@ -41,6 +63,56 @@ namespace Localization.Jliff.Graph
                 //.ForAllOtherMembers(opt => opt.Ignore());
 
                 //cfg.CreateMap<string, Uri>().ConvertUsing<StringToUriConverter>();
+
+                cfg.CreateMap<string, Nmtoken>()
+                    .ConstructUsing(i => new Nmtoken(i))
+                    .ForMember(m => m.Token,
+                        o => o.MapFrom(s =>
+                            s));
+
+                cfg.CreateMap<FilterEventArgs, ChangeTrack>()
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                //cfg.CreateMap<FilterEventArgs, Revision>()
+                //    .ForMember(m => m.AppliesTo,
+                //        o => o.MapFrom(s =>
+                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                //    .ForMember(m => m.CurrentVersion,
+                //        o => o.MapFrom(s =>
+                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("currentVersion")).Value))
+                //    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Revisions>()
+                    .ForMember(m => m.AppliesTo,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                    .ForMember(m => m.CurrentVersion,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("currentVersion")).Value))
+                    .ForMember(m => m.Ref,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, RevisionItem>()
+                    .ForMember(m => m.Author,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("author")).Value))
+                    .ForMember(m => m.DateTime,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("datetime")).Value))
+                    .ForMember(m => m.Version,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("version")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, RevisionItemText>()
+                    .ForMember(m => m.Property,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("property")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s => s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
 
                 cfg.CreateMap<FilterEventArgs, Unit>()
                     //.ForMember(m => m.Id, opt => opt.Condition(src => src.Attributes.First().Value != null))
@@ -130,6 +202,12 @@ namespace Localization.Jliff.Graph
                             s.Text))
                     .ForAllOtherMembers(m => m.Ignore());
 
+                cfg.CreateMap<FilterEventArgs, Segment>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
                 cfg.CreateMap<FilterEventArgs, Term>()
                     .ForMember(m => m.Source,
                         o => o.MapFrom(s =>
@@ -192,6 +270,26 @@ namespace Localization.Jliff.Graph
             mapper = config.CreateMapper();
         }
 
+        public void Definition(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Definition d = mapper.Map<Definition>(args);
+                        ge.Definition = d;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
         public void EcElement(object sender, FilterEventArgs args)
         {
             object parent = stack.Peek();
@@ -208,26 +306,6 @@ namespace Localization.Jliff.Graph
                     break;
                 default:
                     break;
-            }
-        }
-
-        public void Match(object sender, FilterEventArgs args)
-        {
-            if (args.IsEndElement)
-            {
-                stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case Unit u:
-                        Match m = mapper.Map<Match>(args);
-                        u.Matches.Add(m);
-                        stack.Push(m);
-                        break;
-                }
             }
         }
 
@@ -270,6 +348,26 @@ namespace Localization.Jliff.Graph
                 else
                 {
                     throw new Exception("Was expecting a Jliff object.");
+                }
+            }
+        }
+
+        public void GlossaryEntry(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        GlossaryEntry e = mapper.Map<GlossaryEntry>(args);
+                        u.Glossary.Add(e);
+                        stack.Push(e);
+                        break;
                 }
             }
         }
@@ -336,6 +434,26 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public void Match(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        Match m = mapper.Map<Match>(args);
+                        u.Matches.Add(m);
+                        stack.Push(m);
+                        break;
+                }
+            }
+        }
+
         public void Metadata(object sender, FilterEventArgs args)
         {
             if (args.IsEndElement)
@@ -394,6 +512,10 @@ namespace Localization.Jliff.Graph
                         break;
                 }
             }
+        }
+
+        public void OriginalData(object sender, FilterEventArgs args)
+        {
         }
 
         public void PhElement(object sender, FilterEventArgs args)
@@ -465,86 +587,6 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void GlossaryEntry(object sender, FilterEventArgs args)
-        {
-            if (args.IsEndElement)
-            {
-                stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case Unit u:
-                        GlossaryEntry e = mapper.Map<GlossaryEntry>(args);
-                        u.Glossary.Add(e);
-                        stack.Push(e);
-                        break;
-                }
-            }
-        }
-
-        public void Definition(object sender, FilterEventArgs args)
-        {
-            if (args.IsEndElement)
-            {
-                //stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case GlossaryEntry ge:
-                        Definition d = mapper.Map<Definition>(args);
-                        ge.Definition = d;
-                        //stack.Push(e);
-                        break;
-                }
-            }
-        }
-
-        public void Term(object sender, FilterEventArgs args)
-        {
-            if (args.IsEndElement)
-            {
-                //stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case GlossaryEntry ge:
-                        Term t = mapper.Map<Term>(args);
-                        ge.Term = t;
-                        //stack.Push(e);
-                        break;
-                }
-            }
-        }
-
-        public void Translation(object sender, FilterEventArgs args)
-        {
-            if (args.IsEndElement)
-            {
-                //stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case GlossaryEntry ge:
-                        Translation t = mapper.Map<Translation>(args);
-                        ge.Translations.Add(t);
-                        //stack.Push(e);
-                        break;
-                }
-            }
-        }
-
         public void ResourceSource(object sender, FilterEventArgs args)
         {
             if (!args.IsEndElement)
@@ -555,6 +597,81 @@ namespace Localization.Jliff.Graph
                     case ResourceItem ri:
                         Source s = mapper.Map<Source>(args);
                         ri.Source = s;
+                        break;
+                }
+            }
+        }
+
+        public void Revision(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Revisions r:
+                        RevisionItem ri = mapper.Map<RevisionItem>(args);
+                        r.Items.Add(ri);
+                        stack.Push(ri);
+                        break;
+                }
+            }
+        }
+
+        public void RevisionItem(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Revisions r:
+                        RevisionItem ri = mapper.Map<RevisionItem>(args);
+                        r.Items.Add(ri);
+                        stack.Push(r);
+                        break;
+                }
+            }
+        }
+
+        public void RevisionItemText(object sender, FilterEventArgs args)
+        {
+            if (!args.IsEndElement)
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case RevisionItem ri:
+                        RevisionItemText rit = mapper.Map<RevisionItemText>(args);
+                        ri.Item = rit;
+                        break;
+                }
+            }
+        }
+
+        public void Revisions(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ChangeTrack ct:
+                        Revisions r = mapper.Map<Revisions>(args);
+                        ct.Revisions = r;
+                        stack.Push(r);
                         break;
                 }
             }
@@ -593,7 +710,7 @@ namespace Localization.Jliff.Graph
                 Unit parent = stack.Peek() as Unit;
                 if (parent != null)
                 {
-                    Segment segment = new Segment();
+                    Segment segment = mapper.Map<Segment>(args);
                     parent.Subunits.Add(segment);
                     stack.Push(segment);
                 }
@@ -702,6 +819,26 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public void Term(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Term t = mapper.Map<Term>(args);
+                        ge.Term = t;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
         public void Text(object sender, FilterEventArgs args)
         {
             object parent = stack.Peek();
@@ -731,6 +868,26 @@ namespace Localization.Jliff.Graph
                 default:
                     //throw new Exception("Was expecting a Segment object.");
                     break;
+            }
+        }
+
+        public void Translation(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Translation t = mapper.Map<Translation>(args);
+                        ge.Translations.Add(t);
+                        //stack.Push(e);
+                        break;
+                }
             }
         }
 

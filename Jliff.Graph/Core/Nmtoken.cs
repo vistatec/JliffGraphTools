@@ -11,6 +11,11 @@ namespace Jliff.Graph.Core
             
         }
 
+        public Nmtoken(string token)
+        {
+            Token = token;
+        }
+
         private string token;
         public string Token
         {
