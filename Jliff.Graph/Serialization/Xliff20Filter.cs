@@ -111,7 +111,7 @@ namespace Localization.Jliff.Graph
                         FilterEventArgs itemArgs = FilterEventArgs.FromReader(r);
                         r.Read();
                         itemArgs.Text = r.Value;
-                        OnModCtrRevisionItemText(this, itemArgs);
+                        OnModCtrRevisionItem(this, itemArgs);
                         break;
                     case XmlReader r when r.Name.Equals("gls:glossEntry"):
                         OnModGlossaryEntry(this, FilterEventArgs.FromReader(r));
@@ -181,7 +181,6 @@ namespace Localization.Jliff.Graph
         public event EventHandler<FilterEventArgs> ModCtrRevisionEvent;
         public event EventHandler<FilterEventArgs> ModCtrRevisionsEvent;
         public event EventHandler<FilterEventArgs> ModCtrRevisionItemEvent;
-        public event EventHandler<FilterEventArgs> ModCtrRevisionItemTextEvent;
         public event EventHandler<FilterEventArgs> ModGlsDefinitionEvent;
         public event EventHandler<FilterEventArgs> ModGlsEntryEvent;
         public event EventHandler<FilterEventArgs> ModGlsTermEvent;
@@ -218,11 +217,6 @@ namespace Localization.Jliff.Graph
         public void OnModCtrRevisionItem(object sender, FilterEventArgs filterEventArgs)
         {
             ModCtrRevisionItemEvent?.Invoke(this, filterEventArgs);
-        }
-
-        public void OnModCtrRevisionItemText(object sender, FilterEventArgs filterEventArgs)
-        {
-            ModCtrRevisionItemTextEvent?.Invoke(this, filterEventArgs);
         }
 
         public virtual void OnModGlossaryEntry(object sender, FilterEventArgs filterEventArgs)

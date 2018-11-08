@@ -13,7 +13,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
         public Nmtoken AppliesTo { get; set; }
         public Nmtoken CurrentVersion { get; set; }
         public Nmtoken Ref { get; set; }
-        public List<RevisionItem> Items { get; set; } = new List<RevisionItem>();
+        public List<Revision> Items { get; set; } = new List<Revision>();
 
     }
 }

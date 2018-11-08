@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization.Json;
+using Jliff.Graph.Modules.ChangeTrack;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -66,13 +68,19 @@ namespace UnitTests
             fltr.ModCtrRevisionsEvent += bldr.Revisions;
             fltr.ModCtrRevisionEvent += bldr.Revision;
             fltr.ModCtrRevisionItemEvent += bldr.RevisionItem;
-            fltr.ModCtrRevisionItemTextEvent += bldr.RevisionItemText;
             fltr.Filter(new StreamReader(Path.Combine(XlfFiles, "Ocelot.xlf")));
             bldr.Serialize(Path.Combine(XlfFiles, "Ocelot.json"));
             JsonSchema schema = JsonSchema.Parse(schemaDef);
             var obGraph = JObject.FromObject(bldr.Jliff);
             Assert.IsTrue(obGraph.IsValid(schema));
 
+            JliffDocument jd = Converter.Deserialize(new FileInfo(Path.Combine(XlfFiles, "Ocelot.json")));
+            Group grp = jd.Files[0].Subfiles[1] as Group;
+            Unit u = grp.Subgroups[1] as Unit;
+            ChangeTrack ct = u.ChangeTrack;
+            Assert.IsNotNull(ct);
+            Assert.IsTrue(ct.Revisions.Items[1].Author.Equals("phil"));
+            Assert.IsTrue(ct.Revisions.Items[1].Item.Text.StartsWith("Quando un segmento è selezionato nella Vista segmento"));
         }
     }
 }

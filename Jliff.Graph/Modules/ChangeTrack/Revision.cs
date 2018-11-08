@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Jliff.Graph.Core;
+﻿using Jliff.Graph.Core;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
@@ -10,9 +9,9 @@ namespace Jliff.Graph.Modules.ChangeTrack
             
         }
 
-        public Nmtoken AppliesTo { get; set; }
-        public Nmtoken Ref { get; set; }
-        public Nmtoken CurrentVersion { get; set; }
-        public List<RevisionItem> Items { get; set; } = new List<RevisionItem>();
+        public string Author { get; set; }
+        public string DateTime { get; set; }
+        public Nmtoken Version { get; set; }
+        public RevisionItem Item { get; set; }
     }
 }

@@ -94,7 +94,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, RevisionItem>()
+                cfg.CreateMap<FilterEventArgs, Revision>()
                     .ForMember(m => m.Author,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("author")).Value))
@@ -106,7 +106,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("version")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, RevisionItemText>()
+                cfg.CreateMap<FilterEventArgs, RevisionItem>()
                     .ForMember(m => m.Property,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("property")).Value))
@@ -614,7 +614,7 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Revisions r:
-                        RevisionItem ri = mapper.Map<RevisionItem>(args);
+                        Revision ri = mapper.Map<Revision>(args);
                         r.Items.Add(ri);
                         stack.Push(ri);
                         break;
@@ -624,34 +624,14 @@ namespace Localization.Jliff.Graph
 
         public void RevisionItem(object sender, FilterEventArgs args)
         {
-            if (args.IsEndElement)
-            {
-                stack.Pop();
-            }
-            else
-            {
-                object parent = stack.Peek();
-                switch (parent)
-                {
-                    case Revisions r:
-                        RevisionItem ri = mapper.Map<RevisionItem>(args);
-                        r.Items.Add(ri);
-                        stack.Push(r);
-                        break;
-                }
-            }
-        }
-
-        public void RevisionItemText(object sender, FilterEventArgs args)
-        {
             if (!args.IsEndElement)
             {
                 object parent = stack.Peek();
                 switch (parent)
                 {
-                    case RevisionItem ri:
-                        RevisionItemText rit = mapper.Map<RevisionItemText>(args);
-                        ri.Item = rit;
+                    case Revision r:
+                        RevisionItem ri = mapper.Map<RevisionItem>(args);
+                        r.Item = ri;
                         break;
                 }
             }
