@@ -7,6 +7,7 @@ namespace Localization.Jliff.Graph
     public class Xliff20Filter
     {
         private static XmlReader xmlReader;
+        private static string currentLqiRef = string.Empty;
 
         public void Filter(TextReader reader)
         {
@@ -22,13 +23,21 @@ namespace Localization.Jliff.Graph
                         OnXlfRoot(this, FilterEventArgs.FromReader(r));
                         break;
                     case XmlReader r when r.Name.Equals("file"):
+                        // Using XElement.FromReader() would have upset the balance of reader.Read()
                         OnXlfFile(this, FilterEventArgs.FromReader(r));
                         break;
                     case XmlReader r when r.Name.Equals("skeleton"):
                         OnXlfSkeleton(this, new FilterEventArgs());
                         break;
                     case XmlReader r when r.Name.Equals("unit"):
-                        OnXlfUnit(this, FilterEventArgs.FromReader(r));
+                        FilterEventArgs f = FilterEventArgs.FromReader(r);
+                        //f.Id = "adada";
+                        //f.sourceOrTarget = sourceOrTarget;
+                        //f.NodeType = r.NodeType.ToString();
+                        OnXlfUnit(this, f);
+                        break;
+                    case XmlReader r when r.Name.Equals("group"):
+                        OnXlfGroup(this, FilterEventArgs.FromReader(r));
                         break;
                     case XmlReader r when r.Name.Equals("segment"):
                         OnXlfSegment(this, FilterEventArgs.FromReader(r));
@@ -89,6 +98,76 @@ namespace Localization.Jliff.Graph
                         else
                             OnXlfEmElement(this, mrkArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("ctr:changeTrack"):
+                        OnModCtrChangeTrack(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:revisions"):
+                        OnModCtrRevisions(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:revision"):
+                        OnModCtrRevision(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("ctr:item"):
+                        FilterEventArgs itemArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        itemArgs.Text = r.Value;
+                        OnModCtrRevisionItem(this, itemArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:glossEntry"):
+                        OnModGlossaryEntry(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:definition"):
+                        FilterEventArgs defArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        defArgs.Text = r.Value;
+                        OnModGlossDefinition(this, defArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:term"):
+                        FilterEventArgs termArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        termArgs.Text = r.Value;
+                        OnModGlossTerm(this, termArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("gls:translation"):
+                        FilterEventArgs transArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        transArgs.Text = r.Value;
+                        OnModGlossTranslation(this, transArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("md:metadata"):
+                        OnModMetadata(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("md:metaGroup"):
+                        OnModMetaGroup(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("md:meta"):
+                        FilterEventArgs metaArgs = FilterEventArgs.FromReader(r);
+                        r.Read();
+                        metaArgs.Text = r.Value;
+                        OnModMetaitem(this, metaArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("mtc:match"):
+                        OnModTransCandMatch(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("its:locQualityIssues"):
+                        FilterEventArgs lqiFilterEventArgs = FilterEventArgs.FromReader(r);
+                        if (lqiFilterEventArgs.Attributes.Count > 0)
+                            currentLqiRef = lqiFilterEventArgs?.Attributes["xml:id"];
+                        break;
+                    case XmlReader r when r.Name.Equals("its:locQualityIssue"):
+                        FilterEventArgs lqiArgs = FilterEventArgs.FromReader(r);
+                        lqiArgs.Attributes.Add("its:locQualityIssuesRef", currentLqiRef);
+                        OnItsLocQualityIssue(this, lqiArgs);
+                        break;
+                    case XmlReader r when r.Name.Equals("res:resourceData"):
+                        OnModResourceData(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("res:resourceItem"):
+                        OnModResourceItem(this, FilterEventArgs.FromReader(r));
+                        break;
+                    case XmlReader r when r.Name.Equals("res:source"):
+                        OnModResourceSource(this, FilterEventArgs.FromReader(r));
+                        break;
                     default:
                         break;
                 }
@@ -96,6 +175,103 @@ namespace Localization.Jliff.Graph
                 // Try to use Read() here. Using XElement.ReadFrom() reads the whole element and also advances the reader.
                 xmlReader.Read();
             }
+        }
+
+        public event EventHandler<FilterEventArgs> ModCtrChangeTrackEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionsEvent;
+        public event EventHandler<FilterEventArgs> ModCtrRevisionItemEvent;
+        public event EventHandler<FilterEventArgs> ModGlsDefinitionEvent;
+        public event EventHandler<FilterEventArgs> ModGlsEntryEvent;
+        public event EventHandler<FilterEventArgs> ModGlsTermEvent;
+        public event EventHandler<FilterEventArgs> ModGlsTranslationEvent;
+        public event EventHandler<FilterEventArgs> ModItsLocQualityIssue;
+        public event EventHandler<FilterEventArgs> ModMetadataEvent;
+        public event EventHandler<FilterEventArgs> ModMetaGroupEvent;
+        public event EventHandler<FilterEventArgs> ModMetaitemEvent;
+        public event EventHandler<FilterEventArgs> ModResResourceDataEvent;
+        public event EventHandler<FilterEventArgs> ModResResourceItemEvent;
+        public event EventHandler<FilterEventArgs> ModResSourceEvent;
+        public event EventHandler<FilterEventArgs> ModTransCandMatchEvent;
+
+        public virtual void OnItsLocQualityIssue(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModItsLocQualityIssue?.Invoke(sender, filterEventArgs);
+        }
+
+        public void OnModCtrChangeTrack(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrChangeTrackEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevision(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevisions(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionsEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public void OnModCtrRevisionItem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModCtrRevisionItemEvent?.Invoke(this, filterEventArgs);
+        }
+
+        public virtual void OnModGlossaryEntry(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlsEntryEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossDefinition(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlsDefinitionEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossTerm(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlsTermEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModGlossTranslation(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModGlsTranslationEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModMetadata(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModMetadataEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModMetaGroup(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModMetaGroupEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModMetaitem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModMetaitemEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModResourceData(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResResourceDataEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnModResourceItem(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResResourceItemEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModResourceSource(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModResSourceEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnModTransCandMatch(object sender, FilterEventArgs filterEventArgs)
+        {
+            ModTransCandMatchEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfEcElement(object sender, FilterEventArgs filterEventArgs)
@@ -110,12 +286,24 @@ namespace Localization.Jliff.Graph
 
         public virtual void OnXlfFile(object sender, FilterEventArgs filterEventArgs)
         {
+            // Ideally this filter would have done the mapping to the File object but the JliffBuilder needs to know if 
+            // its a start or end element in order to build the object graph
             XlfFileEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        private void OnXlfGroup(object sender, FilterEventArgs filterEventArgs)
+        {
+            XlfGroupEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfIgnorable(object sender, FilterEventArgs filterEventArgs)
         {
             XlfIgnorableEvent?.Invoke(sender, filterEventArgs);
+        }
+
+        public virtual void OnXlfOriginalData(object sender, FilterEventArgs filterEventArgs)
+        {
+            XlfOriginalDataEvent?.Invoke(sender, filterEventArgs);
         }
 
         public virtual void OnXlfPhElement(object sender, FilterEventArgs fliterEventArgs)
@@ -158,7 +346,7 @@ namespace Localization.Jliff.Graph
             XlfTargetEvent?.Invoke(sender, filterEventArgs);
         }
 
-        private void OnXlfText(object sender, FilterEventArgs filterEventArgs)
+        public virtual void OnXlfText(object sender, FilterEventArgs filterEventArgs)
         {
             XlfTextEvent?.Invoke(sender, filterEventArgs);
         }
@@ -173,6 +361,7 @@ namespace Localization.Jliff.Graph
         public event EventHandler<FilterEventArgs> XlfFileEvent;
         public event EventHandler<FilterEventArgs> XlfGroupEvent;
         public event EventHandler<FilterEventArgs> XlfIgnorableEvent;
+        public event EventHandler<FilterEventArgs> XlfOriginalDataEvent;
         public event EventHandler<FilterEventArgs> XlfPhElementEvent;
         public event EventHandler<FilterEventArgs> XlfRootEvent;
         public event EventHandler<FilterEventArgs> XlfScElementEvent;

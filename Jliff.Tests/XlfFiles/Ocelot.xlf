@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" xmlns:xmrk="urn:xmarker" xmlns:mtc="urn:oasis:names:tc:xliff:matches:2.0" xmlns:its="http://www.w3.org/2005/11/its" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gls="urn:oasis:names:tc:xliff:glossary:2.0" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:md="urn:oasis:names:tc:xliff:metadata:2.0" xmlns:res="urn:oasis:names:tc:xliff:resourcedata:2.0" xmlns:ctr="urn:oasis:names:tc:xliff:changetracking:2.0" xmlns:slr="urn:oasis:names:tc:xliff:sizerestriction:2.0" xmlns:val="urn:oasis:names:tc:xliff:validation:2.0" xmlns:itsm="urn:oasis:names:tc:xliff:itsm:2.1" srcLang="en-GB" trgLang="it-IT" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:2.0 file:///E:/Xliff/xliff_core_2.0.xsd">
+	<file id="f1">
+		<res:resourceData>
+			<res:resourceItem>
+				<res:source href="https://open.vistatec.com/ocelot"/>
+			</res:resourceItem>
+		</res:resourceData>
+		<unit id="u1">
+			<gls:glossary>
+				<gls:glossEntry id="gloss1" ref="#mrk1">
+					<gls:term source="Oasis">XLIFF</gls:term>
+					<gls:translation>XLIFF</gls:translation>
+					<gls:definition source="Oasis">XML Localization Interchange File Format</gls:definition>
+				</gls:glossEntry>
+			</gls:glossary>
+			<mtc:matches>
+				<mtc:match ref="#s1" type="mt" similarity="100" matchQuality="100" origin="Google Translate">
+					<source>Ocelot is a free, open source editor with advanced features for reviewing and correcting translations.</source>
+					<target>Ocelot è un editor open source gratuito con funzionalità avanzate per la revisione e la correzione delle traduzioni.</target>
+				</mtc:match>
+				<mtc:match ref="#s1" type="mt" similarity="100" matchQuality="100" origin="Microsoft Bing Translator">
+					<source>Ocelot is a free, open source editor with advanced features for reviewing and correcting translations.</source>
+					<target>Ocelot è un libero, editor open source con funzionalità avanzate per la visualizzazione e la correzione delle traduzioni.</target>
+				</mtc:match>
+				<mtc:match ref="#s2" type="mt" similarity="80" matchQuality="80" origin="Google Translate">
+					<source>Ocelot reads and writes Language Quality Issue data according to the ITS 2.0/XLIFF 1.2 mapping.</source>
+					<target>Ocelot legge e scrive i dati relativi alla qualità della lingua in base al mapping ITS 2.0 / XLIFF 1.2.</target>
+				</mtc:match>
+			</mtc:matches>
+			<notes>
+				<note>This is just made up for testing purposes.</note>
+			</notes>
+			<originalData>
+				<data id="hlstart">&lt;a href="https://www.w3.org/International/its/wiki/XLIFF_1.2_Mapping#Provenance"&gt;</data>
+				<data id="hlend">&lt;/a&gt;</data>
+			</originalData>
+			<segment id="s1">
+				<source>
+					<mrk id="mrk1" type="term">Ocelot</mrk> is a free, open source editor with advanced features for reviewing and correcting translations.
+				</source>
+				<target/>
+			</segment>
+			<segment id="s2">
+				<source>It is licensed under <pc id="pc1" type="link" dataRefStart="hlstart" dataRefEnd="hlend">LGPL 3.0.</pc>
+				</source>
+			</segment>
+			<segment id="s3">
+				<source>It implements the reading, rendering and writing of <mrk id="term1" type="term" its:taIdentRef="https://en.wikipedia.org/wiki/Internationalization_Tag_Set" its:taConfidence="1">Internationalization Tag Set 2.0</mrk> Localization Quality Issue, Provenance and MT Confidence metadata categories.</source>
+				<target/>
+			</segment>
+		</unit>
+		<group id="g1">
+			<unit id="u2">
+				<md:metadata id="md-ocelot-provenance">
+					<md:metaGroup id="developers" category="developers" appliesTo="source">
+						<md:meta type="Company">Vistatec</md:meta>
+						<md:meta type="Lead Architect">Phil Ritchie</md:meta>
+						<md:meta type="Partners">Spartan Software, Inc.</md:meta>
+					</md:metaGroup>
+				</md:metadata>
+				<its:locQualityIssues xml:id="lqi87">
+					<its:locQualityIssue locQualityIssueType="mistranslation" locQualityIssueSeverity="100" locQualityIssueComment="This version of the standard does not exist." locQualityIssueEnabled="yes"/>
+				</its:locQualityIssues>
+				<segment id="s4">
+					<source>Ocelot can also be used as a general XLIFF 1.2 or XLIFF 2.0 Editor.</source>
+					<target>Ocelot può anche essere utilizzato come editor generale XLIFF 1.2 o <mrk id="mrk43" type="generic" translate="no" its:locQualityIssuesRef="#its=lqi87">XLIFF 3.0.</mrk>
+					</target>
+				</segment>
+				<segment id="s5" state="translated">
+					<source>Ocelot reads and writes Language Quality Issue data according to the <pc id="pc2" type="fmt" subType="xlf:b" fs:fs="b">ITS 2.0/XLIFF 1.2 mapping.</pc>
+					</source>
+					<target>Ocelot legge e scrive i dati di emissione di qualità <mrk id="mrk77" type="generic" translate="yes" its:locQualityIssueType="misspelling" its:locQualityIssueSeverity="100" its:locQualityIssueComment="Basic error. Should be linguistica">lingistica</mrk> secondo la sua mappatura 2.0/XLIFF 1,2.</target>
+				</segment>
+			</unit>
+			<unit id="u3">
+				<ctr:changeTrack>
+					<ctr:revisions appliesTo="target" currentVersion="2">
+						<ctr:revision author="phil" datetime="2018-11-03T17:00:00+0:00" version="1">
+							<ctr:item property="content">Quando si seleziona un segmento nella vista segmento, nel riquadro dei dettagli vengono visualizzate le informazioni relative a tale segmento.</ctr:item>
+						</ctr:revision>
+						<ctr:revision author="phil" datetime="2018-11-03T17:45:00+0:00" version="2">
+							<ctr:item property="content">Quando un segmento è selezionato nella Vista segmento, le informazioni su tale segmento vengono visualizzate nel riquadro dettagli.</ctr:item>
+						</ctr:revision>
+					</ctr:revisions>
+				</ctr:changeTrack>
+				<segment id="s-mod">
+					<source>When a segment is selected in the Segment View, information about that segment appears in the Detail Pane.</source>
+					<target>Quando un segmento è selezionato nella Vista segmento, le informazioni su tale segmento vengono visualizzate nel riquadro dettagli.</target>
+				</segment>
+			</unit>
+			<unit id="s-ui">
+				<val:validation>
+					<val:rule isPresent="yes" caseSensitive="yes"/>
+				</val:validation>
+				<segment id="s-ds">
+					<source>
+						<mrk id="mrk-ds" type="generic" translate="yes" slr:sizeRestriction="10">Doc Stats</mrk>
+					</source>
+				</segment>
+				<segment id="s-other">
+					<source>
+						<mrk id="mrk-other" type="generic" translate="yes" slr:sizeRestriction="10">Other ITS</mrk>
+					</source>
+				</segment>
+			</unit>
+		</group>
+	</file>
+</xliff>

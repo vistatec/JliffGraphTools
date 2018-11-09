@@ -1,5 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using Jliff.Graph.Core;
+using Jliff.Graph.Modules.ChangeTrack;
+using Jliff.Graph.Modules.LocQualityIssue;
+using Jliff.Graph.Modules.Matches;
+using Localization.Jliff.Graph.Modules.Metadata;
+using Localization.Jliff.Graph.Modules.ResourceData;
 
 namespace Localization.Jliff.Graph
 {
@@ -8,6 +16,8 @@ namespace Localization.Jliff.Graph
         private static int filesIdx = -1;
         private static JliffDocument jliff;
         private static readonly Stack<object> stack = new Stack<object>();
+        private readonly Dictionary<string, Unit> unitsWithLqi = new Dictionary<string, Unit>();
+        private IMapper mapper;
 
         public JliffBuilder()
         {
@@ -15,11 +25,270 @@ namespace Localization.Jliff.Graph
 
         public JliffBuilder(string srcLang, string trgLang)
         {
+            CreateMaps();
+
             jliff = new JliffDocument(srcLang, trgLang);
             stack.Push(jliff);
         }
 
         public JliffDocument Jliff => jliff;
+
+        public void ChangeTrack(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        ChangeTrack ct = mapper.Map<ChangeTrack>(args);
+                        u.ChangeTrack = ct;
+                        stack.Push(ct);
+                        break;
+                }
+            }
+        }
+
+        private void CreateMaps()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                //cfg.CreateMap<FilterEventArgs, File>()
+                //.ForMember(m => m.AnnotatorsRef, opt => opt.Condition(src => src.Attributes["its:annotatorsRef"] != null))
+                //.ForMember(m => m.Id, opt => opt.MapFrom(src => src.Id))
+                //.ForAllOtherMembers(opt => opt.Ignore());
+
+                //cfg.CreateMap<string, Uri>().ConvertUsing<StringToUriConverter>();
+
+                cfg.CreateMap<string, Nmtoken>()
+                    .ConstructUsing(i => new Nmtoken(i))
+                    .ForMember(m => m.Token,
+                        o => o.MapFrom(s =>
+                            s));
+
+                cfg.CreateMap<FilterEventArgs, ChangeTrack>()
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                //cfg.CreateMap<FilterEventArgs, Revision>()
+                //    .ForMember(m => m.AppliesTo,
+                //        o => o.MapFrom(s =>
+                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                //    .ForMember(m => m.CurrentVersion,
+                //        o => o.MapFrom(s =>
+                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("currentVersion")).Value))
+                //    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Revisions>()
+                    .ForMember(m => m.AppliesTo,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                    .ForMember(m => m.CurrentVersion,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("currentVersion")).Value))
+                    .ForMember(m => m.Ref,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Revision>()
+                    .ForMember(m => m.Author,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("author")).Value))
+                    .ForMember(m => m.DateTime,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("datetime")).Value))
+                    .ForMember(m => m.Version,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("version")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, RevisionItem>()
+                    .ForMember(m => m.Property,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("property")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s => s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Unit>()
+                    //.ForMember(m => m.Id, opt => opt.Condition(src => src.Attributes.First().Value != null))
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    //.ForMember(m => m.Id, opt => opt.MapFrom(src => src.Id))
+                    //.ForMember(m => m.LocQualityIssues, opt => opt.Condition(src => src.Attributes["its:locQualityIssuesRef"] != null));
+                    .ForAllOtherMembers(opt => opt.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Group>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(o => o.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Metadata>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(o => o.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, MetaGroup>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(o => o.Ignore());
+
+                //cfg.CreateMap<FilterEventArgs, KeyValuePair<string, string>>()
+                //    .ConstructUsing(i => new KeyValuePair<string, string>(
+                //        i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Key,
+                //        i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value));
+
+                //cfg.CreateMap<FilterEventArgs, Dictionary<string, string>>()
+                //    .ConstructUsing()
+
+                cfg.CreateMap<FilterEventArgs, Metaitem>()
+                    .ConstructUsing(i => new Metaitem(
+                        i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value,
+                        i.Text))
+                    .ForAllOtherMembers(o => o.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, LocQualityIssue>()
+                    .ForMember(m => m.LocQualityIssueComment,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueComment")).Value))
+                    .ForMember(m => m.LocQualityIssueType,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueType")).Value))
+                    .ForMember(m => m.LocQualityIssueSeverity,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueSeverity")).Value))
+                    .ForMember(m => m.LocQualityIssueEnabled,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Match>()
+                    .ForMember(m => m.MatchQuality,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("matchQuality")).Value))
+                    .ForMember(m => m.Origin,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("origin")).Value))
+                    .ForMember(m => m.Similarity,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("similarity")).Value))
+                    .ForMember(m => m.Type,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, GlossaryEntry>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.Ref,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Definition>()
+                    .ForMember(m => m.Source,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Segment>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Term>()
+                    .ForMember(m => m.Source,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Translation>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.Text,
+                        o => o.MapFrom(s =>
+                            s.Text))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, ResourceData>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, ResourceItem>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, Source>()
+                    .ForMember(m => m.Href,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("href")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, PhElement>()
+                    .ForAllOtherMembers(m => m.Ignore());
+
+                cfg.CreateMap<FilterEventArgs, SmElement>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.LocQualityIssuesRef,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssuesRef")).Value))
+                    //.ForMember(m => m.ProvenanceRecordsRef,
+                    //    o => o.ResolveUsing<ProvenanceRecordsRefValueResolver>())
+                    //.ForMember(m => m.ProvenanceRecordsRef,
+                    //    o => o.Condition(s =>
+                    //        s.Attributes.SingleOrDefault(a => a.Key.EndsWith("provenanceRecordsRef")).Value != null))
+                    .ForMember(m => m.ProvenanceRecordsRef,
+                        o => o.ResolveUsing(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("provenanceRecordsRef"))))
+                    .ForMember(m => m.Type,
+                        o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+            });
+            config.AssertConfigurationIsValid();
+            mapper = config.CreateMapper();
+        }
+
+        public void Definition(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Definition d = mapper.Map<Definition>(args);
+                        ge.Definition = d;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
 
         public void EcElement(object sender, FilterEventArgs args)
         {
@@ -62,7 +331,7 @@ namespace Localization.Jliff.Graph
 
         public void File(object sender, FilterEventArgs args)
         {
-            if (args.NodeType.Equals("EndElement"))
+            if (args.IsEndElement)
             {
                 stack.Pop();
             }
@@ -71,13 +340,34 @@ namespace Localization.Jliff.Graph
                 JliffDocument parent = stack.Peek() as JliffDocument;
                 if (parent != null)
                 {
-                    File file = new File(args.Id);
+                    File file = new File("");
+                    //File file = mapper.Map<File>(args);
                     stack.Push(file);
                     parent.Files.Add(file);
                 }
                 else
                 {
                     throw new Exception("Was expecting a Jliff object.");
+                }
+            }
+        }
+
+        public void GlossaryEntry(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        GlossaryEntry e = mapper.Map<GlossaryEntry>(args);
+                        u.Glossary.Add(e);
+                        stack.Push(e);
+                        break;
                 }
             }
         }
@@ -94,12 +384,12 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Group g:
-                        Group newg1 = new Group(args.Id);
+                        Group newg1 = mapper.Map<Group>(args);
                         g.Subgroups.Add(newg1);
                         stack.Push(newg1);
                         break;
                     case File f:
-                        Group newg2 = new Group(args.Id);
+                        Group newg2 = mapper.Map<Group>(args);
                         f.Subfiles.Add(newg2);
                         stack.Push(newg2);
                         break;
@@ -131,6 +421,102 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public void LocQualityIssue(object sender, FilterEventArgs args)
+        {
+            LocQualityIssue lqi = mapper.Map<LocQualityIssue>(args);
+
+            object parent = stack.Peek();
+            switch (parent)
+            {
+                case Unit u:
+                    u.LocQualityIssues.Add(lqi);
+                    break;
+            }
+        }
+
+        public void Match(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        Match m = mapper.Map<Match>(args);
+                        u.Matches.Add(m);
+                        stack.Push(m);
+                        break;
+                }
+            }
+        }
+
+        public void Metadata(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        Metadata m = mapper.Map<Metadata>(args);
+                        u.Metadata = m;
+                        stack.Push(m);
+                        break;
+                }
+            }
+        }
+
+        public void MetaGroup(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Metadata m:
+                        MetaGroup mg = mapper.Map<MetaGroup>(args);
+                        m.Groups.Add(mg);
+                        stack.Push(mg);
+                        break;
+                }
+            }
+        }
+
+        public void Metaitem(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case MetaGroup mg:
+                        Metaitem mi = mapper.Map<Metaitem>(args);
+                        mg.Meta.Add(mi);
+                        //stack.Push(mg);
+                        break;
+                }
+            }
+        }
+
+        public void OriginalData(object sender, FilterEventArgs args)
+        {
+        }
 
         public void PhElement(object sender, FilterEventArgs args)
         {
@@ -156,6 +542,116 @@ namespace Localization.Jliff.Graph
                         break;
                     default:
                         throw new Exception("Was expecting a Segment or Ignorable object.");
+                        break;
+                }
+            }
+        }
+
+        public virtual void ResourceData(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case File f:
+                        ResourceData rd = mapper.Map<ResourceData>(args);
+                        f.ResourceData = rd;
+                        stack.Push(rd);
+                        break;
+                }
+            }
+        }
+
+        public virtual void ResourceItem(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ResourceData rd:
+                        ResourceItem ri = mapper.Map<ResourceItem>(args);
+                        rd.ResourceItems.Add(ri);
+                        stack.Push(ri);
+                        break;
+                }
+            }
+        }
+
+        public void ResourceSource(object sender, FilterEventArgs args)
+        {
+            if (!args.IsEndElement)
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ResourceItem ri:
+                        Source s = mapper.Map<Source>(args);
+                        ri.Source = s;
+                        break;
+                }
+            }
+        }
+
+        public void Revision(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Revisions r:
+                        Revision ri = mapper.Map<Revision>(args);
+                        r.Items.Add(ri);
+                        stack.Push(ri);
+                        break;
+                }
+            }
+        }
+
+        public void RevisionItem(object sender, FilterEventArgs args)
+        {
+            if (!args.IsEndElement)
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Revision r:
+                        RevisionItem ri = mapper.Map<RevisionItem>(args);
+                        r.Item = ri;
+                        break;
+                }
+            }
+        }
+
+        public void Revisions(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case ChangeTrack ct:
+                        Revisions r = mapper.Map<Revisions>(args);
+                        ct.Revisions = r;
+                        stack.Push(r);
                         break;
                 }
             }
@@ -194,7 +690,7 @@ namespace Localization.Jliff.Graph
                 Unit parent = stack.Peek() as Unit;
                 if (parent != null)
                 {
-                    Segment segment = new Segment();
+                    Segment segment = mapper.Map<Segment>(args);
                     parent.Subunits.Add(segment);
                     stack.Push(segment);
                 }
@@ -232,8 +728,9 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Segment s:
-                        SmElement smElement = new SmElement();
-                        smElement.Attributes = args.Attributes;
+                        //SmElement smElement = new SmElement();
+                        SmElement smElement = mapper.Map<SmElement>(args);
+                        //smElement.Attributes = args.Attributes;
                         if (args.sourceOrTarget.Equals("source"))
                             s.Source.Add(smElement);
                         else
@@ -302,6 +799,26 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public void Term(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Term t = mapper.Map<Term>(args);
+                        ge.Term = t;
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
         public void Text(object sender, FilterEventArgs args)
         {
             object parent = stack.Peek();
@@ -321,30 +838,62 @@ namespace Localization.Jliff.Graph
                     else
                         i.Target.Add(source2);
                     break;
+                case Match m:
+                    TextElement source3 = new TextElement(args.Text);
+                    if (args.sourceOrTarget.Equals("source"))
+                        m.Source = source3;
+                    else
+                        m.Target = source3;
+                    break;
                 default:
                     //throw new Exception("Was expecting a Segment object.");
                     break;
             }
         }
 
+        public void Translation(object sender, FilterEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case GlossaryEntry ge:
+                        Translation t = mapper.Map<Translation>(args);
+                        ge.Translations.Add(t);
+                        //stack.Push(e);
+                        break;
+                }
+            }
+        }
+
         public void Unit(object sender, FilterEventArgs args)
         {
-            if (args.NodeType.Equals("EndElement"))
+            if (args.IsEndElement)
             {
                 stack.Pop();
             }
             else
             {
-                File parent = stack.Peek() as File;
-                if (parent != null)
+                object parent = stack.Peek();
+                switch (parent)
                 {
-                    Unit unit = new Unit(args.Id);
-                    parent.Subfiles.Add(unit);
-                    stack.Push(unit);
-                }
-                else
-                {
-                    throw new Exception("Was expecting a File object.");
+                    case Group g:
+                        Unit unit1 = mapper.Map<Unit>(args);
+                        g.Subgroups.Add(unit1);
+                        stack.Push(unit1);
+                        break;
+                    case File f:
+                        Unit unit2 = mapper.Map<Unit>(args);
+                        f.Subfiles.Add(unit2);
+                        stack.Push(unit2);
+                        break;
+                    default:
+                        throw new Exception("Was expecting a File or Group object.");
                 }
             }
         }

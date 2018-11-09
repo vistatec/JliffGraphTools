@@ -6,6 +6,7 @@ namespace Localization.Jliff.Graph
     {
         public List<Translation> Translations = new List<Translation>();
         public Definition Definition { get; set; }
+        public string Id { get; set; }
         public string Ref { get; set; }
         public Term Term { get; set; }
     }

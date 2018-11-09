@@ -250,6 +250,12 @@ namespace UnitTests
 
             var model = new JlGraph.JliffDocument("en-US", "ja-JP");
             model.Files.Add(new JlGraph.File("f1"));
+            var test = new JlGraph.Metaitem("key", "value");
+            var test1 = new JlGraph.MetaGroup();
+            test1.Meta.Add(test);
+            var list = new List<JlGraph.MetaGroup>();
+            list.Add(test1);
+            model.Files[0].Metadata = list;
             model.Files[0].Skeleton = new JlGraph.Skeleton("Graphic Example.psd.skl");
             model.Files[0].Subfiles = new List<ISubfile>
             {

@@ -19,8 +19,8 @@
 
         public enum ElementType
         {
-            ignorable,
-            segment
+            segment,
+            ignorable
         }
 
         public enum FormatStyle
@@ -116,6 +116,17 @@
             whitespace
         }
 
+        public enum MatchType
+        {
+            am,
+            mt,
+            icm,
+            idm,
+            tb,
+            tm,
+            other
+        }
+
         public enum State
         {
             initial,
@@ -129,7 +140,6 @@
             yes,
             no
         }
-
 
         public enum YesNoFirstNo
         {

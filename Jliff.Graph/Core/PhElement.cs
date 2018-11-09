@@ -77,9 +77,7 @@ namespace Localization.Jliff.Graph
 
 
         public Enumerations.YesNo CanCopy { get; set; }
-
         public Enumerations.YesNo CanDelete { get; set; }
-
         //public bool CanOverlap { get; set; }
         public Enumerations.YesNoFirstNo CanReorder { get; set; }
         public string CopyOf { get; set; }
