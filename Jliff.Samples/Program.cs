@@ -26,7 +26,7 @@ namespace Jliff.Samples
             xliff20Filter.XlfEmElementEvent += builder.EmElement;
             xliff20Filter.XlfScElementEvent += builder.ScElement;
             xliff20Filter.XlfEcElementEvent += builder.EcElement;
-            xliff20Filter.ItsLocQualityIssue += builder.LocQualityIssue;
+            xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
             DirectoryInfo output = new DirectoryInfo(Directory.GetCurrentDirectory());
             for (int i = 0; i < 1; i++)
                 output = Directory.GetParent(output.FullName);

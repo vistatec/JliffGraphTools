@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Output\dummy.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Schemas\JLIFF-2.1\jliff-schema-2.1-no-prefix.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

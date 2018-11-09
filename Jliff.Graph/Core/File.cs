@@ -13,6 +13,11 @@ namespace Localization.Jliff.Graph
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
 
+        public File()
+        {
+            
+        }
+
         [JsonConstructor]
         public File(string id)
         {

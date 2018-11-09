@@ -37,5 +37,24 @@ namespace Localization.Jliff.Graph
 
             return args;
         }
+
+        public FilterEventArgs()
+        {
+            
+        }
+
+        public FilterEventArgs(string id)
+        {
+            Attributes["id"] = id;
+            NodeType = "Element";
+        }
+
+        public FilterEventArgs(string id, string text, Dictionary<string, string> attributes)
+        {
+            Text = text;
+            Attributes = attributes;
+            NodeType = "Element";
+            Attributes["id"] = id;
+        }
     }
 }

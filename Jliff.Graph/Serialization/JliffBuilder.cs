@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.LocQualityIssue;
 using Jliff.Graph.Modules.Matches;
+using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
 
 namespace Localization.Jliff.Graph
 {
-    public class JliffBuilder
+    public class JliffBuilder : ISubfileBuilder, ISubUnitBuilder, IElementBuilder
     {
         private static int filesIdx = -1;
         private static JliffDocument jliff;
@@ -57,7 +60,11 @@ namespace Localization.Jliff.Graph
         {
             var config = new MapperConfiguration(cfg =>
             {
-                //cfg.CreateMap<FilterEventArgs, File>()
+                cfg.CreateMap<FilterEventArgs, File>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
                 //.ForMember(m => m.AnnotatorsRef, opt => opt.Condition(src => src.Attributes["its:annotatorsRef"] != null))
                 //.ForMember(m => m.Id, opt => opt.MapFrom(src => src.Id))
                 //.ForAllOtherMembers(opt => opt.Ignore());
@@ -328,6 +335,11 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public ISubfileBuilder File(FilterEventArgs args)
+        {
+            File(null, args);
+            return this as ISubfileBuilder;
+        }
 
         public void File(object sender, FilterEventArgs args)
         {
@@ -337,11 +349,9 @@ namespace Localization.Jliff.Graph
             }
             else
             {
-                JliffDocument parent = stack.Peek() as JliffDocument;
-                if (parent != null)
+                if (stack.Peek() is JliffDocument parent)
                 {
-                    File file = new File("");
-                    //File file = mapper.Map<File>(args);
+                    File file = mapper.Map<File>(args);
                     stack.Push(file);
                     parent.Files.Add(file);
                 }
@@ -370,6 +380,12 @@ namespace Localization.Jliff.Graph
                         break;
                 }
             }
+        }
+
+        public ISubfileBuilder Group(FilterEventArgs args)
+        {
+            Group(null, args);
+            return this;
         }
 
         public void Group(object sender, FilterEventArgs args)
@@ -679,6 +695,12 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public ISubUnitBuilder Segment(FilterEventArgs args)
+        {
+            Segment(null, args);
+            return this;
+        }
+
         public void Segment(object sender, FilterEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
@@ -743,6 +765,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public IElementBuilder Source(FilterEventArgs args)
+        {
+            args.sourceOrTarget = "source";
+            Source(null, args);
+            return this;
+        }
+
         public void Source(object sender, FilterEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
@@ -769,6 +798,14 @@ namespace Localization.Jliff.Graph
                         break;
                 }
             }
+        }
+
+        public IElementBuilder Target(FilterEventArgs args)
+        {
+            args.sourceOrTarget = "target";
+            stack.Pop();
+            Target(null, args);
+            return this;
         }
 
         public void Target(object sender, FilterEventArgs args)
@@ -871,6 +908,12 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public ISubfileBuilder Unit(FilterEventArgs args)
+        {
+            Unit(null, args);
+            return this;
+        }
+
         public void Unit(object sender, FilterEventArgs args)
         {
             if (args.IsEndElement)
@@ -903,6 +946,21 @@ namespace Localization.Jliff.Graph
             if (args.Attributes.Count > 0 && args.Attributes != null)
                 if (!args.Attributes["version"].Equals("2.0"))
                     throw new ArgumentException("Expected version 2.0 XLIFF.");
+        }
+
+        public ISubUnitBuilder EndSubFiles()
+        {
+            return this;
+        }
+
+        public IElementBuilder EndSubUnits()
+        {
+            return this;
+        }
+
+        public JliffDocument Build()
+        {
+            return jliff;
         }
     }
 }
