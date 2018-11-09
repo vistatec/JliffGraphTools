@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jliff.Graph.Core;
+using Jliff.Graph.Modules.ITS;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
@@ -10,6 +11,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
             
         }
 
+        public AnnotatorsRef AnnotatorsRef { get; set; }
         public Nmtoken AppliesTo { get; set; }
         public Nmtoken CurrentVersion { get; set; }
         public Nmtoken Ref { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ChangeTrack;
+using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.LocQualityIssue;
 using Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Modules.Metadata;
@@ -43,7 +44,7 @@ namespace Localization.Jliff.Graph
         }
 
         public Unit() { }
-
+        public AnnotatorsRef AnnotatorsRef { get; set; }
         public string CanResegment { get; set; } = "no";
         public ChangeTrack ChangeTrack { get; set; }
         public object Domains { get; set; }

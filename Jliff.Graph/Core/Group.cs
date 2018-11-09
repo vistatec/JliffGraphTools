@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jliff.Graph.Core;
+using Jliff.Graph.Modules.ITS;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
@@ -38,6 +39,7 @@ namespace Localization.Jliff.Graph
                     throw new ArgumentException();
         }
 
+        public AnnotatorsRef AnnotatorsRef { get; set; }
         public string CanResegment { get; set; } = "no";
         public object Domains { get; set; }
         public string Id { get; set; }
