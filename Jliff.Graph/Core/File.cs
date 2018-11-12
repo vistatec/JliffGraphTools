@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
@@ -9,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class File : IJlfNode
+    public class File : JlfNode, IJlfNode
     {
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
@@ -96,8 +97,32 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
-        //public override string Kind => Enumerations.JlfNodeType.file.ToString();
+        public override string Kind => Enumerations.JlfNodeType.file.ToString();
 
+        [JsonIgnore]
+        public override bool HasChildren
+        {
+            get { return Subfiles.Count > 0; }
+        }
 
+        public override string Traverse(Func<string> func)
+        {
+            string z = String.Empty;
+            foreach (JlfNode subfile in Subfiles)
+            {
+                z = subfile.Traverse(func);
+            }
+
+            return $"{Id}/ {z}";
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subfiles)
+            {
+                node.Process(visitor);
+            }
+        }
     }
 }

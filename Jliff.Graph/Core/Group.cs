@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Group : ISubfile, IJlfNode
+    public class Group : JlfNode, ISubfile, IJlfNode
     {
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subgroups = new List<ISubfile>();
@@ -44,7 +44,7 @@ namespace Localization.Jliff.Graph
         public string CanResegment { get; set; } = "no";
         public object Domains { get; set; }
         public string Id { get; set; }
-        public string Kind => "group";
+        public override string Kind => Enumerations.JlfNodeType.group.ToString();
         public string LocQualityRatingProfileRef { get; set; }
         public float LocQualityRatingScore { get; set; }
         public float LocQualityRatingScoreThreshold { get; set; }
@@ -89,6 +89,31 @@ namespace Localization.Jliff.Graph
         public void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            string z = String.Empty;
+            foreach (JlfNode node in Subgroups)
+            {
+                z = node.Traverse(func);
+            }
+
+            return $"{Id}/ {z}";
+        }
+
+        public JlfNode NodeAccept(IVisitor visitor)
+        {
+            return this;
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subgroups)
+            {
+                node.Process(visitor);
+            }
         }
     }
 }

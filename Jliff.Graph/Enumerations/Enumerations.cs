@@ -87,7 +87,17 @@
 
         public enum JlfNodeType
         {
-            file
+            ec,
+            em,
+            file,
+            group,
+            ignorable,
+            ph,
+            sc,
+            segment,
+            sm,
+            text,
+            unit
         }
 
         public enum LocQualityIssueType

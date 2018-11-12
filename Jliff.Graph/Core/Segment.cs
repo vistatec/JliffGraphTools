@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Segment : ISubunit
+    public class Segment : JlfNode, ISubunit
     {
         [JsonProperty(Order = 10)]
         public List<IElement> Source = new List<IElement>();
@@ -38,7 +39,7 @@ namespace Localization.Jliff.Graph
 
         public string Id { get; set; }
 
-        public string Kind => "segment";
+        public override string Kind => Enumerations.JlfNodeType.segment.ToString();
 
         public string State { get; set; }
 
@@ -48,5 +49,25 @@ namespace Localization.Jliff.Graph
                 return (Target[index] as TextElement).Text;
             throw new InvalidOperationException();
         }
+
+        public override string Traverse(Func<string> func)
+        {
+            return $"{Id}/ ";
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            //foreach (JlfNode node in Source)
+            //{
+            //    node.Process(visitor);
+            //}
+
+            //foreach (JlfNode node in Target)
+            //{
+                
+            //}
+        }
+
     }
 }

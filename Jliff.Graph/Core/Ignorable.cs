@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Ignorable : ISubunit
+    public class Ignorable : JlfNode, ISubunit
     {
         [JsonProperty(Order = 10)]
         public List<IElement> Source = new List<IElement>();
@@ -26,6 +27,11 @@ namespace Localization.Jliff.Graph
 
         public string Id { get; set; }
 
-        public string Kind => "ignorable";
+        public override string Kind => Enumerations.JlfNodeType.ignorable.ToString();
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

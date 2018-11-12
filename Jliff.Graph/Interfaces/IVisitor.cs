@@ -6,6 +6,7 @@ namespace Jliff.Graph.Interfaces
     {
         void Visit(File file);
         void Visit(Group group);
+        //void Visit(JlfNode node);
         void Visit(Unit unit);
     }
 }

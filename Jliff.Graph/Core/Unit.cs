@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Unit : ISubfile, IJlfNode
+    public class Unit : JlfNode, ISubfile, IJlfNode
     {
         public List<GlossaryEntry> Glossary = new List<GlossaryEntry>();
 
@@ -50,7 +50,7 @@ namespace Localization.Jliff.Graph
         public ChangeTrack ChangeTrack { get; set; }
         public object Domains { get; set; }
         public string Id { get; set; }
-        public string Kind => "unit";
+        public override string Kind => Enumerations.JlfNodeType.unit.ToString();
 
         public List<LocQualityIssue> LocQualityIssues { get; set; } = new List<LocQualityIssue>();
 
@@ -123,6 +123,35 @@ namespace Localization.Jliff.Graph
         public void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
+            foreach (JlfNode node in Subunits)
+            {
+                
+            }
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            string z = String.Empty;
+            foreach (JlfNode node in Subunits)
+            {
+                z = node.Traverse(func);
+            }
+
+            return $"{Id}/ {z}";
+        }
+
+        public JlfNode NodeAccept(IVisitor visitor)
+        {
+            return this;
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subunits)
+            {
+                node.Process(visitor);
+            }
         }
     }
 }

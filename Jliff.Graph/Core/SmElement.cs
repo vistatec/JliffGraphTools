@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class SmElement : IElement
+    public class SmElement : JlfNode, IElement
     {
         public SmElement()
         {
@@ -52,8 +53,9 @@ namespace Localization.Jliff.Graph
 		public List<Domain> Domains { get; set; }
         public string Id { get; set; }
 
-        public string Kind => Enumerations.ElementKind.sm.ToString();
-		public Enumerations.FormatStyle fs { get; set; }
+        public override string Kind => Enumerations.JlfNodeType.sm.ToString();
+
+        public Enumerations.FormatStyle fs { get; set; }
         public string LocaleFilterList { get; set; }
         public string LocaleFilterType { get; set; }
         public string LocQualityIssueComment { get; set; }
@@ -95,5 +97,10 @@ namespace Localization.Jliff.Graph
 		public string ToolRef { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class EcElement : AbstractElement, IElement
+    public class EcElement : JlfNode, IElement
     {
         public EcElement()
         {
@@ -30,7 +32,7 @@ namespace Localization.Jliff.Graph
                 atts.Add("Equiv", Equiv);
                 atts.Add("Id", Id);
                 atts.Add("Isolated", Isolated.ToString());
-                atts.Add("Kind", Kind);
+                atts.Add("Kind", Kind.ToString());
                 atts.Add("Subflows", SubFlows);
                 atts.Add("SubType", SubType);
                 return atts;
@@ -93,11 +95,17 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public bool Isolated { get; set; }
 
-        public string Kind => Enumerations.ElementKind.ec.ToString();
+        public override string Kind => Enumerations.JlfNodeType.ec.ToString();
+
         public string StartRef { get; set; }
 
         public string SubFlows { get; set; }
         public string SubType { get; set; }
         public string Text { get; set; }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

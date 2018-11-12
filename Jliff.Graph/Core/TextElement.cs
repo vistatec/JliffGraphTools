@@ -1,6 +1,9 @@
-﻿namespace Localization.Jliff.Graph
+﻿using Jliff.Graph.Interfaces;
+using Newtonsoft.Json;
+
+namespace Localization.Jliff.Graph
 {
-    public class TextElement : IElement
+    public class TextElement : JlfNode, IElement
     {
         public TextElement()
         {
@@ -12,5 +15,13 @@
         }
 
         public string Text { get; set; }
+
+        [JsonIgnore]
+        public override string Kind => Enumerations.JlfNodeType.text.ToString();
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

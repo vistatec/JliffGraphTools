@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class EmElement : IElement
+    public class EmElement : JlfNode, IElement
     {
-        private string kind;
-
         [JsonIgnore]
         public IDictionary<string, string> Attributes
         {
@@ -30,8 +29,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public string Kind => Enumerations.ElementKind.em.ToString();
+        public override string Kind => Enumerations.JlfNodeType.em.ToString();
 
         public string StartRef { get; set; }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }
