@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
@@ -21,6 +23,8 @@ namespace UnitTests
     {
         private static string schemaDef = string.Empty;
         private const string OutputFolder = "Output";
+        private const string schemasLocation = "Schemas";
+
 
         [TestMethodAttribute]
         public void EnrichedXliff()
@@ -410,17 +414,40 @@ namespace UnitTests
         [TestMethod]
         public void RoundTripExample7()
         {
+            ResourceData rd1 = new ResourceData("rd1",
+                new ResourceItem("ri1", new Source("https://open.vistatec.com/ocelot")));
+
             JliffDocument jlb = new JliffBuilder("en-US", "it-IT")
-                .File(new FilterEventArgs("f1"))
-                .Unit(new FilterEventArgs("u1"))
+                .AddFile(new XlfEventArgs("f1"))
+                .AddUnit(new XlfEventArgs("u1"))
                 .EndSubFiles()
-                .Segment(new FilterEventArgs("s1"))
+                .AddSegment(new XlfEventArgs("s1"))
                 .EndSubUnits()
-                .Source(new FilterEventArgs(String.Empty, "Hello", new Dictionary<string, string>()))
-                .Target(new FilterEventArgs(String.Empty, "Buongiorno", new Dictionary<string, string>()))
+                .AddSource("Hello")
+                .AddSmElement("mrk1", true)
+                .AddSource("there")
+                .AddEmElement("", true)
+                .AddTarget("Buongiorno")
+                .MoreSubUnits()
+                .AddSegment(new XlfEventArgs("s2"))
+                .EndSubUnits()
+                .AddSource("Congratulations")
+                .MoreSubUnits()
+                .AddSegment(new XlfEventArgs("s3"))
+                .EndSubUnits()
+                .AddSource("Goodbye")
+                .AddTarget("Arrivederci")
                 .Build();
 
+            jlb.Files[0].ResourceData = rd1;
+
             Converter.Serialize(Path.Combine(OutputFolder, "example7.json"), jlb);
+
+            schemaDef = System.IO.File.ReadAllText(Path.Combine($"{schemasLocation}\\JLIFF-2.1", "jliff-schema-2.1-no-prefix.json"));
+            JsonSchema schema = JsonSchema.Parse(schemaDef);
+            var obGraph = JObject.FromObject(jlb);
+            Assert.IsTrue(obGraph.IsValid(schema));
+
         }
     }
 }

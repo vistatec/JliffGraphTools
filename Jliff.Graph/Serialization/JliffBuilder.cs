@@ -36,7 +36,7 @@ namespace Localization.Jliff.Graph
 
         public JliffDocument Jliff => jliff;
 
-        public void ChangeTrack(object sender, FilterEventArgs args)
+        public void ChangeTrack(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -60,16 +60,10 @@ namespace Localization.Jliff.Graph
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<FilterEventArgs, File>()
+                cfg.CreateMap<XlfEventArgs, File>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
-
-                //.ForMember(m => m.AnnotatorsRef, opt => opt.Condition(src => src.Attributes["its:annotatorsRef"] != null))
-                //.ForMember(m => m.Id, opt => opt.MapFrom(src => src.Id))
-                //.ForAllOtherMembers(opt => opt.Ignore());
-
-                //cfg.CreateMap<string, Uri>().ConvertUsing<StringToUriConverter>();
 
                 cfg.CreateMap<string, Nmtoken>()
                     .ConstructUsing(i => new Nmtoken(i))
@@ -77,19 +71,10 @@ namespace Localization.Jliff.Graph
                         o => o.MapFrom(s =>
                             s));
 
-                cfg.CreateMap<FilterEventArgs, ChangeTrack>()
+                cfg.CreateMap<XlfEventArgs, ChangeTrack>()
                     .ForAllOtherMembers(m => m.Ignore());
 
-                //cfg.CreateMap<FilterEventArgs, Revision>()
-                //    .ForMember(m => m.AppliesTo,
-                //        o => o.MapFrom(s =>
-                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
-                //    .ForMember(m => m.CurrentVersion,
-                //        o => o.MapFrom(s =>
-                //            s.Attributes.SingleOrDefault(a => a.Key.Equals("currentVersion")).Value))
-                //    .ForAllOtherMembers(m => m.Ignore());
-
-                cfg.CreateMap<FilterEventArgs, Revisions>()
+                cfg.CreateMap<XlfEventArgs, Revisions>()
                     .ForMember(m => m.AppliesTo,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
@@ -101,7 +86,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Revision>()
+                cfg.CreateMap<XlfEventArgs, Revision>()
                     .ForMember(m => m.Author,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("author")).Value))
@@ -113,7 +98,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("version")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, RevisionItem>()
+                cfg.CreateMap<XlfEventArgs, RevisionItem>()
                     .ForMember(m => m.Property,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("property")).Value))
@@ -121,7 +106,7 @@ namespace Localization.Jliff.Graph
                         o => o.MapFrom(s => s.Text))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Unit>()
+                cfg.CreateMap<XlfEventArgs, Unit>()
                     //.ForMember(m => m.Id, opt => opt.Condition(src => src.Attributes.First().Value != null))
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
@@ -129,39 +114,39 @@ namespace Localization.Jliff.Graph
                     //.ForMember(m => m.LocQualityIssues, opt => opt.Condition(src => src.Attributes["its:locQualityIssuesRef"] != null));
                     .ForAllOtherMembers(opt => opt.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Group>()
+                cfg.CreateMap<XlfEventArgs, Group>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(o => o.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Metadata>()
+                cfg.CreateMap<XlfEventArgs, Metadata>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(o => o.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, MetaGroup>()
+                cfg.CreateMap<XlfEventArgs, MetaGroup>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(o => o.Ignore());
 
-                //cfg.CreateMap<FilterEventArgs, KeyValuePair<string, string>>()
+                //cfg.CreateMap<XlfEventArgs, KeyValuePair<string, string>>()
                 //    .ConstructUsing(i => new KeyValuePair<string, string>(
                 //        i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Key,
                 //        i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value));
 
-                //cfg.CreateMap<FilterEventArgs, Dictionary<string, string>>()
+                //cfg.CreateMap<XlfEventArgs, Dictionary<string, string>>()
                 //    .ConstructUsing()
 
-                cfg.CreateMap<FilterEventArgs, Metaitem>()
+                cfg.CreateMap<XlfEventArgs, Metaitem>()
                     .ConstructUsing(i => new Metaitem(
                         i.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value,
                         i.Text))
                     .ForAllOtherMembers(o => o.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, LocQualityIssue>()
+                cfg.CreateMap<XlfEventArgs, LocQualityIssue>()
                     .ForMember(m => m.LocQualityIssueComment,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueComment")).Value))
@@ -176,7 +161,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Match>()
+                cfg.CreateMap<XlfEventArgs, Match>()
                     .ForMember(m => m.MatchQuality,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("matchQuality")).Value))
@@ -191,7 +176,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, GlossaryEntry>()
+                cfg.CreateMap<XlfEventArgs, GlossaryEntry>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
@@ -200,7 +185,7 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Definition>()
+                cfg.CreateMap<XlfEventArgs, Definition>()
                     .ForMember(m => m.Source,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
@@ -209,13 +194,13 @@ namespace Localization.Jliff.Graph
                             s.Text))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Segment>()
+                cfg.CreateMap<XlfEventArgs, Segment>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Term>()
+                cfg.CreateMap<XlfEventArgs, Term>()
                     .ForMember(m => m.Source,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("source")).Value))
@@ -224,7 +209,7 @@ namespace Localization.Jliff.Graph
                             s.Text))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Translation>()
+                cfg.CreateMap<XlfEventArgs, Translation>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
@@ -233,28 +218,28 @@ namespace Localization.Jliff.Graph
                             s.Text))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, ResourceData>()
+                cfg.CreateMap<XlfEventArgs, ResourceData>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, ResourceItem>()
+                cfg.CreateMap<XlfEventArgs, ResourceItem>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, Source>()
+                cfg.CreateMap<XlfEventArgs, Source>()
                     .ForMember(m => m.Href,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("href")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, PhElement>()
+                cfg.CreateMap<XlfEventArgs, PhElement>()
                     .ForAllOtherMembers(m => m.Ignore());
 
-                cfg.CreateMap<FilterEventArgs, SmElement>()
+                cfg.CreateMap<XlfEventArgs, SmElement>()
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
@@ -277,7 +262,7 @@ namespace Localization.Jliff.Graph
             mapper = config.CreateMapper();
         }
 
-        public void Definition(object sender, FilterEventArgs args)
+        public void Definition(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -297,7 +282,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void EcElement(object sender, FilterEventArgs args)
+        public void EcElement(XlfEventArgs args)
         {
             object parent = stack.Peek();
             switch (parent)
@@ -316,7 +301,20 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void EmElement(object sender, FilterEventArgs args)
+        public IElementBuilder AddEmElement(string id, bool forSource)
+        {
+            XlfEventArgs args = new XlfEventArgs();
+            args.Attributes["id"] = id;
+            if (forSource)
+                args.sourceOrTarget = "source";
+            else
+                args.sourceOrTarget = "target";
+            EmElement(args);
+            return this;
+        }
+
+
+        public void EmElement(XlfEventArgs args)
         {
             object parent = stack.Peek();
             switch (parent)
@@ -335,13 +333,19 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public ISubfileBuilder File(FilterEventArgs args)
+        public ISubfileBuilder AddFile(XlfEventArgs args)
         {
-            File(null, args);
-            return this as ISubfileBuilder;
+            File(args);
+            return this;
         }
 
-        public void File(object sender, FilterEventArgs args)
+        public ISubfileBuilder AddFile(Dictionary<string, string> properties)
+        {
+            File(new XlfEventArgs(String.Empty, String.Empty, properties));
+            return this;
+        }
+
+        public void File(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -362,7 +366,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void GlossaryEntry(object sender, FilterEventArgs args)
+        public void GlossaryEntry(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -382,13 +386,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public ISubfileBuilder Group(FilterEventArgs args)
+        public ISubfileBuilder AddGroup(XlfEventArgs args)
         {
-            Group(null, args);
+            Group(args);
             return this;
         }
 
-        public void Group(object sender, FilterEventArgs args)
+        public void Group(XlfEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
             {
@@ -415,7 +419,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Ignorable(object sender, FilterEventArgs args)
+        public void Ignorable(XlfEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
             {
@@ -437,7 +441,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void LocQualityIssue(object sender, FilterEventArgs args)
+        public void LocQualityIssue(XlfEventArgs args)
         {
             LocQualityIssue lqi = mapper.Map<LocQualityIssue>(args);
 
@@ -450,7 +454,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Match(object sender, FilterEventArgs args)
+        public void Match(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -470,7 +474,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Metadata(object sender, FilterEventArgs args)
+        public void Metadata(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -490,7 +494,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void MetaGroup(object sender, FilterEventArgs args)
+        public void MetaGroup(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -510,7 +514,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Metaitem(object sender, FilterEventArgs args)
+        public void Metaitem(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -530,11 +534,11 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void OriginalData(object sender, FilterEventArgs args)
+        public void OriginalData(XlfEventArgs args)
         {
         }
 
-        public void PhElement(object sender, FilterEventArgs args)
+        public void PhElement(XlfEventArgs args)
         {
             if (!args.NodeType.Equals("EndElement"))
             {
@@ -563,7 +567,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public virtual void ResourceData(object sender, FilterEventArgs args)
+        public virtual void ResourceData(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -583,7 +587,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public virtual void ResourceItem(object sender, FilterEventArgs args)
+        public virtual void ResourceItem(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -603,7 +607,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void ResourceSource(object sender, FilterEventArgs args)
+        public void ResourceSource(XlfEventArgs args)
         {
             if (!args.IsEndElement)
             {
@@ -618,7 +622,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Revision(object sender, FilterEventArgs args)
+        public void Revision(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -638,7 +642,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void RevisionItem(object sender, FilterEventArgs args)
+        public void RevisionItem(XlfEventArgs args)
         {
             if (!args.IsEndElement)
             {
@@ -653,7 +657,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Revisions(object sender, FilterEventArgs args)
+        public void Revisions(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -673,7 +677,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void ScElement(object sender, FilterEventArgs args)
+        public void ScElement(XlfEventArgs args)
         {
             if (!args.NodeType.Equals("EndElement"))
             {
@@ -695,13 +699,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public ISubUnitBuilder Segment(FilterEventArgs args)
+        public ISubUnitBuilder AddSegment(XlfEventArgs args)
         {
-            Segment(null, args);
+            Segment(args);
             return this;
         }
 
-        public void Segment(object sender, FilterEventArgs args)
+        public void Segment(XlfEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
             {
@@ -728,7 +732,7 @@ namespace Localization.Jliff.Graph
             Converter.Serialize(filename, jliff);
         }
 
-        public void Skeleton(object sender, FilterEventArgs filterEventArgs)
+        public void Skeleton(XlfEventArgs filterEventArgs)
         {
             object parent = stack.Peek();
             switch (parent)
@@ -742,7 +746,19 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void SmElement(object sender, FilterEventArgs args)
+        public IElementBuilder AddSmElement(string id, bool forSource)
+        {
+            XlfEventArgs args = new XlfEventArgs();
+            args.Attributes["id"] = id;
+            if (forSource)
+                args.sourceOrTarget = "source";
+            else
+                args.sourceOrTarget = "target";
+            SmElement(args);
+            return this;
+        }
+
+        public void SmElement(XlfEventArgs args)
         {
             if (!args.NodeType.Equals("EndElement"))
             {
@@ -765,14 +781,25 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public IElementBuilder Source(FilterEventArgs args)
+        public IElementBuilder AddSource(XlfEventArgs args)
         {
             args.sourceOrTarget = "source";
-            Source(null, args);
+            Source(args);
+            stack.Pop();
             return this;
         }
 
-        public void Source(object sender, FilterEventArgs args)
+        public IElementBuilder AddSource(string text)
+        {
+            XlfEventArgs args = new XlfEventArgs();
+            args.Text = text;
+            args.sourceOrTarget = "source";
+            Source(args);
+            stack.Pop();
+            return this;
+        }
+
+        public void Source(XlfEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
             {
@@ -800,15 +827,27 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public IElementBuilder Target(FilterEventArgs args)
+        public IElementBuilder AddTarget(XlfEventArgs args)
         {
             args.sourceOrTarget = "target";
             stack.Pop();
-            Target(null, args);
+            Target(args);
+            stack.Pop();
             return this;
         }
 
-        public void Target(object sender, FilterEventArgs args)
+        public IElementBuilder AddTarget(string text)
+        {
+            XlfEventArgs args = new XlfEventArgs();
+            args.Text = text;
+            args.sourceOrTarget = "target";
+            //stack.Pop();
+            Target(args);
+            stack.Pop();
+            return this;
+        }
+
+        public void Target(XlfEventArgs args)
         {
             if (args.NodeType.Equals("EndElement"))
             {
@@ -836,7 +875,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Term(object sender, FilterEventArgs args)
+        public void Term(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -856,7 +895,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Text(object sender, FilterEventArgs args)
+        public void Text(XlfEventArgs args)
         {
             object parent = stack.Peek();
             switch (parent)
@@ -888,7 +927,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void Translation(object sender, FilterEventArgs args)
+        public void Translation(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -908,13 +947,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public ISubfileBuilder Unit(FilterEventArgs args)
+        public ISubfileBuilder AddUnit(XlfEventArgs args)
         {
-            Unit(null, args);
+            Unit(args);
             return this;
         }
 
-        public void Unit(object sender, FilterEventArgs args)
+        public void Unit(XlfEventArgs args)
         {
             if (args.IsEndElement)
             {
@@ -941,7 +980,7 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void XlfRoot(object sender, FilterEventArgs args)
+        public void XlfRoot(XlfEventArgs args)
         {
             if (args.Attributes.Count > 0 && args.Attributes != null)
                 if (!args.Attributes["version"].Equals("2.0"))
@@ -961,6 +1000,12 @@ namespace Localization.Jliff.Graph
         public JliffDocument Build()
         {
             return jliff;
+        }
+
+        public ISubUnitBuilder MoreSubUnits()
+        {
+            stack.Pop();
+            return this;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Localization.Jliff.Graph
 {
     public interface ISubUnitBuilder
     {
-        ISubUnitBuilder Segment(FilterEventArgs args);
+        ISubUnitBuilder AddSegment(XlfEventArgs args);
         IElementBuilder EndSubUnits();
     }
 }

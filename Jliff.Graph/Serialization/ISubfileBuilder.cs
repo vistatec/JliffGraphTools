@@ -6,8 +6,8 @@ namespace Jliff.Graph.Serialization
 {
     public interface ISubfileBuilder
     {
-        ISubfileBuilder Unit(FilterEventArgs args);
-        ISubfileBuilder Group(FilterEventArgs args);
+        ISubfileBuilder AddUnit(XlfEventArgs args);
+        ISubfileBuilder AddGroup(XlfEventArgs args);
         ISubUnitBuilder EndSubFiles();
     }
 }
