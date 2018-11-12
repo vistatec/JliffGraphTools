@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jliff.Graph.Core;
+using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.LocQualityIssue;
@@ -11,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Unit : ISubfile
+    public class Unit : ISubfile, IJlfNode
     {
         public List<GlossaryEntry> Glossary = new List<GlossaryEntry>();
 
@@ -117,6 +118,11 @@ namespace Localization.Jliff.Graph
         public bool ShouldSerializeLocQualityIssues()
         {
             return LocQualityIssues.Count > 0;
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

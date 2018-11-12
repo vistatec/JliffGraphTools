@@ -85,6 +85,11 @@
             ul
         }
 
+        public enum JlfNodeType
+        {
+            file
+        }
+
         public enum LocQualityIssueType
         {
             addition,

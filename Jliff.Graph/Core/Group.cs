@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jliff.Graph.Core;
+using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Group : ISubfile
+    public class Group : ISubfile, IJlfNode
     {
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subgroups = new List<ISubfile>();
@@ -84,5 +85,10 @@ namespace Localization.Jliff.Graph
         public string Type { get; set; }
         public object Userdata { get; set; }
         public string Validation { get; set; }
+
+        public void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

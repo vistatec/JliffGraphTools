@@ -26,7 +26,7 @@ namespace UnitTests
         private const string schemasLocation = "Schemas";
 
 
-        [TestMethodAttribute]
+        [TestMethod]
         public void EnrichedXliff()
         {
             StringBuilder sb = new StringBuilder();
@@ -77,7 +77,7 @@ namespace UnitTests
             Assert.AreEqual("term", smElement.Type);
         }
 
-        [ClassInitializeAttribute]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             DirectoryInfo output = new DirectoryInfo(Directory.GetCurrentDirectory());
