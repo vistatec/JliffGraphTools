@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Jliff.Graph.Core;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
@@ -10,6 +11,24 @@ namespace Localization.Jliff.Graph
     public class JliffDocument
     {
         private const string jliff = "2.1";
+
+        [JsonIgnore]
+        private List<Segment> segments = new List<Segment>();
+
+        [JsonIgnore]
+        public List<Segment> Segments
+        {
+            get
+            {
+                SegmentVisitor v = new SegmentVisitor();
+                foreach (JlfNode node in Files)
+                {
+                    node.Process(v);
+                }
+                segments.AddRange(v.Segments);
+                return segments;
+            }
+        }
 
         [JsonProperty(Order = 10)]
         public List<File> Files = new List<File>();
