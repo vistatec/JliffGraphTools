@@ -249,6 +249,18 @@ namespace Localization.Jliff.Graph
                     .ForMember(m => m.Id,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                    .ForMember(m => m.LocQualityIssueComment,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueComment")).Value))
+                    .ForMember(m => m.LocQualityIssueType,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueType")).Value))
+                    .ForMember(m => m.LocQualityIssueSeverity,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueSeverity")).Value))
+                    .ForMember(m => m.LocQualityIssueEnabled,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
                     .ForMember(m => m.LocQualityIssuesRef,
                         o => o.MapFrom(s =>
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssuesRef")).Value))
