@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using AutoMapper;
 using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ChangeTrack;
-using Jliff.Graph.Modules.LocQualityIssue;
+using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.Matches;
 using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Interfaces;

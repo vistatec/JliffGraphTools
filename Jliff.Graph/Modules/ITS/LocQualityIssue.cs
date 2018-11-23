@@ -1,4 +1,4 @@
-﻿namespace Jliff.Graph.Modules.LocQualityIssue
+﻿namespace Jliff.Graph.Modules.ITS
 {
     public class LocQualityIssue
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Modules.LocQualityIssue
+namespace Jliff.Graph.Modules.ITS
 {
     public class LocQualityIssuesRefValueResolver : IValueResolver<FilterEventArgs, IElement, string>
     {

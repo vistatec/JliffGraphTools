@@ -4,7 +4,7 @@ using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Modules.LocQualityIssue;
+using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
