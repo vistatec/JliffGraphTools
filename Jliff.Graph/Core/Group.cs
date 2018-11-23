@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
-using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Modules.Metadata;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -14,7 +14,9 @@ namespace Localization.Jliff.Graph
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subgroups = new List<ISubfile>();
 
-        public Group() { }
+        public Group()
+        {
+        }
 
         public Group(string id)
         {
@@ -42,6 +44,7 @@ namespace Localization.Jliff.Graph
 
         public AnnotatorsRef AnnotatorsRef { get; set; }
         public string CanResegment { get; set; } = "no";
+        public object Data { get; set; }
         public object Domains { get; set; }
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.group.ToString();
@@ -56,12 +59,7 @@ namespace Localization.Jliff.Graph
         public string OrgRef { get; set; }
         public string Person { get; set; }
         public Iri PersonRef { get; set; }
-        public object ProfileData { get; set; }
         public object Profiles { get; set; }
-        public string ProfileSizeInfo { get; set; }
-        public string ProfileSizeInfoRef { get; set; }
-        public string ProfileSizeRestriction { get; set; }
-        public string ProfileStorageRestriction { get; set; }
         public List<object> ProvenanceRecords { get; set; }
         public Iri ProvenanceRecordsRef { get; set; }
         public object ResourceData { get; set; }
@@ -71,7 +69,11 @@ namespace Localization.Jliff.Graph
         public Iri RevPersonRef { get; set; }
         public string RevTool { get; set; }
         public Iri RevToolRef { get; set; }
+        public string SizeInfo { get; set; }
+        public string SizeInfoRef { get; set; }
+        public string SizeRestriction { get; set; }
         public string SrcDir { get; set; }
+        public string StorageRestriction { get; set; }
         public string SubFs { get; set; }
         public string TaClassRef { get; set; }
         public float TaConfidence { get; set; }
@@ -91,17 +93,6 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
-        public override string Traverse(Func<string> func)
-        {
-            string z = String.Empty;
-            foreach (JlfNode node in Subgroups)
-            {
-                z = node.Traverse(func);
-            }
-
-            return $"{Id}/ {z}";
-        }
-
         public JlfNode NodeAccept(IVisitor visitor)
         {
             return this;
@@ -110,10 +101,15 @@ namespace Localization.Jliff.Graph
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
-            foreach (JlfNode node in Subgroups)
-            {
-                node.Process(visitor);
-            }
+            foreach (JlfNode node in Subgroups) node.Process(visitor);
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            string z = string.Empty;
+            foreach (JlfNode node in Subgroups) z = node.Traverse(func);
+
+            return $"{Id}/ {z}";
         }
     }
 }

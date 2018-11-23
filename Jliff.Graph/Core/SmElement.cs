@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
@@ -78,7 +79,7 @@ namespace Localization.Jliff.Graph
         public string ProfileSizeRestriction { get; set; }
 
         public string ProvenanceRecordsRef { get; set; }
-        public string Ref { get; set; }
+        public Iri Ref { get; set; }
         public string RevOrg { get; set; }
         public string RevOrgRef { get; set; }
         public string RevPerson { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
@@ -97,7 +98,7 @@ namespace Localization.Jliff.Graph
 
         public override string Kind => Enumerations.JlfNodeType.ec.ToString();
 
-        public string StartRef { get; set; }
+        public Nmtoken StartRef { get; set; }
 
         public string SubFlows { get; set; }
         public string SubType { get; set; }

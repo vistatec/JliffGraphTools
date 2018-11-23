@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
@@ -17,7 +16,6 @@ namespace Localization.Jliff.Graph
 
         public File()
         {
-            
         }
 
         [JsonConstructor]
@@ -47,10 +45,16 @@ namespace Localization.Jliff.Graph
 
         public AnnotatorsRef AnnotatorsRef { get; set; }
         public object ChangeTrack { get; set; }
+        public object Data { get; set; }
         public string Domains { get; set; }
         public Enumerations.FormatStyle Fs { get; set; }
 
+        [JsonIgnore]
+        public override bool HasChildren => Subfiles.Count > 0;
+
         public string Id { get; set; }
+
+        public override string Kind => Enumerations.JlfNodeType.file.ToString();
         public string LocQualityRatingProfileRef { get; set; }
         public float LocQualityRatingScore { get; set; }
         public float LocQualityRatingScoreThreshold { get; set; }
@@ -62,12 +66,7 @@ namespace Localization.Jliff.Graph
         public string Original { get; set; }
         public string Person { get; set; }
         public Iri PersonRef { get; set; }
-        public object ProfileData { get; set; }
         public object Profiles { get; set; }
-        public string ProfileSizeInfo { get; set; }
-        public string ProfileSizeInfoRef { get; set; }
-        public string ProfileSizeRestriction { get; set; }
-        public string ProfileStorageRestriction { get; set; }
         public List<object> ProvenanceRecords { get; set; }
         public Iri ProvenanceRecordsRef { get; set; }
         public object ResourceData { get; set; }
@@ -77,8 +76,12 @@ namespace Localization.Jliff.Graph
         public Iri RevPersonRef { get; set; }
         public string RevTool { get; set; }
         public Iri RevToolRef { get; set; }
+        public string SizeInfo { get; set; }
+        public string SizeInfoRef { get; set; }
+        public string SizeRestriction { get; set; }
         public Skeleton Skeleton { get; set; }
         public string SrcDir { get; set; }
+        public string StorageRestriction { get; set; }
         public string SubFs { get; set; }
         public Iri TaClassRef { get; set; }
         public float TaConfidence { get; set; }
@@ -97,32 +100,18 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
-        public override string Kind => Enumerations.JlfNodeType.file.ToString();
-
-        [JsonIgnore]
-        public override bool HasChildren
+        public override void Process(ICompositeVisitor visitor)
         {
-            get { return Subfiles.Count > 0; }
+            visitor.Visit(this);
+            foreach (JlfNode node in Subfiles) node.Process(visitor);
         }
 
         public override string Traverse(Func<string> func)
         {
-            string z = String.Empty;
-            foreach (JlfNode subfile in Subfiles)
-            {
-                z = subfile.Traverse(func);
-            }
+            string z = string.Empty;
+            foreach (JlfNode subfile in Subfiles) z = subfile.Traverse(func);
 
             return $"{Id}/ {z}";
-        }
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-            foreach (JlfNode node in Subfiles)
-            {
-                node.Process(visitor);
-            }
         }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using Jliff.Graph.Core;
 using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
@@ -116,10 +117,10 @@ namespace UnitTests
 
             var ec1 = new EcElement();
             ec1.DataRef = "d3";
-            ec1.StartRef = "c2";
+            ec1.StartRef = new Nmtoken("c2");
             var tec1 = new EcElement();
             tec1.DataRef = "d3";
-            tec1.StartRef = "c2";
+            tec1.StartRef = new Nmtoken("c2");
 
             var te1 = new TextElement("aaa");
             var tte1 = new TextElement("AAA");

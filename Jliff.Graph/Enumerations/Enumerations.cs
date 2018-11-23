@@ -131,6 +131,14 @@
             whitespace
         }
 
+        public enum MarkType
+        {
+            comment,
+            generic,
+            itsTermNo,
+            term
+        }
+
         public enum MatchType
         {
             am,
@@ -140,6 +148,13 @@
             tb,
             tm,
             other
+        }
+
+        public enum Normalization
+        {
+            nfc,
+            nfd,
+            none
         }
 
         public enum State

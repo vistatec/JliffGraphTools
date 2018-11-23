@@ -4,10 +4,9 @@ using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.Matches;
-using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Modules.Metadata;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -44,10 +43,14 @@ namespace Localization.Jliff.Graph
                         Subunits.Add(grpparobj);
         }
 
-        public Unit() { }
+        public Unit()
+        {
+        }
+
         public AnnotatorsRef AnnotatorsRef { get; set; }
         public string CanResegment { get; set; } = "no";
         public ChangeTrack ChangeTrack { get; set; }
+        public object Data { get; set; }
         public object Domains { get; set; }
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.unit.ToString();
@@ -70,12 +73,7 @@ namespace Localization.Jliff.Graph
         public string OrgRef { get; set; }
         public string Person { get; set; }
         public Iri PersonRef { get; set; }
-        public object ProfileData { get; set; }
         public object Profiles { get; set; }
-        public string ProfileSizeInfo { get; set; }
-        public string ProfileSizeInfoRef { get; set; }
-        public string ProfileSizeRestriction { get; set; }
-        public string ProfileStorageRestriction { get; set; }
         public List<object> ProvenanceRecords { get; set; }
         public Iri ProvenanceRecordsRef { get; set; }
         public object ResourceData { get; set; }
@@ -85,7 +83,11 @@ namespace Localization.Jliff.Graph
         public Iri RevPersonRef { get; set; }
         public string RevTool { get; set; }
         public Iri RevToolRef { get; set; }
+        public string SizeInfo { get; set; }
+        public string SizeInfoRef { get; set; }
+        public string SizeRestriction { get; set; }
         public string SrcDir { get; set; }
+        public string StorageRestriction { get; set; }
         public string SubFs { get; set; }
         public string TaClassRef { get; set; }
         public float TaConfidence { get; set; }
@@ -100,9 +102,33 @@ namespace Localization.Jliff.Graph
         public object Userdata { get; set; }
         public string Validation { get; set; }
 
+        public void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subunits)
+            {
+            }
+        }
+
+        public JlfNode NodeAccept(IVisitor visitor)
+        {
+            return this;
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subunits) node.Process(visitor);
+        }
+
         public bool ShouldSerializeGlossary()
         {
             return Glossary.Count > 0;
+        }
+
+        public bool ShouldSerializeLocQualityIssues()
+        {
+            return LocQualityIssues.Count > 0;
         }
 
         public bool ShouldSerializeOriginalData()
@@ -115,43 +141,12 @@ namespace Localization.Jliff.Graph
             return Subunits.Count > 0;
         }
 
-        public bool ShouldSerializeLocQualityIssues()
-        {
-            return LocQualityIssues.Count > 0;
-        }
-
-        public void Accept(IVisitor visitor)
-        {
-            visitor.Visit(this);
-            foreach (JlfNode node in Subunits)
-            {
-                
-            }
-        }
-
         public override string Traverse(Func<string> func)
         {
-            string z = String.Empty;
-            foreach (JlfNode node in Subunits)
-            {
-                z = node.Traverse(func);
-            }
+            string z = string.Empty;
+            foreach (JlfNode node in Subunits) z = node.Traverse(func);
 
             return $"{Id}/ {z}";
-        }
-
-        public JlfNode NodeAccept(IVisitor visitor)
-        {
-            return this;
-        }
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-            foreach (JlfNode node in Subunits)
-            {
-                node.Process(visitor);
-            }
         }
     }
 }

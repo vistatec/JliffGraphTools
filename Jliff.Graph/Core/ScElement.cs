@@ -33,7 +33,7 @@ namespace Localization.Jliff.Graph
                 atts.Add("Equiv", Equiv);
                 atts.Add("Id", Id);
                 atts.Add("Isolated", Isolated.ToString());
-                atts.Add("Kind", Kind.ToString());
+                atts.Add("Kind", Kind);
                 atts.Add("Subflows", SubFlows);
                 atts.Add("SubType", SubType);
                 atts.Add("Type", Type);
@@ -56,7 +56,8 @@ namespace Localization.Jliff.Graph
                             CanOverlap = (Enumerations.YesNo) Enum.Parse(typeof(Enumerations.YesNo), att.Value);
                             break;
                         case "canReorder":
-                            CanReorder = (Enumerations.YesNoFirstNo) Enum.Parse(typeof(Enumerations.YesNoFirstNo), att.Value);
+                            CanReorder =
+                                (Enumerations.YesNoFirstNo) Enum.Parse(typeof(Enumerations.YesNoFirstNo), att.Value);
                             break;
                         case "copyOf":
                             CopyOf = att.Value;
@@ -101,6 +102,7 @@ namespace Localization.Jliff.Graph
         public string Dir { get; set; }
         public string Disp { get; set; }
         public string Equiv { get; set; }
+        public string EquivStorage { get; set; }
         public Enumerations.FormatStyle Fs { get; set; }
         public string Id { get; set; }
         public Enumerations.YesNo Isolated { get; set; }
@@ -108,7 +110,6 @@ namespace Localization.Jliff.Graph
         public override string Kind => Enumerations.JlfNodeType.sc.ToString();
 
         public string ProfileData { get; set; }
-        public string ProfileEquivStorage { get; set; }
         public string ProfileSizeInfo { get; set; }
         public string ProfileSizeInfoRef { get; set; }
         public string SubFlows { get; set; }

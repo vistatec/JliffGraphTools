@@ -12,7 +12,7 @@
   <ItemGroup>
     <Folder Include="Modules\FormatStyle\" />
     <Folder Include="Modules\Metadata\" />
-    <Folder Include="Modules\SizeRestriction\" />
+    <Folder Include="Modules\TranslationCandidates\" />
     <Folder Include="Modules\Validation\" />
   </ItemGroup>
 
