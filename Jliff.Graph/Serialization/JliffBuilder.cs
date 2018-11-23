@@ -161,6 +161,12 @@ namespace Localization.Jliff.Graph
                             s.Attributes.SingleOrDefault(a => a.Key.EndsWith("locQualityIssueEnabled")).Value))
                     .ForAllOtherMembers(m => m.Ignore());
 
+                cfg.CreateMap<XlfEventArgs, LocQualityIssues>()
+                    .ForMember(m => m.Id,
+                        o => o.MapFrom(s =>
+                            s.Attributes.SingleOrDefault(a => a.Key.EndsWith("id")).Value))
+                    .ForAllOtherMembers(m => m.Ignore());
+
                 cfg.CreateMap<XlfEventArgs, Match>()
                     .ForMember(m => m.MatchQuality,
                         o => o.MapFrom(s =>
@@ -441,6 +447,27 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public void LocQualityIssues(XlfEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                stack.Pop();
+            }
+            else
+            {
+                LocQualityIssues lqis = mapper.Map<LocQualityIssues>(args);
+
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        u.LocQualityIssues = lqis;
+                        stack.Push(lqis);
+                        break;
+                }
+            }
+        }
+
         public void LocQualityIssue(XlfEventArgs args)
         {
             LocQualityIssue lqi = mapper.Map<LocQualityIssue>(args);
@@ -448,8 +475,8 @@ namespace Localization.Jliff.Graph
             object parent = stack.Peek();
             switch (parent)
             {
-                case Unit u:
-                    u.LocQualityIssues.Add(lqi);
+                case LocQualityIssues lqis:
+                    lqis.Items.Add(lqi);
                     break;
             }
         }

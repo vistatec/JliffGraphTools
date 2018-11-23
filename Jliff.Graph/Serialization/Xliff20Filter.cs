@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using Jliff.Graph.Serialization;
 
@@ -7,6 +6,8 @@ namespace Localization.Jliff.Graph
 {
     public class Xliff20Filter
     {
+        public delegate void XlfEvent(XlfEventArgs args);
+
         private static XmlReader xmlReader;
         private static string currentLqiRef = string.Empty;
 
@@ -154,6 +155,7 @@ namespace Localization.Jliff.Graph
                         XlfEventArgs lqiFilterEventArgs = XlfEventArgs.FromReader(r);
                         if (lqiFilterEventArgs.Attributes.Count > 0)
                             currentLqiRef = lqiFilterEventArgs?.Attributes["xml:id"];
+                        OnItsLocQualityIssues(lqiFilterEventArgs);
                         break;
                     case XmlReader r when r.Name.Equals("its:locQualityIssue"):
                         XlfEventArgs lqiArgs = XlfEventArgs.FromReader(r);
@@ -180,13 +182,14 @@ namespace Localization.Jliff.Graph
 
         public event XlfEvent ModCtrChangeTrackEvent;
         public event XlfEvent ModCtrRevisionEvent;
-        public event XlfEvent ModCtrRevisionsEvent;
         public event XlfEvent ModCtrRevisionItemEvent;
+        public event XlfEvent ModCtrRevisionsEvent;
         public event XlfEvent ModGlsDefinitionEvent;
         public event XlfEvent ModGlsEntryEvent;
         public event XlfEvent ModGlsTermEvent;
         public event XlfEvent ModGlsTranslationEvent;
         public event XlfEvent ModItsLocQualityIssue;
+        public event XlfEvent ModItsLocQualityIssues;
         public event XlfEvent ModMetadataEvent;
         public event XlfEvent ModMetaGroupEvent;
         public event XlfEvent ModMetaitemEvent;
@@ -200,6 +203,11 @@ namespace Localization.Jliff.Graph
             ModItsLocQualityIssue?.Invoke(xeArgs);
         }
 
+        private void OnItsLocQualityIssues(XlfEventArgs xeArgs)
+        {
+            ModItsLocQualityIssues?.Invoke(xeArgs);
+        }
+
         public void OnModCtrChangeTrack(XlfEventArgs xeArgs)
         {
             ModCtrChangeTrackEvent?.Invoke(xeArgs);
@@ -210,14 +218,14 @@ namespace Localization.Jliff.Graph
             ModCtrRevisionEvent?.Invoke(xeArgs);
         }
 
-        public void OnModCtrRevisions(XlfEventArgs xeArgs)
-        {
-            ModCtrRevisionsEvent?.Invoke(xeArgs);
-        }
-
         public void OnModCtrRevisionItem(XlfEventArgs xeArgs)
         {
             ModCtrRevisionItemEvent?.Invoke(xeArgs);
+        }
+
+        public void OnModCtrRevisions(XlfEventArgs xeArgs)
+        {
+            ModCtrRevisionsEvent?.Invoke(xeArgs);
         }
 
         public virtual void OnModGlossaryEntry(XlfEventArgs xeArgs)
@@ -373,7 +381,5 @@ namespace Localization.Jliff.Graph
         public event XlfEvent XlfTargetEvent;
         public event XlfEvent XlfTextEvent;
         public event XlfEvent XlfUnitEvent;
-
-        public delegate void XlfEvent(XlfEventArgs args);
     }
 }

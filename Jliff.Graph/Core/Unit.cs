@@ -55,7 +55,7 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.unit.ToString();
 
-        public List<LocQualityIssue> LocQualityIssues { get; set; } = new List<LocQualityIssue>();
+        public LocQualityIssues LocQualityIssues { get; set; }
 
         [JsonIgnore]
         public string LocQualityIssuesRef { get; set; }
@@ -126,10 +126,10 @@ namespace Localization.Jliff.Graph
             return Glossary.Count > 0;
         }
 
-        public bool ShouldSerializeLocQualityIssues()
-        {
-            return LocQualityIssues.Count > 0;
-        }
+        //public bool ShouldSerializeLocQualityIssues()
+        //{
+        //    return LocQualityIssues.Count > 0;
+        //}
 
         public bool ShouldSerializeOriginalData()
         {

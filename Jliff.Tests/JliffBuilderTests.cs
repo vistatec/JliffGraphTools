@@ -52,6 +52,7 @@ namespace UnitTests
             fltr.XlfScElementEvent += bldr.ScElement;
             fltr.XlfEcElementEvent += bldr.EcElement;
             fltr.XlfOriginalDataEvent += bldr.OriginalData;
+            fltr.ModItsLocQualityIssues += bldr.LocQualityIssues;
             fltr.ModItsLocQualityIssue += bldr.LocQualityIssue;
             fltr.ModMetadataEvent += bldr.Metadata;
             fltr.ModMetaGroupEvent += bldr.MetaGroup;
