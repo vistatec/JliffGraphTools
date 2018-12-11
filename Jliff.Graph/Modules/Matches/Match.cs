@@ -1,5 +1,6 @@
 ﻿using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Modules.Metadata;
+using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.Matches
 {
@@ -7,11 +8,16 @@ namespace Jliff.Graph.Modules.Matches
     {
         public string Domains { get; set; }
         public string Id { get; set; }
+        [JsonProperty("its_locQualityRatingProfileRef")]
         public string LocQualityRatingProfileRef { get; set; }
+        [JsonProperty("its_locQualityRatingScore")]
         public float LocQualityRatingScore { get; set; }
+        [JsonProperty("its_locQualityRatingScoreThreshold")]
         public float LocQualityRatingScoreThreshold { get; set; }
-        public int LocQualityRatingVote { get; set; }
-        public int LocQualityRatingVoteThreshold { get; set; }
+        [JsonProperty("its_locQualityRatingVote")]
+        public int LocQualityRatingScoreVote { get; set; }
+        [JsonProperty("its_locQualityRatingVoteThreshold")]
+        public int LocQualityRatingScoreVoteThreshold { get; set; }
         public int MatchQuality { get; set; }
         public int MatchSuitability { get; set; }
         public Metadata Metadata { get; set; }

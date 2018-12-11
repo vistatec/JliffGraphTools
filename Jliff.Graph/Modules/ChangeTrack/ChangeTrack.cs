@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jliff.Graph.Modules.ITS;
+using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
@@ -10,6 +11,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
             
         }
 
+        [JsonProperty("its_annotatorsRef")]
         public AnnotatorsRef AnnotatorsRef { get; set; }
         public Revisions Revisions { get; set; } 
     }

@@ -103,7 +103,8 @@ namespace Localization.Jliff.Graph
         public string Disp { get; set; }
         public string Equiv { get; set; }
         public string EquivStorage { get; set; }
-        public Enumerations.FormatStyle Fs { get; set; }
+        [JsonProperty("fs_fs")]
+		public Enumerations.FormatStyle Fs { get; set; }
         public string Id { get; set; }
         public Enumerations.YesNo Isolated { get; set; }
 
@@ -113,7 +114,8 @@ namespace Localization.Jliff.Graph
         public string ProfileSizeInfo { get; set; }
         public string ProfileSizeInfoRef { get; set; }
         public string SubFlows { get; set; }
-        public string SubFs { get; set; }
+        [JsonProperty("fs_subFs")]
+		public string SubFs { get; set; }
         public string SubType { get; set; }
         public string Type { get; set; }
 

@@ -43,11 +43,15 @@ namespace Localization.Jliff.Graph
                     throw new ArgumentException();
         }
 
-        public AnnotatorsRef AnnotatorsRef { get; set; }
-        public object ChangeTrack { get; set; }
-        public object Data { get; set; }
+        [JsonProperty("its_annotatorsRef")]
+		public AnnotatorsRef AnnotatorsRef { get; set; }
+        [JsonProperty("ctr_changeTrack")]
+		public object ChangeTrack { get; set; }
+        [JsonProperty("slr_data")]
+		public object Data { get; set; }
         public string Domains { get; set; }
-        public Enumerations.FormatStyle Fs { get; set; }
+        [JsonProperty("fs_fs")]
+		public Enumerations.FormatStyle Fs { get; set; }
 
         [JsonIgnore]
         public override bool HasChildren => Subfiles.Count > 0;
@@ -55,45 +59,67 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.file.ToString();
-        public string LocQualityRatingProfileRef { get; set; }
-        public float LocQualityRatingScore { get; set; }
-        public float LocQualityRatingScoreThreshold { get; set; }
+        [JsonProperty("its_locQualityRatingProfileRef")]
+		public string LocQualityRatingProfileRef { get; set; }
+        [JsonProperty("its_locQualityRatingScore")]
+		public float LocQualityRatingScore { get; set; }
+        [JsonProperty("its_locQualityRatingScoreThreshold")]
+		public float LocQualityRatingScoreThreshold { get; set; }
         public float LocQualityRatingVote { get; set; }
         public float LocQualityRatingVoteThreshold { get; set; }
         public List<MetaGroup> Metadata { get; set; }
-        public string Org { get; set; }
+        [JsonProperty("its_org")]
+		public string Org { get; set; }
         public Iri OrgRef { get; set; }
         public string Original { get; set; }
-        public string Person { get; set; }
+        [JsonProperty("its_person")]
+		public string Person { get; set; }
         public Iri PersonRef { get; set; }
-        public object Profiles { get; set; }
-        public List<object> ProvenanceRecords { get; set; }
+        [JsonProperty("slr_profiles")]
+		public object Profiles { get; set; }
+        [JsonProperty("its_provenanceRecords")]
+		public List<object> ProvenanceRecords { get; set; }
         public Iri ProvenanceRecordsRef { get; set; }
-        public object ResourceData { get; set; }
-        public string RevOrg { get; set; }
+        [JsonProperty("res_resourceData")]
+		public object ResourceData { get; set; }
+        [JsonProperty("its_revOrg")]
+		public string RevOrg { get; set; }
         public Iri RevOrgRef { get; set; }
-        public string RevPerson { get; set; }
+        [JsonProperty("its_revPerson")]
+		public string RevPerson { get; set; }
         public Iri RevPersonRef { get; set; }
-        public string RevTool { get; set; }
+        [JsonProperty("its_revTool")]
+		public string RevTool { get; set; }
         public Iri RevToolRef { get; set; }
-        public string SizeInfo { get; set; }
-        public string SizeInfoRef { get; set; }
-        public string SizeRestriction { get; set; }
+        [JsonProperty("slr_sizeInfo")]
+		public string SizeInfo { get; set; }
+        [JsonProperty("slr_sizeInfoRef")]
+		public string SizeInfoRef { get; set; }
+        [JsonProperty("slr_sizeRestriction")]
+		public string SizeRestriction { get; set; }
         public Skeleton Skeleton { get; set; }
         public string SrcDir { get; set; }
-        public string StorageRestriction { get; set; }
-        public string SubFs { get; set; }
+        [JsonProperty("slr_storageRestriction")]
+		public string StorageRestriction { get; set; }
+        [JsonProperty("fs_subFs")]
+		public string SubFs { get; set; }
         public Iri TaClassRef { get; set; }
-        public float TaConfidence { get; set; }
-        public string TaIdent { get; set; }
-        public Iri TaIdentRef { get; set; }
-        public string TaSource { get; set; }
-        public string Tool { get; set; }
+        [JsonProperty("its_taConfidence")]
+		public float TaConfidence { get; set; }
+        [JsonProperty("its_taIdent")]
+		public string TaIdent { get; set; }
+        [JsonProperty("its_taIdentRef")]
+		public Iri TaIdentRef { get; set; }
+        [JsonProperty("its_taSource")]
+		public string TaSource { get; set; }
+        [JsonProperty("its_tool")]
+		public string Tool { get; set; }
         public Iri ToolRef { get; set; }
         public Enumerations.YesNo Translate { get; set; }
         public string TrgDir { get; set; }
         public object Userdata { get; set; }
-        public string Validation { get; set; }
+        [JsonProperty("val_validation")]
+		public string Validation { get; set; }
 
         public void Accept(IVisitor visitor)
         {
