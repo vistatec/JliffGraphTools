@@ -20,6 +20,7 @@ namespace Localization.Jliff.Graph
         {
             get
             {
+                segments.Clear();
                 SegmentVisitor v = new SegmentVisitor();
                 foreach (JlfNode node in Files)
                 {

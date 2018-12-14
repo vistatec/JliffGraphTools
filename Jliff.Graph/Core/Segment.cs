@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
@@ -69,5 +71,28 @@ namespace Localization.Jliff.Graph
             //}
         }
 
+        [JsonIgnore]
+        public string SourceText
+        {
+            get
+            {
+                return Source.Where(t => t is TextElement)
+                    .Cast<TextElement>()
+                    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
+                    .ToString();
+            }
+        }
+
+        [JsonIgnore]
+        public string TargetText
+        {
+            get
+            {
+                return Target.Where(t => t is TextElement)
+                    .Cast<TextElement>()
+                    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
+                    .ToString();
+            }
+        }
     }
 }
