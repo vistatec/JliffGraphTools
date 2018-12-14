@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 file:///E:/xliff-core-1.2-strict.xml">
+	<file original="" source-language="en-GB" datatype="xml" target-language="it-IT">
+		<body>
+			<trans-unit id="u1">
+				<source>
+					<mrk mtype="term">Ocelot</mrk> is a free, open source editor with advanced features for reviewing and correcting translations.</source>
+			</trans-unit>
+			<trans-unit id="u2">
+				<source>It is licensed under <ph id="pc1">LGPL 3.0.</ph>
+				</source>
+			</trans-unit>
+			<group id="g1">
+				<trans-unit id="u3">
+					<source>Ocelot can also be used as a general XLIFF 1.2 or XLIFF 2.0 Editor.</source>
+					<target>Ocelot può anche essere utilizzato come editor generale XLIFF 1.2 o <mrk mtype="term">XLIFF 3.0.</mrk>
+					</target>
+				</trans-unit>
+				<trans-unit id="u4">
+					<source>When a segment is selected in the Segment View, information about that segment appears in the Detail Pane.</source>
+					<target>Quando un segmento è selezionato nella Vista segmento, le informazioni su tale segmento vengono visualizzate nel riquadro dettagli.</target>
+				</trans-unit>
+				<trans-unit id="s-ui">
+					<source>Doc Stats Other</source>
+					<seg-source>
+						<mrk mid="s-ds" mtype="seg">Doc Stats</mrk>
+						<mrk mid="s-other" mtype="seg">Other</mrk>
+					</seg-source>
+				</trans-unit>
+			</group>
+		</body>
+	</file>
+</xliff>

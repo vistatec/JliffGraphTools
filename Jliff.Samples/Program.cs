@@ -33,6 +33,33 @@ namespace Jliff.Samples
             //xliff20Filter.Filter(new StreamReader(Path.Combine($"{output}\\Jliff.Tests\\XlfFiles", "everything-core.xlf")));
             xliff20Filter.Filter(new StreamReader(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\LQE_xliff_2.0.xlf"));
             builder.Serialize("XliffToJliff.json");
+            
+
+            JliffBuilder bldr = new JliffBuilder("en", "fr");
+            Xliff12Filter xliff12Filter = new Xliff12Filter();
+            xliff12Filter.XlfRootEvent += bldr.XlfRoot;
+            xliff12Filter.XlfFileEvent += bldr.File;
+            xliff12Filter.XlfUnitEvent += bldr.Unit;
+            xliff12Filter.XlfGroupEvent += bldr.Group;
+            xliff12Filter.XlfSegmentEvent += bldr.Segment;
+            xliff12Filter.XlfSourceEvent += bldr.Source;
+            xliff12Filter.XlfTargetEvent += bldr.Target;
+            xliff12Filter.XlfIgnorableEvent += bldr.Ignorable;
+            xliff12Filter.XlfPhElementEvent += bldr.PhElement;
+            xliff12Filter.XlfSkeletonEvent += bldr.Skeleton;
+            xliff12Filter.XlfTextEvent += bldr.Text;
+            xliff12Filter.XlfSmElementEvent += bldr.SmElement;
+            xliff12Filter.XlfEmElementEvent += bldr.EmElement;
+            xliff12Filter.XlfScElementEvent += bldr.ScElement;
+            xliff12Filter.XlfEcElementEvent += bldr.EcElement;
+            xliff12Filter.ModItsLocQualityIssue += bldr.LocQualityIssue;
+            DirectoryInfo output2 = new DirectoryInfo(Directory.GetCurrentDirectory());
+            for (int i = 0; i < 1; i++)
+                output2 = Directory.GetParent(output2.FullName);
+            //xliff12Filter.Filter(new StreamReader(Path.Combine($"{output}\\Jliff.Tests\\XlfFiles", "everything-core.xlf")));
+            xliff12Filter.Filter(new StreamReader(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\ocelot12.xlf"));
+            bldr.Serialize("Xliff12ToJliff.json");
+
         }
     }
 }
