@@ -32,6 +32,9 @@
     <None Update="Schemas\JLIFF-2.1\jliff-schema-2.1-no-prefix.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Schemas\JLIFF-2.1\jliff-schema-2.1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="XlfFiles\Ocelot.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

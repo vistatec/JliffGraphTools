@@ -12,27 +12,11 @@ namespace Localization.Jliff.Graph
     {
         private const string jliff = "2.1";
 
-        [JsonIgnore]
-        private List<Segment> segments = new List<Segment>();
-
-        [JsonIgnore]
-        public List<Segment> Segments
-        {
-            get
-            {
-                segments.Clear();
-                SegmentVisitor v = new SegmentVisitor();
-                foreach (JlfNode node in Files)
-                {
-                    node.Process(v);
-                }
-                segments.AddRange(v.Segments);
-                return segments;
-            }
-        }
-
         [JsonProperty(Order = 10)]
         public List<File> Files = new List<File>();
+
+        [JsonIgnore]
+        private readonly List<Segment> segments = new List<Segment>();
 
         [JsonProperty]
         public List<ISubfile> Subfiles = new List<ISubfile>();
@@ -80,6 +64,19 @@ namespace Localization.Jliff.Graph
         [JsonProperty(PropertyName = "@context")]
         public Context21 Context { get; set; }
 
+        [JsonIgnore]
+        public List<Segment> Segments
+        {
+            get
+            {
+                segments.Clear();
+                SegmentVisitor v = new SegmentVisitor();
+                foreach (JlfNode node in Files) node.Process(v);
+                segments.AddRange(v.Segments);
+                return segments;
+            }
+        }
+
         public string SrcLang { get; set; }
         public string TrgLang { get; set; }
 
@@ -94,6 +91,11 @@ namespace Localization.Jliff.Graph
                 filenames.Add(file.Original);
 
             return filenames;
+        }
+
+        public bool ShouldSerializeFiles()
+        {
+            return Files.Count > 0;
         }
 
         public bool ShouldSerializeSubfiles()

@@ -156,6 +156,11 @@ namespace Localization.Jliff.Graph
             return Glossary.Count > 0;
         }
 
+        public bool ShouldSerializeMatches()
+        {
+            return Matches.Count > 0;
+        }
+
         //public bool ShouldSerializeLocQualityIssues()
         //{
         //    return LocQualityIssues.Count > 0;

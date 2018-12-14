@@ -450,5 +450,23 @@ namespace UnitTests
             Assert.IsTrue(obGraph.IsValid(schema));
 
         }
+
+        [TestMethod]
+        public void RoundTripSegmentsFragment()
+        {
+            JliffDocument jd = new JliffDocument("en-GB", "it-IT",
+                new Unit("unit000001",
+                    new Segment(
+                        new TextElement("Ocelot is open source and cross-platform."),
+                        new TextElement(""))
+                    )
+                );
+            Converter.Serialize(Path.Combine(OutputFolder, "SegmentFragment.json"), jd);
+
+            schemaDef = System.IO.File.ReadAllText(Path.Combine($"{schemasLocation}\\JLIFF-2.1", "jliff-schema-2.1.json"));
+            JsonSchema schema = JsonSchema.Parse(schemaDef);
+            var obGraph = JObject.FromObject(jd);
+            Assert.IsTrue(obGraph.IsValid(schema));
+        }
     }
 }
