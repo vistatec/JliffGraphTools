@@ -27,5 +27,10 @@ namespace Localization.Jliff.Graph
         public List<IElement> Target { get; set; }
 
         public string Type { get; set; }
+
+        public bool ShouldSerializeTarget()
+        {
+            return Target.Count > 0;
+        }
     }
 }

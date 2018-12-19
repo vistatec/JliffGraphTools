@@ -18,9 +18,10 @@ namespace Localization.Jliff.Graph
         [JsonIgnore]
         private readonly List<Segment> segments = new List<Segment>();
 
-        [JsonProperty]
+        [JsonProperty(Order = 20)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
 
+        [JsonProperty(Order = 30)]
         public List<ISubunit> Subunits = new List<ISubunit>();
 
         [JsonConstructor]
@@ -77,10 +78,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        [JsonProperty(Order = 2)]
         public string SrcLang { get; set; }
+
+        [JsonProperty(Order = 3)]
         public string TrgLang { get; set; }
 
-        [JsonProperty(PropertyName = "Jliff")]
+        [JsonProperty(PropertyName = "Jliff", Order = 1)]
         public string Version { get; set; }
 
         public List<string> GetFilenames()

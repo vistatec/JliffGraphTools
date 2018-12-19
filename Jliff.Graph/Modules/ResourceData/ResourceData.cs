@@ -28,5 +28,10 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
         public string Id { get; set; }
         public List<ResourceItem> ResourceItems { get; set; } = new List<ResourceItem>();
         public List<ResourceItemRef> ResourceItemRefs { get; set; } = new List<ResourceItemRef>();
+
+        public bool ShouldSerializeResourceItemRefs()
+        {
+            return ResourceItemRefs.Count > 0;
+        }
     }
 }

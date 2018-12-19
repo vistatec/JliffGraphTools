@@ -88,6 +88,7 @@ namespace Localization.Jliff.Graph
 		public object Profiles { get; set; }
         [JsonProperty("its_provenanceRecords")]
 		public List<object> ProvenanceRecords { get; set; }
+        [JsonProperty("its_provenanceRecordsRef")]
         public Iri ProvenanceRecordsRef { get; set; }
         [JsonProperty("res_resourceData")]
 		public object ResourceData { get; set; }

@@ -94,5 +94,10 @@ namespace Localization.Jliff.Graph
                     .ToString();
             }
         }
+
+        public bool ShouldSerializeTarget()
+        {
+            return Target.Count > 0;
+        }
     }
 }

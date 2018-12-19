@@ -7,7 +7,7 @@ namespace Jliff.Graph.Core
     {
         public Iri()
         {
-            
+            Identifier = String.Empty;
         }
 
         public Iri(string identifier)
@@ -15,7 +15,7 @@ namespace Jliff.Graph.Core
             Identifier = identifier;
         }
 
-        private string identifier;
+        private string identifier = String.Empty;
         public string Identifier
         {
             get { return identifier; }

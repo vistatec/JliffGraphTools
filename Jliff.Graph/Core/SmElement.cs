@@ -89,7 +89,7 @@ namespace Localization.Jliff.Graph
         public string ProfileSizeRestriction { get; set; }
 
         [JsonProperty("its_provenanceRecordsRef")]
-		public string ProvenanceRecordsRef { get; set; }
+		public Iri ProvenanceRecordsRef { get; set; } = new Iri();
         public Iri Ref { get; set; }
         [JsonProperty("its_revOrg")]
 		public string RevOrg { get; set; }
@@ -127,6 +127,11 @@ namespace Localization.Jliff.Graph
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public bool ShouldSerializeProvenanceRecordsRef()
+        {
+            return !ProvenanceRecordsRef.Identifier.Equals(String.Empty);
         }
     }
 }
