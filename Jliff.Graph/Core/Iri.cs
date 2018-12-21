@@ -37,7 +37,6 @@ namespace Jliff.Graph.Core
     {
         public Iri()
         {
-            Identifier = String.Empty;
         }
 
         public Iri(string identifier)
@@ -61,7 +60,11 @@ namespace Jliff.Graph.Core
                 {
                     // Syntax error in the regular expression
                 }
-                if (foundMatch) identifier = value;
+
+                if (foundMatch)
+                    identifier = value;
+                else
+                    identifier = string.Empty;
             }
         }
     }

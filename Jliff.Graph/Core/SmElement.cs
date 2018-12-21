@@ -158,10 +158,5 @@ namespace Localization.Jliff.Graph
         {
             visitor.Visit(this);
         }
-
-        public bool ShouldSerializeProvenanceRecordsRef()
-        {
-            return !ProvenanceRecordsRef.Identifier.Equals(String.Empty);
-        }
     }
 }

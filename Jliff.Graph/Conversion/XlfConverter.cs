@@ -39,11 +39,11 @@ namespace Jliff.Graph.Conversion
 {
     public class XlfConverter
     {
-        public JliffDocument ConvertXlf20(Stream stream)
+        public JliffDocument ConvertXlf20Files(Stream stream)
         {
             try
             {
-                JliffBuilder builder = new JliffBuilder("en", "fr");
+                JliffBuilder builder = new JliffBuilder();
                 Xliff20Filter xliff20Filter = new Xliff20Filter();
                 xliff20Filter.XlfRootEvent += builder.XlfRoot;
                 xliff20Filter.XlfFileEvent += builder.File;
@@ -63,6 +63,47 @@ namespace Jliff.Graph.Conversion
                 xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
                 xliff20Filter.Filter(new StreamReader(stream, Encoding.UTF8));
                 return builder.Jliff;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidDataException();
+            }
+        }
+
+        public JliffDocument ConvertXlf20Subunits(Stream stream)
+        {
+            try
+            {
+                JliffBuilder builder = new JliffBuilder();
+                Xliff20Filter xliff20Filter = new Xliff20Filter();
+                xliff20Filter.XlfRootEvent += builder.XlfRoot;
+                xliff20Filter.XlfFileEvent += builder.File;
+                xliff20Filter.XlfUnitEvent += builder.Unit;
+                xliff20Filter.XlfGroupEvent += builder.Group;
+                xliff20Filter.XlfSegmentEvent += builder.Segment;
+                xliff20Filter.XlfSourceEvent += builder.Source;
+                xliff20Filter.XlfTargetEvent += builder.Target;
+                xliff20Filter.XlfIgnorableEvent += builder.Ignorable;
+                xliff20Filter.XlfPhElementEvent += builder.PhElement;
+                xliff20Filter.XlfSkeletonEvent += builder.Skeleton;
+                xliff20Filter.XlfTextEvent += builder.Text;
+                xliff20Filter.XlfSmElementEvent += builder.SmElement;
+                xliff20Filter.XlfEmElementEvent += builder.EmElement;
+                xliff20Filter.XlfScElementEvent += builder.ScElement;
+                xliff20Filter.XlfEcElementEvent += builder.EcElement;
+                xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
+                xliff20Filter.Filter(new StreamReader(stream, Encoding.UTF8));
+                JliffDocument jd = builder.Jliff;
+                List<Segment> segments = jd.Segments;
+                jd.Subunits.AddRange(segments);
+                JliffDocument jd2 = new JliffDocument("en", "fr");
+                jd2.Subunits.AddRange(segments);
+                // This is a cludge to avoid deep copying
+                ///TODO: Implement proper deep copying
+                string tempSerialization = Converter.Serialize(jd2);
+                JliffDocument jd3 = Converter.Deserialize(tempSerialization);
+                return jd3;
+                // https://stackoverflow.com/questions/5713556/copy-object-to-object-with-automapper
             }
             catch (Exception e)
             {
