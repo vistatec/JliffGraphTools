@@ -43,7 +43,7 @@ namespace Jliff.Graph.Conversion
         {
             try
             {
-                JliffBuilder builder = new JliffBuilder();
+                JliffBuilder builder = new JliffBuilder("en-US", "fr-FR");
                 Xliff20Filter xliff20Filter = new Xliff20Filter();
                 xliff20Filter.XlfRootEvent += builder.XlfRoot;
                 xliff20Filter.XlfFileEvent += builder.File;
@@ -74,7 +74,7 @@ namespace Jliff.Graph.Conversion
         {
             try
             {
-                JliffBuilder builder = new JliffBuilder();
+                JliffBuilder builder = new JliffBuilder("en-US", "fr-FR");
                 Xliff20Filter xliff20Filter = new Xliff20Filter();
                 xliff20Filter.XlfRootEvent += builder.XlfRoot;
                 xliff20Filter.XlfFileEvent += builder.File;

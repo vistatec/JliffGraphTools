@@ -28,6 +28,7 @@
  */
 
 
+using System;
 using System.Collections.Generic;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
@@ -36,6 +37,8 @@ namespace Localization.Jliff.Graph
 {
     public class EmElement : JlfNode, IElement
     {
+        private static int CLOSINGTAG = 0xe102;
+
         [JsonIgnore]
         public IDictionary<string, string> Attributes
         {
@@ -66,6 +69,11 @@ namespace Localization.Jliff.Graph
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public override string ToString()
+        {
+            return $"{new String(Convert.ToChar(CLOSINGTAG), 2)}";
         }
     }
 }

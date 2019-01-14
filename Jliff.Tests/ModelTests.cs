@@ -34,6 +34,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using Jliff.Graph.Core;
 using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
@@ -42,6 +43,7 @@ using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using File = System.IO.File;
@@ -248,6 +250,57 @@ namespace UnitTests
             JsonSchema schema = JsonSchema.Parse(schemaDef);
             var obGraph = JObject.FromObject(model);
             Assert.IsTrue(obGraph.IsValid(schema));
+        }
+
+        [TestMethod]
+        public void JsonToXmlTrial()
+        {
+            var unit1 = new Unit("1");
+            var unit2 = new Unit("2");
+            var unit3 = new Unit("3");
+
+            var segment1 = new Segment(
+                new TextElement("Quetzal"),
+                new TextElement("Quetzal"));
+
+            var segment2 = new Segment(
+                new TextElement("An application to manipulate and process XLIFF documents"),
+                new TextElement("XLIFF 文書を編集、または処理 するアプリケーションです。"));
+
+            var segment3 = new Segment(
+                new TextElement("XLIFF Data Manager"),
+                new TextElement("XLIFF データ・マネージャ"));
+
+            unit1.Subunits.Add(segment1);
+            unit2.Subunits.Add(segment2);
+            unit3.Subunits.Add(segment3);
+
+            var model = new JliffDocument("en", "fr");
+            model.Files.Add(new Localization.Jliff.Graph.File("f1"));
+            model.Files[0].Skeleton = new Skeleton("Graphic Example.psd.skl");
+            model.Files[0].Subfiles = new List<ISubfile>
+            {
+                unit1,
+                unit2,
+                unit3
+            };
+
+            var dllPath = Assembly.GetAssembly(typeof(ModelTests)).Location;
+            var dllName = Assembly.GetAssembly(typeof(ModelTests)).GetName().Name;
+            var outputPath = dllPath.Replace(dllName + ".dll", "");
+
+
+            Converter.Serialize(Path.Combine(outputPath, "example2.json"), model);
+
+            Converter.Deserialize(new FileInfo(Path.Combine(outputPath, "example2.json")));
+
+            XDocument d = JsonConvert.DeserializeXNode(File.ReadAllText(Path.Combine(outputPath, "example2.json")), "xliff");
+            d.Save(Path.Combine(outputPath, "example2.xlf"));
+
+            JsonSchema schema = JsonSchema.Parse(schemaDef);
+            var obGraph = JObject.FromObject(model);
+            Assert.IsTrue(obGraph.IsValid(schema));
+
         }
 
         [TestMethodAttribute]

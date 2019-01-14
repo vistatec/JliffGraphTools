@@ -98,6 +98,7 @@ namespace Localization.Jliff.Graph
         [JsonIgnore]
         public List<Segment> Segments
         {
+            ///TODO: Only works if the segments are within a file.
             get
             {
                 segments.Clear();

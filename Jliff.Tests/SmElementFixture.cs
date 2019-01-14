@@ -27,36 +27,29 @@
  * Also, see the full LGPL text here: <http://www.gnu.org/copyleft/lesser.html>
  */
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Localization.Jliff.Graph;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Jliff.Graph.Interfaces;
-using Newtonsoft.Json;
-
-namespace Localization.Jliff.Graph
+namespace UnitTests
 {
-    public class TextElement : JlfNode, IElement
+    [TestClass]
+    public class SmElementFixture
     {
-        public TextElement()
+        [TestMethod]
+        public void WritesStringWithAnnotationsCorrectly()
         {
-        }
+            Segment s = new Segment("s1");
+            s.Source.Add(new SmElement("mrk1"));
+            s.Source.Add(new TextElement("Ocelot"));
+            s.Source.Add(new EmElement());
+            s.Source.Add(new TextElement(" is a free, open source editor."));
 
-        public TextElement(string text)
-        {
-            Text = text;
-        }
+            string expected = "\ue101mrk1\ue101Ocelot\ue102\ue102 is a free, open source editor.";
 
-        public string Text { get; set; }
-
-        [JsonIgnore]
-        public override string Kind => Enumerations.JlfNodeType.text.ToString();
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
-        public override string ToString()
-        {
-            return Text;
+            Assert.AreEqual(expected, s.FlattenSource());
         }
     }
 }

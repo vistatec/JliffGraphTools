@@ -32,11 +32,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
+    /// TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits"/>.
+    /// </summary>
     public class Segment : JlfNode, ISubunit
     {
         [JsonProperty(Order = 10)]
@@ -47,11 +52,13 @@ namespace Localization.Jliff.Graph
 
         public Segment()
         {
+            FragmentManager = new FragmentManager();
         }
 
         public Segment(string id)
         {
             Id = id;
+            FragmentManager = new FragmentManager();
         }
 
         [JsonConstructor]
@@ -106,13 +113,15 @@ namespace Localization.Jliff.Graph
         {
             get
             {
-                return Source.Where(t => t is TextElement)
-                    .Cast<TextElement>()
-                    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
-                    .ToString();
+                //return Source.Where(t => t is TextElement)
+                //    .Cast<TextElement>()
+                //    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
+                //    .ToString();
+                return Source.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
             }
         }
 
+        private string targetText;
         [JsonIgnore]
         public string TargetText
         {
@@ -128,6 +137,31 @@ namespace Localization.Jliff.Graph
         public bool ShouldSerializeTarget()
         {
             return Target.Count > 0;
+        }
+
+        
+        [JsonIgnore]
+        public FragmentManager FragmentManager { get; set; }
+
+        public string FlattenSource()
+        {
+            return FragmentManager.Flatten(Source);
+        }
+
+        public string FlattenTarget()
+        {
+            return FragmentManager.Flatten(Target);
+        }
+
+        public void ParseSource(string text)
+        {
+            Source = FragmentManager.Parse(text);
+        }
+
+        public void ParseTarget(string text)
+        {
+            Target = FragmentManager.Parse(text);
+            //Target.Parse();
         }
     }
 }

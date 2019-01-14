@@ -39,6 +39,11 @@ namespace Localization.Jliff.Graph
 {
     public class SmElement : JlfNode, IElement
     {
+        private static int OPENINGTAG = 0xe101;
+
+        /// <summary>
+        /// SmElement is intended to deliniate the start of an annotation.
+        /// </summary>
         public SmElement()
         {
         }
@@ -157,6 +162,11 @@ namespace Localization.Jliff.Graph
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public override string ToString()
+        {
+            return $"{Convert.ToChar(OPENINGTAG).ToString()}{Id}{Convert.ToChar(OPENINGTAG).ToString()}";
         }
     }
 }
