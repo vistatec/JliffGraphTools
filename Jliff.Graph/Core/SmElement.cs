@@ -30,6 +30,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
@@ -37,7 +40,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class SmElement : JlfNode, IElement
+    public class SmElement : JlfNode, IElement, IXmlSerializable
     {
         private static int OPENINGTAG = 0xe101;
 
@@ -51,6 +54,12 @@ namespace Localization.Jliff.Graph
         public SmElement(string id)
         {
             Id = id;
+        }
+
+        public SmElement(string id, string type)
+        {
+            Id = id;
+            Type = type;
         }
 
         [JsonIgnore]
@@ -159,14 +168,31 @@ namespace Localization.Jliff.Graph
         public string Type { get; set; }
         public string Value { get; set; }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
         }
 
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return $"{Convert.ToChar(OPENINGTAG).ToString()}{Id}{Convert.ToChar(OPENINGTAG).ToString()}";
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteAttributeString("type", Type);
+            
         }
     }
 }

@@ -179,11 +179,21 @@ namespace Localization.Jliff.Graph
 
         public void WriteXml(XmlWriter writer)
         {
+            writer.WriteAttributeString("id", Id);
             writer.WriteStartElement("source");
             foreach (IElement element in Source)
             {
                 switch (element)
                 {
+                    case EmElement em:
+                        writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case SmElement sm:
+                        writer.WriteStartElement("sm");
+                        (sm as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
                     case TextElement te:
                         (te as IXmlSerializable).WriteXml(writer);
                         break;
@@ -196,6 +206,15 @@ namespace Localization.Jliff.Graph
             {
                 switch (element)
                 {
+                    case EmElement em:
+                        writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case SmElement sm:
+                        writer.WriteStartElement("sm");
+                        (sm as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
                     case TextElement te:
                         (te as IXmlSerializable).WriteXml(writer);
                         break;

@@ -30,12 +30,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class EmElement : JlfNode, IElement
+    public class EmElement : JlfNode, IElement, IXmlSerializable
     {
         private static int CLOSINGTAG = 0xe102;
 
@@ -66,14 +69,29 @@ namespace Localization.Jliff.Graph
 
         public string StartRef { get; set; }
 
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
         }
 
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return $"{new String(Convert.ToChar(CLOSINGTAG), 2)}";
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            
         }
     }
 }

@@ -33,6 +33,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,22 +50,24 @@ namespace UnitTests
         [TestMethod]
         public void SerializeModelAsXlf()
         {
+            List<IElement> source = new List<IElement>();
+            source.Add(new SmElement("mrk1", "term"));
+            source.Add(new TextElement("Ocelot"));
+            source.Add(new EmElement());
+            source.Add(new TextElement(" is a free, open source editor with advanced features for reviewing and correcting translations."));
+
             JliffDocument jd = new JliffDocument("en-US", "it-IT",
                 new File("file1",
                     new Unit("unit1"),
                     new Unit("unit2",
                         new Segment(
-                            new List<IElement>() { new TextElement("Source 1")},
-                            new List<IElement>() { new TextElement("Target 1")}
+                            source,
+                            new List<IElement>() { new SmElement(), new TextElement("Target 1"), new EmElement()}
                         ))));
 
-            ///TODO: This does not work because XmlSerializer uses class inheritance rather than interfaces so I'd
-            ///TODO: have to change all of the generic collections as collections of base classes
-            ///TODO: then I have multiple inheritance issues
-            XmlSerializer xs = new XmlSerializer(typeof(JliffDocument), new Type[] { typeof(Unit), typeof(Ignorable), typeof(Metadata), typeof(Group) });
-            xs.Serialize(new XmlTextWriter(Path.Combine(OutputFolder, "Jlf2Xlf.xlf"), Encoding.UTF8), jd);
+            ((jd.Files[0].Subfiles[1] as Unit).Subunits[0] as Segment).Id = "S1ofU2";
 
-            
+            jd.ToXlf(Path.Combine(OutputFolder, "Jlf2Xlf.xlf"));
         }
     }
 }
