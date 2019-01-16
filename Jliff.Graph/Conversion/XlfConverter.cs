@@ -61,6 +61,9 @@ namespace Jliff.Graph.Conversion
                 xliff20Filter.XlfScElementEvent += builder.ScElement;
                 xliff20Filter.XlfEcElementEvent += builder.EcElement;
                 xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
+                xliff20Filter.ModResResourceDataEvent += builder.ResourceData;
+                xliff20Filter.ModResResourceItemEvent += builder.ResourceItem;
+                xliff20Filter.ModResSourceEvent += builder.ResourceSource;
                 xliff20Filter.Filter(new StreamReader(stream, Encoding.UTF8));
                 return builder.Jliff;
             }

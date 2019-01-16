@@ -30,6 +30,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
@@ -40,7 +42,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Group : JlfNode, ISubfile, IJlfNode
+    public class Group : JlfNode, ISubfile, IJlfNode, IXmlSerializable
     {
         [XmlIgnore]
         [JsonProperty(Order = 10)]
@@ -154,6 +156,11 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public JlfNode NodeAccept(IVisitor visitor)
         {
             return this;
@@ -165,12 +172,41 @@ namespace Localization.Jliff.Graph
             foreach (JlfNode node in Subgroups) node.Process(visitor);
         }
 
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string Traverse(Func<string> func)
         {
             string z = string.Empty;
             foreach (JlfNode node in Subgroups) z = node.Traverse(func);
 
             return $"{Id}/ {z}";
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            if (Subgroups.Count > 0)
+            {
+                foreach (ISubfile subfile in Subgroups)
+                {
+                    switch (subfile)
+                    {
+                        case Group g:
+                            writer.WriteStartElement("group");
+                            (g as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case Unit u:
+                            writer.WriteStartElement("unit");
+                            (u as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                    }
+                }
+            }
         }
     }
 }

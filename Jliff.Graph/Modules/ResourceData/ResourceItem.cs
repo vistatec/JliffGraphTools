@@ -29,11 +29,14 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Localization.Jliff.Graph;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
-    public class ResourceItem
+    public class ResourceItem : IXmlSerializable
     {
         public ResourceItem()
         {
@@ -50,5 +53,22 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
         public string MimeType { get; set; }
         public Enumerations.YesNo Context { get; set; }
         public Source Source { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("res:source");
+            if (Source != null) (Source as IXmlSerializable).WriteXml(writer);
+            writer.WriteEndElement();
+        }
     }
 }

@@ -42,10 +42,12 @@ using File = Localization.Jliff.Graph.File;
 namespace UnitTests
 {
     [DeploymentItem(OutputFolder)]
+    [DeploymentItem(XlfFiles)]
     [TestClass]
     public class XlfSerializationFixture
     {
         private const string OutputFolder = "Output";
+        private const string XlfFiles = "XlfFiles";
 
         [TestMethod]
         public void SerializeModelAsXlf()
@@ -68,6 +70,13 @@ namespace UnitTests
             ((jd.Files[0].Subfiles[1] as Unit).Subunits[0] as Segment).Id = "S1ofU2";
 
             jd.ToXlf(Path.Combine(OutputFolder, "Jlf2Xlf.xlf"));
+        }
+
+        [TestMethod]
+        public void XlfInXlfOutViaJliffModel()
+        {
+            JliffDocument jd = JliffDocument.LoadXlf(Path.Combine(XlfFiles, "Ocelot.xlf"));
+            jd.ToXlf(Path.Combine(OutputFolder, "OcelotSerializedFromModel.xlf"));
         }
     }
 }

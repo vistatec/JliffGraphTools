@@ -30,10 +30,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
-    public class ResourceData
+    public class ResourceData : IXmlSerializable
     {
         public ResourceData()
         {
@@ -59,9 +62,33 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
         public List<ResourceItem> ResourceItems { get; set; } = new List<ResourceItem>();
         public List<ResourceItemRef> ResourceItemRefs { get; set; } = new List<ResourceItemRef>();
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool ShouldSerializeResourceItemRefs()
         {
             return ResourceItemRefs.Count > 0;
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            if (ResourceItems.Count > 0)
+            {
+                writer.WriteStartElement("res:resourceItem");
+                foreach (ResourceItem resourceItem in ResourceItems)
+                {
+                    (resourceItem as IXmlSerializable).WriteXml(writer);
+                }
+                writer.WriteEndElement();
+            }
         }
     }
 }

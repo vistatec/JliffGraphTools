@@ -31,9 +31,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Conversion;
 using Jliff.Graph.Core;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
@@ -99,6 +101,14 @@ namespace Localization.Jliff.Graph
         public JliffDocument()
         {
             
+        }
+
+        public static JliffDocument LoadXlf(string filename)
+        {
+            FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            XlfConverter xlfc = new XlfConverter();
+            return xlfc.ConvertXlf20Files(fileStream);
+
         }
 
         [JsonProperty(PropertyName = "@context")]
@@ -204,6 +214,7 @@ namespace Localization.Jliff.Graph
 
         public void WriteXml(XmlWriter writer)
         {
+            writer.WriteAttributeString("xmlns:res", "urn:oasis:names:tc:xliff:resourcedata:2.0");
             writer.WriteAttributeString("version", "2.0");
             writer.WriteAttributeString("srcLang", SrcLang);
             writer.WriteAttributeString("trgLang", TrgLang);

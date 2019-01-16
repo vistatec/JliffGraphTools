@@ -115,6 +115,7 @@ namespace Localization.Jliff.Graph
         public Iri ProvenanceRecordsRef { get; set; }
         [JsonProperty("res_resourceData")]
 		public object ResourceData { get; set; }
+
         [JsonProperty("its_revOrg")]
 		public string RevOrg { get; set; }
         public Iri RevOrgRef { get; set; }
@@ -186,16 +187,29 @@ namespace Localization.Jliff.Graph
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
+
+            if (ResourceData != null)
+            {
+                writer.WriteStartElement("res:resourceData");
+                (ResourceData as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+
             foreach (ISubfile subfile in Subfiles)
             {
-                writer.WriteStartElement("unit");
-                if (subfile.GetType().Equals(typeof(Unit)))
+                switch (subfile)
                 {
-                    Unit u = subfile as Unit;
-                    (u as IXmlSerializable).WriteXml(writer);
+                    case Group g:
+                        writer.WriteStartElement("group");
+                        (g as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case Unit u:
+                        writer.WriteStartElement("unit");
+                        (u as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
                 }
-                writer.WriteEndElement();
-                
             }
         }
     }

@@ -30,12 +30,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class ScElement : JlfNode, IElement
+    public class ScElement : JlfNode, IElement, IXmlSerializable
     {
         public ScElement()
         {
@@ -149,9 +152,26 @@ namespace Localization.Jliff.Graph
         public string SubType { get; set; }
         public string Type { get; set; }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteAttributeString("type", Type);
+           
         }
     }
 }
