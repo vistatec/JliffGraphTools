@@ -28,12 +28,15 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class TextElement : JlfNode, IElement
+    public class TextElement : JlfNode, IElement, IXmlSerializable
     {
         public TextElement()
         {
@@ -49,14 +52,29 @@ namespace Localization.Jliff.Graph
         [JsonIgnore]
         public override string Kind => Enumerations.JlfNodeType.text.ToString();
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
         }
 
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override string ToString()
         {
             return Text;
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(Text);
         }
     }
 }

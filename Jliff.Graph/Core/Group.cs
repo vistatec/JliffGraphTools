@@ -30,6 +30,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
@@ -41,6 +42,7 @@ namespace Localization.Jliff.Graph
 {
     public class Group : JlfNode, ISubfile, IJlfNode
     {
+        [XmlIgnore]
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subgroups = new List<ISubfile>();
 

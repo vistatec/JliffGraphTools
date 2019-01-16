@@ -29,11 +29,13 @@
 
 
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class MetaGroup : IMetadata
     {
+        [XmlIgnore]
         public List<IMetadata> Meta = new List<IMetadata>();
         public string AppliesTo { get; set; }
         public string Category { get; set; }

@@ -30,6 +30,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ChangeTrack;
@@ -41,7 +44,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Unit : JlfNode, ISubfile, IJlfNode
+    public class Unit : JlfNode, ISubfile, IJlfNode, IXmlSerializable
     {
         [JsonProperty("gls_glossary")]
 		public List<GlossaryEntry> Glossary = new List<GlossaryEntry>();
@@ -213,6 +216,34 @@ namespace Localization.Jliff.Graph
             foreach (JlfNode node in Subunits) z = node.Traverse(func);
 
             return $"{Id}/ {z}";
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            foreach (ISubunit subunit in Subunits)
+            {
+                switch (subunit)
+                {
+                    case Segment s:
+                        writer.WriteStartElement("segment");
+                        (s as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

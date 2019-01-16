@@ -32,6 +32,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
@@ -42,7 +45,7 @@ namespace Localization.Jliff.Graph
     /// Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
     /// TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits"/>.
     /// </summary>
-    public class Segment : JlfNode, ISubunit
+    public class Segment : JlfNode, ISubunit, IXmlSerializable
     {
         [JsonProperty(Order = 10)]
         public List<IElement> Source = new List<IElement>();
@@ -162,6 +165,43 @@ namespace Localization.Jliff.Graph
         {
             Target = FragmentManager.Parse(text);
             //Target.Parse();
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("source");
+            foreach (IElement element in Source)
+            {
+                switch (element)
+                {
+                    case TextElement te:
+                        (te as IXmlSerializable).WriteXml(writer);
+                        break;
+                }
+            }
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("target");
+            foreach (IElement element in Target)
+            {
+                switch (element)
+                {
+                    case TextElement te:
+                        (te as IXmlSerializable).WriteXml(writer);
+                        break;
+                }
+            }
+            writer.WriteEndElement();
         }
     }
 }

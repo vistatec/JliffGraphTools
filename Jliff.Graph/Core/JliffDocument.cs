@@ -31,6 +31,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
@@ -38,7 +41,8 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class JliffDocument
+    [XmlRoot(ElementName = "xliff", Namespace = "urn:oasis:names:tc:xliff:document:2.0")]
+    public class JliffDocument : IXmlSerializable
     {
         private const string jliff = "2.1";
 
@@ -90,6 +94,11 @@ namespace Localization.Jliff.Graph
                         Subfiles.Add(grpparobj);
                 else
                     throw new InvalidEnumArgumentException();
+        }
+
+        public JliffDocument()
+        {
+            
         }
 
         [JsonProperty(PropertyName = "@context")]
@@ -181,6 +190,29 @@ namespace Localization.Jliff.Graph
             }
 
             return segment;
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("version", "2.0");
+            writer.WriteAttributeString("srcLang", SrcLang);
+            writer.WriteAttributeString("trgLang", TrgLang);
+            foreach (File file in Files)
+            {
+                writer.WriteStartElement("file");
+                (file as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
         }
     }
 }

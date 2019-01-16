@@ -30,6 +30,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
@@ -39,7 +42,7 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class File : JlfNode, IJlfNode
+    public class File : JlfNode, IJlfNode, IXmlSerializable
     {
         [JsonProperty(Order = 10)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
@@ -156,10 +159,20 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
             foreach (JlfNode node in Subfiles) node.Process(visitor);
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
         }
 
         public override string Traverse(Func<string> func)
@@ -168,6 +181,22 @@ namespace Localization.Jliff.Graph
             foreach (JlfNode subfile in Subfiles) z = subfile.Traverse(func);
 
             return $"{Id}/ {z}";
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            foreach (ISubfile subfile in Subfiles)
+            {
+                writer.WriteStartElement("unit");
+                if (subfile.GetType().Equals(typeof(Unit)))
+                {
+                    Unit u = subfile as Unit;
+                    (u as IXmlSerializable).WriteXml(writer);
+                }
+                writer.WriteEndElement();
+                
+            }
         }
     }
 }
