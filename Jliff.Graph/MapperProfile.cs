@@ -202,6 +202,23 @@ namespace Jliff.Graph
                 .ConstructUsing(i => new Iri(i))
                 .ForAllOtherMembers(o => o.Ignore());
 
+            CreateMap<XlfEventArgs, ScElement>()
+                .ForMember(m => m.Id,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                .ForMember(m => m.DataRef,
+                    o => o.MapFrom(s => 
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("dataRefStart")).Value))
+                .ForMember(m => m.Type,
+                    o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
+                .ForAllOtherMembers(m => m.Ignore());
+
+            CreateMap<XlfEventArgs, EcElement>()
+                .ForMember(m => m.DataRef,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("dataRef")).Value))
+                .ForAllOtherMembers(m => m.Ignore());
+
             CreateMap<XlfEventArgs, SmElement>()
                 .ForMember(m => m.Id,
                     o => o.MapFrom(s =>

@@ -185,8 +185,18 @@ namespace Localization.Jliff.Graph
             {
                 switch (element)
                 {
+                    case EcElement ec:
+                        writer.WriteStartElement("ec");
+                        (ec as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
                     case EmElement em:
                         writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case ScElement sc:
+                        writer.WriteStartElement("sc");
+                        (sc as IXmlSerializable).WriteXml(writer);
                         writer.WriteEndElement();
                         break;
                     case SmElement sm:
@@ -206,8 +216,18 @@ namespace Localization.Jliff.Graph
             {
                 switch (element)
                 {
+                    case EcElement ec:
+                        writer.WriteStartElement("ec");
+                        (ec as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
                     case EmElement em:
                         writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case ScElement sc:
+                        writer.WriteStartElement("sc");
+                        (sc as IXmlSerializable).WriteXml(writer);
                         writer.WriteEndElement();
                         break;
                     case SmElement sm:

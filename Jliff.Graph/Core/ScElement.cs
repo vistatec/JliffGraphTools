@@ -171,7 +171,7 @@ namespace Localization.Jliff.Graph
         {
             writer.WriteAttributeString("id", Id);
             writer.WriteAttributeString("type", Type);
-           
+            writer.WriteAttributeString("dataRef", DataRef);
         }
     }
 }

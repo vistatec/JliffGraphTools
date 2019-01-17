@@ -616,8 +616,7 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Segment s:
-                        ScElement scElement = new ScElement();
-                        scElement.Attributes = args.Attributes;
+                        ScElement scElement = mapper.Map<ScElement>(args);
                         if (args.sourceOrTarget.Equals("source"))
                             s.Source.Add(scElement);
                         else

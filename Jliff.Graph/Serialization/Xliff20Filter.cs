@@ -28,6 +28,7 @@
  */
 
 
+using System;
 using System.IO;
 using System.Xml;
 using Jliff.Graph.Serialization;
@@ -40,6 +41,7 @@ namespace Localization.Jliff.Graph
 
         private static XmlReader xmlReader;
         private static string currentLqiRef = string.Empty;
+        private static string dataRef = String.Empty;
 
         public void Filter(TextReader reader)
         {
@@ -92,10 +94,17 @@ namespace Localization.Jliff.Graph
                     case XmlReader r when r.Name.Equals("pc"):
                         XlfEventArgs pcArgs = XlfEventArgs.FromReader(r);
                         pcArgs.sourceOrTarget = sourceOrTarget;
-                        if (r.NodeType == XmlNodeType.Element)
+                        if (!pcArgs.IsEndElement)
+                        {
+                            if (pcArgs.Attributes.ContainsKey("dataRefEnd"))
+                                dataRef = pcArgs.Attributes["dataRefEnd"];
                             OnXlfScElement(pcArgs);
+                        }
                         else
+                        {
+                            pcArgs.Attributes.Add("dataRef", dataRef);
                             OnXlfEcElement(pcArgs);
+                        }
                         break;
                     case XmlReader r when r.Name.Equals("sc"):
                         XlfEventArgs scArgs = XlfEventArgs.FromReader(r);
