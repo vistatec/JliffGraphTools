@@ -29,16 +29,53 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
-    public class MetaGroup : IMetadata
+    public class MetaGroup : IMetadata, IXmlSerializable
     {
         [XmlIgnore]
         public List<IMetadata> Meta = new List<IMetadata>();
         public string AppliesTo { get; set; }
         public string Category { get; set; }
         public string Id { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteAttributeString("category", Category);
+            writer.WriteAttributeString("appliesTo", AppliesTo);
+            foreach (IMetadata metadata in Meta)
+            {
+                switch (metadata)
+                {
+                    case MetaGroup mg:
+                        writer.WriteStartElement("mda:metaGroup");
+                        (mg as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case Metaitem mi:
+                        writer.WriteStartElement("mda:meta");
+                        (mi as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

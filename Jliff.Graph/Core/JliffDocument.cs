@@ -215,6 +215,7 @@ namespace Localization.Jliff.Graph
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("xmlns:gls", "urn:oasis:names:tc:xliff:glossary:2.0");
+            writer.WriteAttributeString("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
             writer.WriteAttributeString("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
             writer.WriteAttributeString("xmlns:res", "urn:oasis:names:tc:xliff:resourcedata:2.0");
             writer.WriteAttributeString("version", "2.0");

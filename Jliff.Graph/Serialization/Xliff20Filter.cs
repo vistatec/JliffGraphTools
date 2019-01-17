@@ -166,13 +166,13 @@ namespace Localization.Jliff.Graph
                         transArgs.Text = r.Value;
                         OnModGlossTranslation(transArgs);
                         break;
-                    case XmlReader r when r.Name.Equals("md:metadata"):
+                    case XmlReader r when r.Name.Equals("mda:metadata"):
                         OnModMetadata(XlfEventArgs.FromReader(r));
                         break;
-                    case XmlReader r when r.Name.Equals("md:metaGroup"):
+                    case XmlReader r when r.Name.Equals("mda:metaGroup"):
                         OnModMetaGroup(XlfEventArgs.FromReader(r));
                         break;
-                    case XmlReader r when r.Name.Equals("md:meta"):
+                    case XmlReader r when r.Name.Equals("mda:meta"):
                         XlfEventArgs metaArgs = XlfEventArgs.FromReader(r);
                         r.Read();
                         metaArgs.Text = r.Value;
@@ -220,9 +220,9 @@ namespace Localization.Jliff.Graph
         public event XlfEvent ModGlsTranslationEvent;
         public event XlfEvent ModItsLocQualityIssue;
         public event XlfEvent ModItsLocQualityIssues;
-        public event XlfEvent ModMetadataEvent;
-        public event XlfEvent ModMetaGroupEvent;
-        public event XlfEvent ModMetaitemEvent;
+        public event XlfEvent ModMdaMetadataEvent;
+        public event XlfEvent ModMdaMetaGroupEvent;
+        public event XlfEvent ModMdaMetaitemEvent;
         public event XlfEvent ModResResourceDataEvent;
         public event XlfEvent ModResResourceItemEvent;
         public event XlfEvent ModResSourceEvent;
@@ -280,17 +280,17 @@ namespace Localization.Jliff.Graph
 
         public virtual void OnModMetadata(XlfEventArgs xeArgs)
         {
-            ModMetadataEvent?.Invoke(xeArgs);
+            ModMdaMetadataEvent?.Invoke(xeArgs);
         }
 
         private void OnModMetaGroup(XlfEventArgs xeArgs)
         {
-            ModMetaGroupEvent?.Invoke(xeArgs);
+            ModMdaMetaGroupEvent?.Invoke(xeArgs);
         }
 
         private void OnModMetaitem(XlfEventArgs xeArgs)
         {
-            ModMetaitemEvent?.Invoke(xeArgs);
+            ModMdaMetaitemEvent?.Invoke(xeArgs);
         }
 
         private void OnModResourceData(XlfEventArgs xeArgs)

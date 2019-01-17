@@ -79,6 +79,12 @@ namespace Jliff.Graph
                 .ForAllOtherMembers(o => o.Ignore());
 
             CreateMap<XlfEventArgs, MetaGroup>()
+                .ForMember(m => m.AppliesTo,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                .ForMember(m => m.Category,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("category")).Value))
                 .ForMember(m => m.Id,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))

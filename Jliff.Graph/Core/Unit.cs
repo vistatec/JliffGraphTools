@@ -232,7 +232,7 @@ namespace Localization.Jliff.Graph
         {
             writer.WriteAttributeString("id", Id);
 
-            if (Glossary != null)
+            if (Glossary.Count > 0)
             {
                 writer.WriteStartElement("gls:glossary");
                 foreach (GlossaryEntry glossaryEntry in Glossary)
@@ -241,6 +241,13 @@ namespace Localization.Jliff.Graph
                     (glossaryEntry as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }
+                writer.WriteEndElement();
+            }
+
+            if (Metadata != null)
+            {
+                writer.WriteStartElement("mda:metadata");
+                (Metadata as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
 

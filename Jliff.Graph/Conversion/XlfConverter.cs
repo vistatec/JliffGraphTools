@@ -65,6 +65,9 @@ namespace Jliff.Graph.Conversion
                 xliff20Filter.ModGlsTranslationEvent += builder.Translation;
                 xliff20Filter.ModGlsDefinitionEvent += builder.Definition;
                 xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
+                xliff20Filter.ModMdaMetadataEvent += builder.Metadata;
+                xliff20Filter.ModMdaMetaGroupEvent += builder.MetaGroup;
+                xliff20Filter.ModMdaMetaitemEvent += builder.Metaitem;
                 xliff20Filter.ModMtcMatchEvent += builder.Match;
                 xliff20Filter.ModResResourceDataEvent += builder.ResourceData;
                 xliff20Filter.ModResResourceItemEvent += builder.ResourceItem;
