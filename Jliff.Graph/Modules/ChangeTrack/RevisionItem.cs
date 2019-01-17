@@ -28,9 +28,13 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace Jliff.Graph.Modules.ChangeTrack
 {
-    public class RevisionItem
+    public class RevisionItem : IXmlSerializable
     {
         public RevisionItem()
         {
@@ -39,5 +43,21 @@ namespace Jliff.Graph.Modules.ChangeTrack
 
         public string Property { get; set; }
         public string Text { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("property", Property);
+            writer.WriteString(Text);
+        }
     }
 }

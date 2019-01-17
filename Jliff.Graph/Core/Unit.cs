@@ -232,6 +232,13 @@ namespace Localization.Jliff.Graph
         {
             writer.WriteAttributeString("id", Id);
 
+            if (ChangeTrack != null)
+            {
+                writer.WriteStartElement("ctr:changeTrack");
+                (ChangeTrack as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+
             if (Glossary.Count > 0)
             {
                 writer.WriteStartElement("gls:glossary");

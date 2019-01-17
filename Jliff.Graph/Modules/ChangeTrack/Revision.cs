@@ -28,11 +28,14 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
-    public class Revision
+    public class Revision : IXmlSerializable
     {
         public Revision()
         {
@@ -43,5 +46,28 @@ namespace Jliff.Graph.Modules.ChangeTrack
         public string DateTime { get; set; }
         public Nmtoken Version { get; set; }
         public RevisionItem Item { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("author", Author);
+            writer.WriteAttributeString("datetime", DateTime);
+            writer.WriteAttributeString("version", Version.Token);
+            if (Item != null)
+            {
+                writer.WriteStartElement("ctr:item");
+                (Item as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
     }
 }

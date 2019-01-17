@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" xmlns:xmrk="urn:xmarker" xmlns:mtc="urn:oasis:names:tc:xliff:matches:2.0" xmlns:its="http://www.w3.org/2005/11/its" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gls="urn:oasis:names:tc:xliff:glossary:2.0" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:md="urn:oasis:names:tc:xliff:metadata:2.0" xmlns:res="urn:oasis:names:tc:xliff:resourcedata:2.0" xmlns:ctr="urn:oasis:names:tc:xliff:changetracking:2.0" xmlns:slr="urn:oasis:names:tc:xliff:sizerestriction:2.0" xmlns:val="urn:oasis:names:tc:xliff:validation:2.0" xmlns:itsm="urn:oasis:names:tc:xliff:itsm:2.1" srcLang="en-GB" trgLang="it-IT" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:2.0 file:///E:/Xliff/xliff_core_2.0.xsd">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" xmlns:xmrk="urn:xmarker" xmlns:mtc="urn:oasis:names:tc:xliff:matches:2.0" xmlns:its="http://www.w3.org/2005/11/its" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gls="urn:oasis:names:tc:xliff:glossary:2.0" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" xmlns:res="urn:oasis:names:tc:xliff:resourcedata:2.0" xmlns:ctr="urn:oasis:names:tc:xliff:changetracking:2.0" xmlns:slr="urn:oasis:names:tc:xliff:sizerestriction:2.0" xmlns:val="urn:oasis:names:tc:xliff:validation:2.0" xmlns:itsm="urn:oasis:names:tc:xliff:itsm:2.1" srcLang="en-GB" trgLang="it-IT" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:2.0 file:///E:/Xliff/xliff_core_2.0.xsd">
 	<file id="f1">
 		<res:resourceData>
 			<res:resourceItem>
@@ -52,13 +52,13 @@
 		</unit>
 		<group id="g1">
 			<unit id="u2">
-				<md:metadata id="md-ocelot-provenance">
-					<md:metaGroup id="developers" category="developers" appliesTo="source">
-						<md:meta type="Company">Vistatec</md:meta>
-						<md:meta type="Lead Architect">Phil Ritchie</md:meta>
-						<md:meta type="Partners">Spartan Software, Inc.</md:meta>
-					</md:metaGroup>
-				</md:metadata>
+				<mda:metadata id="md-ocelot-provenance">
+					<mda:metaGroup id="developers" category="developers" appliesTo="source">
+						<mda:meta type="Company">Vistatec</mda:meta>
+						<mda:meta type="Lead Architect">Phil Ritchie</mda:meta>
+						<mda:meta type="Partners">Spartan Software, Inc.</mda:meta>
+					</mda:metaGroup>
+				</mda:metadata>
 				<its:locQualityIssues xml:id="lqi87">
 					<its:locQualityIssue locQualityIssueType="mistranslation" locQualityIssueSeverity="100" locQualityIssueComment="This version of the standard does not exist." locQualityIssueEnabled="yes"/>
 				</its:locQualityIssues>

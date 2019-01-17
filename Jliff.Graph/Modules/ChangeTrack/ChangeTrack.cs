@@ -29,12 +29,15 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
-    public class ChangeTrack
+    public class ChangeTrack : IXmlSerializable
     {
         public ChangeTrack()
         {
@@ -43,6 +46,26 @@ namespace Jliff.Graph.Modules.ChangeTrack
 
         [JsonProperty("its_annotatorsRef")]
         public AnnotatorsRef AnnotatorsRef { get; set; }
-        public Revisions Revisions { get; set; } 
+        public Revisions Revisions { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            if (Revisions != null)
+            {
+                writer.WriteStartElement("ctr:revisions");
+                (Revisions as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
     }
 }

@@ -29,13 +29,16 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
-    public class Revisions
+    public class Revisions : IXmlSerializable
     {
         public Revisions()
         {
@@ -49,5 +52,29 @@ namespace Jliff.Graph.Modules.ChangeTrack
         public Nmtoken Ref { get; set; }
         public List<Revision> Items { get; set; } = new List<Revision>();
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("appliesTo", AppliesTo.Token);
+            writer.WriteAttributeString("currentVersion", CurrentVersion.Token);
+            if (Items.Count > 0)
+            {
+                foreach (Revision revision in Items)
+                {
+                    writer.WriteStartElement("ctr:revision");
+                    (revision as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+            }
+        }
     }
 }

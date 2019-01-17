@@ -60,6 +60,10 @@ namespace Jliff.Graph.Conversion
                 xliff20Filter.XlfEmElementEvent += builder.EmElement;
                 xliff20Filter.XlfScElementEvent += builder.ScElement;
                 xliff20Filter.XlfEcElementEvent += builder.EcElement;
+                xliff20Filter.ModCtrChangeTrackEvent += builder.ChangeTrack;
+                xliff20Filter.ModCtrRevisionsEvent += builder.Revisions;
+                xliff20Filter.ModCtrRevisionEvent += builder.Revision;
+                xliff20Filter.ModCtrRevisionItemEvent += builder.RevisionItem;
                 xliff20Filter.ModGlsEntryEvent += builder.GlossaryEntry;
                 xliff20Filter.ModGlsTermEvent += builder.Term;
                 xliff20Filter.ModGlsTranslationEvent += builder.Translation;
