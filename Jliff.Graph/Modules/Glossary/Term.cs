@@ -28,11 +28,31 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace Localization.Jliff.Graph
 {
-    public class Term
+    public class Term : IXmlSerializable
     {
         public string Source { get; set; }
         public string Text { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("source", Source);
+            writer.WriteString(Text);
+        }
     }
 }

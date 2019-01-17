@@ -94,7 +94,7 @@ namespace UnitTests
             fltr.ModGlsDefinitionEvent += bldr.Definition;
             fltr.ModGlsTermEvent += bldr.Term;
             fltr.ModGlsTranslationEvent += bldr.Translation;
-            fltr.ModTransCandMatchEvent += bldr.Match;
+            fltr.ModMtcMatchEvent += bldr.Match;
             fltr.ModCtrChangeTrackEvent += bldr.ChangeTrack;
             fltr.ModCtrRevisionsEvent += bldr.Revisions;
             fltr.ModCtrRevisionEvent += bldr.Revision;

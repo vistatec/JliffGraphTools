@@ -118,6 +118,9 @@ namespace Jliff.Graph
                 .ForMember(m => m.Origin,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("origin")).Value))
+                .ForMember(m => m.Ref,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("ref")).Value))
                 .ForMember(m => m.Similarity,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("similarity")).Value))

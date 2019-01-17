@@ -29,15 +29,55 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph
 {
-    public class GlossaryEntry
+    public class GlossaryEntry : IXmlSerializable
     {
         public List<Translation> Translations = new List<Translation>();
         public Definition Definition { get; set; }
         public string Id { get; set; }
         public string Ref { get; set; }
         public Term Term { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteAttributeString("ref", Ref);
+            if (Term != null)
+            {
+                writer.WriteStartElement("gls:term");
+                (Term as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+            if (Translations.Count > 0)
+            {
+                foreach (Translation translation in Translations)
+                {
+                    writer.WriteStartElement("gls:translation");
+                    (translation as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+            }
+            if (Definition != null)
+            {
+                writer.WriteStartElement("gls:definition");
+                (Definition as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
     }
 }

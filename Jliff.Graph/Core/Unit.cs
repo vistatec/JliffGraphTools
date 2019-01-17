@@ -231,6 +231,31 @@ namespace Localization.Jliff.Graph
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
+
+            if (Glossary != null)
+            {
+                writer.WriteStartElement("gls:glossary");
+                foreach (GlossaryEntry glossaryEntry in Glossary)
+                {
+                    writer.WriteStartElement("gls:glossEntry");
+                    (glossaryEntry as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+
+            if (Matches.Count > 0)
+            {
+                writer.WriteStartElement("mtc:matches");
+                foreach (Match match in Matches)
+                {
+                    writer.WriteStartElement("mtc:match");
+                    (match as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+
             foreach (ISubunit subunit in Subunits)
             {
                 switch (subunit)

@@ -28,9 +28,13 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace Localization.Jliff.Graph
 {
-    public class Translation
+    public class Translation : IXmlSerializable
     {
         public Translation(string id, string source, string text)
         {
@@ -47,5 +51,21 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public string Source { get; set; }
         public string Text { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteString(Text);
+        }
     }
 }
