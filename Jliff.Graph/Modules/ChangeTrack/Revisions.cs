@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,6 +28,7 @@
  */
 
 
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
@@ -40,17 +41,13 @@ namespace Jliff.Graph.Modules.ChangeTrack
 {
     public class Revisions : IXmlSerializable
     {
-        public Revisions()
-        {
-            
-        }
-
         [JsonProperty("its_annotatorsRef")]
         public AnnotatorsRef AnnotatorsRef { get; set; }
+
         public Nmtoken AppliesTo { get; set; }
         public Nmtoken CurrentVersion { get; set; }
-        public Nmtoken Ref { get; set; }
         public List<Revision> Items { get; set; } = new List<Revision>();
+        public Nmtoken Ref { get; set; }
 
         public XmlSchema GetSchema()
         {
@@ -59,7 +56,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
 
         public void ReadXml(XmlReader reader)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void WriteXml(XmlWriter writer)
@@ -67,14 +64,12 @@ namespace Jliff.Graph.Modules.ChangeTrack
             writer.WriteAttributeString("appliesTo", AppliesTo.Token);
             writer.WriteAttributeString("currentVersion", CurrentVersion.Token);
             if (Items.Count > 0)
-            {
                 foreach (Revision revision in Items)
                 {
                     writer.WriteStartElement("ctr:revision");
                     (revision as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }
-            }
         }
     }
 }

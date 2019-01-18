@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -35,6 +35,8 @@ namespace Jliff.Graph.Core
 {
     public class Iri
     {
+        private string identifier = string.Empty;
+
         public Iri()
         {
         }
@@ -44,17 +46,18 @@ namespace Jliff.Graph.Core
             Identifier = identifier;
         }
 
-        private string identifier = String.Empty;
         public string Identifier
         {
-            get { return identifier; }
+            get => identifier;
 
             set
             {
                 bool foundMatch = false;
                 try
                 {
-                    foundMatch = Regex.IsMatch(value, @"\A\b((?#protocol)https?|ftp)://((?#domain)[-A-Z0-9.]+)((?#file)/[-A-Z0-9+&@#/%=~_|!:,.;]*)?((?#parameters)\?[A-Z0-9+&@#/%=~_|!:,.;]*)?\z", RegexOptions.IgnoreCase);
+                    foundMatch = Regex.IsMatch(value,
+                        @"\A\b((?#protocol)https?|ftp)://((?#domain)[-A-Z0-9.]+)((?#file)/[-A-Z0-9+&@#/%=~_|!:,.;]*)?((?#parameters)\?[A-Z0-9+&@#/%=~_|!:,.;]*)?\z",
+                        RegexOptions.IgnoreCase);
                 }
                 catch (ArgumentException ex)
                 {

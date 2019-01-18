@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -40,7 +40,6 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
     {
         public ResourceData()
         {
-            
         }
 
         public ResourceData(string id, params object[] content)
@@ -55,12 +54,11 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
                         ResourceItems.Add(grpparobj);
                 else
                     throw new ArgumentException();
-
         }
 
         public string Id { get; set; }
-        public List<ResourceItem> ResourceItems { get; set; } = new List<ResourceItem>();
         public List<ResourceItemRef> ResourceItemRefs { get; set; } = new List<ResourceItemRef>();
+        public List<ResourceItem> ResourceItems { get; set; } = new List<ResourceItem>();
 
         public XmlSchema GetSchema()
         {
@@ -72,11 +70,6 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
             throw new NotImplementedException();
         }
 
-        public bool ShouldSerializeResourceItemRefs()
-        {
-            return ResourceItemRefs.Count > 0;
-        }
-
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
@@ -84,11 +77,14 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
             {
                 writer.WriteStartElement("res:resourceItem");
                 foreach (ResourceItem resourceItem in ResourceItems)
-                {
                     (resourceItem as IXmlSerializable).WriteXml(writer);
-                }
                 writer.WriteEndElement();
             }
+        }
+
+        public bool ShouldSerializeResourceItemRefs()
+        {
+            return ResourceItemRefs.Count > 0;
         }
     }
 }

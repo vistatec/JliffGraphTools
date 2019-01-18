@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -77,14 +77,18 @@ namespace Localization.Jliff.Graph
         }
 
         [JsonProperty("its_annotatorsRef")]
-		public AnnotatorsRef AnnotatorsRef { get; set; }
+        public AnnotatorsRef AnnotatorsRef { get; set; }
+
         [JsonProperty("ctr_changeTrack")]
-		public object ChangeTrack { get; set; }
+        public object ChangeTrack { get; set; }
+
         [JsonProperty("slr_data")]
-		public object Data { get; set; }
+        public object Data { get; set; }
+
         public string Domains { get; set; }
+
         [JsonProperty("fs_fs")]
-		public Enumerations.FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
 
         [JsonIgnore]
         public override bool HasChildren => Subfiles.Count > 0;
@@ -92,68 +96,99 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.file.ToString();
+
         [JsonProperty("its_locQualityRatingProfileRef")]
-		public string LocQualityRatingProfileRef { get; set; }
+        public string LocQualityRatingProfileRef { get; set; }
+
         [JsonProperty("its_locQualityRatingScore")]
-		public float LocQualityRatingScore { get; set; }
+        public float LocQualityRatingScore { get; set; }
+
         [JsonProperty("its_locQualityRatingScoreThreshold")]
-		public float LocQualityRatingScoreThreshold { get; set; }
+        public float LocQualityRatingScoreThreshold { get; set; }
+
         public float LocQualityRatingVote { get; set; }
         public float LocQualityRatingVoteThreshold { get; set; }
         public List<MetaGroup> Metadata { get; set; }
+
         [JsonProperty("its_org")]
-		public string Org { get; set; }
+        public string Org { get; set; }
+
         public Iri OrgRef { get; set; }
         public string Original { get; set; }
+
         [JsonProperty("its_person")]
-		public string Person { get; set; }
+        public string Person { get; set; }
+
         public Iri PersonRef { get; set; }
+
         [JsonProperty("slr_profiles")]
-		public object Profiles { get; set; }
+        public object Profiles { get; set; }
+
         [JsonProperty("its_provenanceRecords")]
-		public List<object> ProvenanceRecords { get; set; }
+        public List<object> ProvenanceRecords { get; set; }
+
         public Iri ProvenanceRecordsRef { get; set; }
+
         [JsonProperty("res_resourceData")]
-		public object ResourceData { get; set; }
+        public object ResourceData { get; set; }
 
         [JsonProperty("its_revOrg")]
-		public string RevOrg { get; set; }
+        public string RevOrg { get; set; }
+
         public Iri RevOrgRef { get; set; }
+
         [JsonProperty("its_revPerson")]
-		public string RevPerson { get; set; }
+        public string RevPerson { get; set; }
+
         public Iri RevPersonRef { get; set; }
+
         [JsonProperty("its_revTool")]
-		public string RevTool { get; set; }
+        public string RevTool { get; set; }
+
         public Iri RevToolRef { get; set; }
+
         [JsonProperty("slr_sizeInfo")]
-		public string SizeInfo { get; set; }
+        public string SizeInfo { get; set; }
+
         [JsonProperty("slr_sizeInfoRef")]
-		public string SizeInfoRef { get; set; }
+        public string SizeInfoRef { get; set; }
+
         [JsonProperty("slr_sizeRestriction")]
-		public string SizeRestriction { get; set; }
+        public string SizeRestriction { get; set; }
+
         public Skeleton Skeleton { get; set; }
         public string SrcDir { get; set; }
+
         [JsonProperty("slr_storageRestriction")]
-		public string StorageRestriction { get; set; }
+        public string StorageRestriction { get; set; }
+
         [JsonProperty("fs_subFs")]
-		public string SubFs { get; set; }
+        public string SubFs { get; set; }
+
         public Iri TaClassRef { get; set; }
+
         [JsonProperty("its_taConfidence")]
-		public float TaConfidence { get; set; }
+        public float TaConfidence { get; set; }
+
         [JsonProperty("its_taIdent")]
-		public string TaIdent { get; set; }
+        public string TaIdent { get; set; }
+
         [JsonProperty("its_taIdentRef")]
-		public Iri TaIdentRef { get; set; }
+        public Iri TaIdentRef { get; set; }
+
         [JsonProperty("its_taSource")]
-		public string TaSource { get; set; }
+        public string TaSource { get; set; }
+
         [JsonProperty("its_tool")]
-		public string Tool { get; set; }
+        public string Tool { get; set; }
+
         public Iri ToolRef { get; set; }
         public Enumerations.YesNo Translate { get; set; }
         public string TrgDir { get; set; }
         public object Userdata { get; set; }
+
         [JsonProperty("val_validation")]
-		public string Validation { get; set; }
+        public string Validation { get; set; }
 
         public void Accept(IVisitor visitor)
         {
@@ -165,23 +200,9 @@ namespace Localization.Jliff.Graph
             return null;
         }
 
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-            foreach (JlfNode node in Subfiles) node.Process(visitor);
-        }
-
         public void ReadXml(XmlReader reader)
         {
             throw new NotImplementedException();
-        }
-
-        public override string Traverse(Func<string> func)
-        {
-            string z = string.Empty;
-            foreach (JlfNode subfile in Subfiles) z = subfile.Traverse(func);
-
-            return $"{Id}/ {z}";
         }
 
         public void WriteXml(XmlWriter writer)
@@ -196,7 +217,6 @@ namespace Localization.Jliff.Graph
             }
 
             foreach (ISubfile subfile in Subfiles)
-            {
                 switch (subfile)
                 {
                     case Group g:
@@ -210,7 +230,20 @@ namespace Localization.Jliff.Graph
                         writer.WriteEndElement();
                         break;
                 }
-            }
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            foreach (JlfNode node in Subfiles) node.Process(visitor);
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            string z = string.Empty;
+            foreach (JlfNode subfile in Subfiles) z = subfile.Traverse(func);
+
+            return $"{Id}/ {z}";
         }
     }
 }

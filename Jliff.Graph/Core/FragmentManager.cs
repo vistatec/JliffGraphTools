@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,8 +7,8 @@ using Localization.Jliff.Graph;
 namespace Jliff.Graph.Core
 {
     /// <summary>
-    /// A class to facilitate conversion from a <code>List&lt;IElement&gt;</code> to a flat representation
-    /// and back.
+    ///     A class to facilitate conversion from a <code>List&lt;IElement&gt;</code> to a flat representation
+    ///     and back.
     /// </summary>
     public class FragmentManager
     {
@@ -19,12 +18,9 @@ namespace Jliff.Graph.Core
 
         private List<string> codes = new List<string>();
 
-        private enum ParseState
+        public string Flatten(List<IElement> elements)
         {
-            None,
-            Sm,
-            Em,
-            Text
+            return elements.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
         }
 
         public List<IElement> Parse(string text)
@@ -33,7 +29,7 @@ namespace Jliff.Graph.Core
             Stack<IElement> parsed = new Stack<IElement>();
             StringBuilder data = new StringBuilder();
             ParseState parserState = ParseState.None;
-            string token = String.Empty;
+            string token = string.Empty;
             TextElementEnumerator d = StringInfo.GetTextElementEnumerator(text);
             while (d.MoveNext())
             {
@@ -53,6 +49,7 @@ namespace Jliff.Graph.Core
                             data.Clear();
                             parserState = ParseState.None;
                         }
+
                         break;
                     case CLOSINGTAG:
                         if (parserState == ParseState.None)
@@ -67,24 +64,26 @@ namespace Jliff.Graph.Core
                             parsed.Push(new EmElement());
                             data.Clear();
                         }
+
                         break;
                     default:
                         data.Append(token);
                         break;
                 }
             }
-            if (parserState == ParseState.Text || parserState == ParseState.None)
-            {
 
+            if (parserState == ParseState.Text || parserState == ParseState.None)
                 parsed.Push(new TextElement(data.ToString()));
-            }
 
             return parsed.Reverse().ToList();
         }
 
-        public string Flatten(List<IElement> elements)
+        private enum ParseState
         {
-            return elements.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
+            None,
+            Sm,
+            Em,
+            Text
         }
     }
 }

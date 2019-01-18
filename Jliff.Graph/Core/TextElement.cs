@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,6 +28,7 @@
  */
 
 
+using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -47,14 +48,24 @@ namespace Localization.Jliff.Graph
             Text = text;
         }
 
-        public string Text { get; set; }
-
         [JsonIgnore]
         public override string Kind => Enumerations.JlfNodeType.text.ToString();
+
+        public string Text { get; set; }
 
         public XmlSchema GetSchema()
         {
             return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(Text);
         }
 
         public override void Process(ICompositeVisitor visitor)
@@ -62,19 +73,9 @@ namespace Localization.Jliff.Graph
             visitor.Visit(this);
         }
 
-        public void ReadXml(XmlReader reader)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override string ToString()
         {
             return Text;
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteString(Text);
         }
     }
 }

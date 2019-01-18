@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -66,7 +66,7 @@ namespace Localization.Jliff.Graph
                 atts.Add("Equiv", Equiv);
                 atts.Add("Id", Id);
                 atts.Add("Isolated", Isolated.ToString());
-                atts.Add("Kind", Kind.ToString());
+                atts.Add("Kind", Kind);
                 atts.Add("Subflows", SubFlows);
                 atts.Add("SubType", SubType);
                 return atts;
@@ -142,11 +142,6 @@ namespace Localization.Jliff.Graph
             return null;
         }
 
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
         public void ReadXml(XmlReader reader)
         {
             throw new NotImplementedException();
@@ -155,6 +150,11 @@ namespace Localization.Jliff.Graph
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("dataRef", DataRef);
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

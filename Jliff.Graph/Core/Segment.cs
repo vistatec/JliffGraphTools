@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -42,8 +42,8 @@ using Newtonsoft.Json;
 namespace Localization.Jliff.Graph
 {
     /// <summary>
-    /// Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
-    /// TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits"/>.
+    ///     Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
+    ///     TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits" />.
     /// </summary>
     public class Segment : JlfNode, ISubunit, IXmlSerializable
     {
@@ -52,6 +52,8 @@ namespace Localization.Jliff.Graph
 
         [JsonProperty(Order = 20)]
         public List<IElement> Target = new List<IElement>();
+
+        private string targetText;
 
         public Segment()
         {
@@ -79,37 +81,13 @@ namespace Localization.Jliff.Graph
 
         public string CanResegment { get; set; } = "no";
 
+
+        [JsonIgnore]
+        public FragmentManager FragmentManager { get; set; }
+
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.segment.ToString();
-
-        public string State { get; set; }
-
-        public string GetTargetTextAt(int index)
-        {
-            if (Target[index] is TextElement)
-                return (Target[index] as TextElement).Text;
-            throw new InvalidOperationException();
-        }
-
-        public override string Traverse(Func<string> func)
-        {
-            return $"{Id}/ ";
-        }
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-            //foreach (JlfNode node in Source)
-            //{
-            //    node.Process(visitor);
-            //}
-
-            //foreach (JlfNode node in Target)
-            //{
-                
-            //}
-        }
 
         [JsonIgnore]
         public string SourceText
@@ -124,7 +102,8 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        private string targetText;
+        public string State { get; set; }
+
         [JsonIgnore]
         public string TargetText
         {
@@ -135,36 +114,6 @@ namespace Localization.Jliff.Graph
                     .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
                     .ToString();
             }
-        }
-
-        public bool ShouldSerializeTarget()
-        {
-            return Target.Count > 0;
-        }
-
-        
-        [JsonIgnore]
-        public FragmentManager FragmentManager { get; set; }
-
-        public string FlattenSource()
-        {
-            return FragmentManager.Flatten(Source);
-        }
-
-        public string FlattenTarget()
-        {
-            return FragmentManager.Flatten(Target);
-        }
-
-        public void ParseSource(string text)
-        {
-            Source = FragmentManager.Parse(text);
-        }
-
-        public void ParseTarget(string text)
-        {
-            Target = FragmentManager.Parse(text);
-            //Target.Parse();
         }
 
         public XmlSchema GetSchema()
@@ -182,7 +131,6 @@ namespace Localization.Jliff.Graph
             writer.WriteAttributeString("id", Id);
             writer.WriteStartElement("source");
             foreach (IElement element in Source)
-            {
                 switch (element)
                 {
                     case EcElement ec:
@@ -208,12 +156,10 @@ namespace Localization.Jliff.Graph
                         (te as IXmlSerializable).WriteXml(writer);
                         break;
                 }
-            }
             writer.WriteEndElement();
 
             writer.WriteStartElement("target");
             foreach (IElement element in Target)
-            {
                 switch (element)
                 {
                     case EcElement ec:
@@ -239,8 +185,59 @@ namespace Localization.Jliff.Graph
                         (te as IXmlSerializable).WriteXml(writer);
                         break;
                 }
-            }
             writer.WriteEndElement();
+        }
+
+        public string FlattenSource()
+        {
+            return FragmentManager.Flatten(Source);
+        }
+
+        public string FlattenTarget()
+        {
+            return FragmentManager.Flatten(Target);
+        }
+
+        public string GetTargetTextAt(int index)
+        {
+            if (Target[index] is TextElement)
+                return (Target[index] as TextElement).Text;
+            throw new InvalidOperationException();
+        }
+
+        public void ParseSource(string text)
+        {
+            Source = FragmentManager.Parse(text);
+        }
+
+        public void ParseTarget(string text)
+        {
+            Target = FragmentManager.Parse(text);
+            //Target.Parse();
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            //foreach (JlfNode node in Source)
+            //{
+            //    node.Process(visitor);
+            //}
+
+            //foreach (JlfNode node in Target)
+            //{
+
+            //}
+        }
+
+        public bool ShouldSerializeTarget()
+        {
+            return Target.Count > 0;
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            return $"{Id}/ ";
         }
     }
 }

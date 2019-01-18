@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -48,11 +48,11 @@ namespace Localization.Jliff.Graph
     {
         private const string jliff = "2.1";
 
-        [JsonProperty(Order = 10)]
-        public List<File> Files = new List<File>();
-
         [JsonIgnore]
         private readonly List<Segment> segments = new List<Segment>();
+
+        [JsonProperty(Order = 10)]
+        public List<File> Files = new List<File>();
 
         [JsonProperty(Order = 20)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
@@ -100,15 +100,6 @@ namespace Localization.Jliff.Graph
 
         public JliffDocument()
         {
-            
-        }
-
-        public static JliffDocument LoadXlf(string filename)
-        {
-            FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-            XlfConverter xlfc = new XlfConverter();
-            return xlfc.ConvertXlf20Files(fileStream);
-
         }
 
         [JsonProperty(PropertyName = "@context")]
@@ -137,6 +128,34 @@ namespace Localization.Jliff.Graph
         [JsonProperty(PropertyName = "Jliff", Order = 1)]
         public string Version { get; set; }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("xmlns:ctr", "urn:oasis:names:tc:xliff:changetrack:2.0");
+            writer.WriteAttributeString("xmlns:gls", "urn:oasis:names:tc:xliff:glossary:2.0");
+            writer.WriteAttributeString("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
+            writer.WriteAttributeString("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
+            writer.WriteAttributeString("xmlns:res", "urn:oasis:names:tc:xliff:resourcedata:2.0");
+            writer.WriteAttributeString("version", "2.0");
+            writer.WriteAttributeString("srcLang", SrcLang);
+            writer.WriteAttributeString("trgLang", TrgLang);
+            foreach (File file in Files)
+            {
+                writer.WriteStartElement("file");
+                (file as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
+
         public List<string> GetFilenames()
         {
             List<string> filenames = new List<string>();
@@ -145,6 +164,13 @@ namespace Localization.Jliff.Graph
                 filenames.Add(file.Original);
 
             return filenames;
+        }
+
+        public static JliffDocument LoadXlf(string filename)
+        {
+            FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            XlfConverter xlfc = new XlfConverter();
+            return xlfc.ConvertXlf20Files(fileStream);
         }
 
         public bool ShouldSerializeFiles()
@@ -200,34 +226,6 @@ namespace Localization.Jliff.Graph
             }
 
             return segment;
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("xmlns:ctr", "urn:oasis:names:tc:xliff:changetrack:2.0");
-            writer.WriteAttributeString("xmlns:gls", "urn:oasis:names:tc:xliff:glossary:2.0");
-            writer.WriteAttributeString("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
-            writer.WriteAttributeString("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
-            writer.WriteAttributeString("xmlns:res", "urn:oasis:names:tc:xliff:resourcedata:2.0");
-            writer.WriteAttributeString("version", "2.0");
-            writer.WriteAttributeString("srcLang", SrcLang);
-            writer.WriteAttributeString("trgLang", TrgLang);
-            foreach (File file in Files)
-            {
-                writer.WriteStartElement("file");
-                (file as IXmlSerializable).WriteXml(writer);
-                writer.WriteEndElement();
-            }
         }
     }
 }

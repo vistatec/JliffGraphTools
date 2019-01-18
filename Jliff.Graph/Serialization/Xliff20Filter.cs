@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,7 +28,6 @@
  */
 
 
-using System;
 using System.IO;
 using System.Xml;
 using Jliff.Graph.Serialization;
@@ -41,7 +40,7 @@ namespace Localization.Jliff.Graph
 
         private static XmlReader xmlReader;
         private static string currentLqiRef = string.Empty;
-        private static string dataRef = String.Empty;
+        private static string dataRef = string.Empty;
 
         public void Filter(TextReader reader)
         {
@@ -105,6 +104,7 @@ namespace Localization.Jliff.Graph
                             pcArgs.Attributes.Add("dataRef", dataRef);
                             OnXlfEcElement(pcArgs);
                         }
+
                         break;
                     case XmlReader r when r.Name.Equals("sc"):
                         XlfEventArgs scArgs = XlfEventArgs.FromReader(r);
@@ -232,10 +232,10 @@ namespace Localization.Jliff.Graph
         public event XlfEvent ModMdaMetadataEvent;
         public event XlfEvent ModMdaMetaGroupEvent;
         public event XlfEvent ModMdaMetaitemEvent;
+        public event XlfEvent ModMtcMatchEvent;
         public event XlfEvent ModResResourceDataEvent;
         public event XlfEvent ModResResourceItemEvent;
         public event XlfEvent ModResSourceEvent;
-        public event XlfEvent ModMtcMatchEvent;
 
         public virtual void OnItsLocQualityIssue(XlfEventArgs xeArgs)
         {
@@ -302,6 +302,11 @@ namespace Localization.Jliff.Graph
             ModMdaMetaitemEvent?.Invoke(xeArgs);
         }
 
+        public virtual void OnModMtcMatch(XlfEventArgs xeArgs)
+        {
+            ModMtcMatchEvent?.Invoke(xeArgs);
+        }
+
         private void OnModResourceData(XlfEventArgs xeArgs)
         {
             ModResResourceDataEvent?.Invoke(xeArgs);
@@ -315,11 +320,6 @@ namespace Localization.Jliff.Graph
         public virtual void OnModResourceSource(XlfEventArgs xeArgs)
         {
             ModResSourceEvent?.Invoke(xeArgs);
-        }
-
-        public virtual void OnModMtcMatch(XlfEventArgs xeArgs)
-        {
-            ModMtcMatchEvent?.Invoke(xeArgs);
         }
 
         public virtual void OnXlfEcElement(XlfEventArgs xeArgs)

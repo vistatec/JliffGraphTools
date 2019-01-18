@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -42,10 +42,10 @@ namespace Localization.Jliff.Graph
 {
     public class SmElement : JlfNode, IElement, IXmlSerializable
     {
-        private static int OPENINGTAG = 0xe101;
+        private static readonly int OPENINGTAG = 0xe101;
 
         /// <summary>
-        /// SmElement is intended to deliniate the start of an annotation.
+        ///     SmElement is intended to deliniate the start of an annotation.
         /// </summary>
         public SmElement()
         {
@@ -61,6 +61,11 @@ namespace Localization.Jliff.Graph
             Id = id;
             Type = type;
         }
+
+        public string AllowedCharacters { get; set; }
+
+        [JsonProperty("its_annotatorsRef")]
+        public AnnotatorsRef AnnotatorsRef { get; set; }
 
         [JsonIgnore]
         public IDictionary<string, string> Attributes
@@ -93,78 +98,103 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public string AllowedCharacters { get; set; }
-		[JsonProperty("its_annotatorsRef")]
-		public AnnotatorsRef AnnotatorsRef { get; set; }
-		public List<Domain> Domains { get; set; }
+        public List<Domain> Domains { get; set; }
+
+        public Enumerations.FormatStyle fs { get; set; }
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.sm.ToString();
-
-        public Enumerations.FormatStyle fs { get; set; }
         public string LocaleFilterList { get; set; }
         public string LocaleFilterType { get; set; }
         public string LocQualityIssueComment { get; set; }
         public string LocQualityIssueEnabled { get; set; }
         public string LocQualityIssueProfileRef { get; set; }
-        public string LocQualityIssuesRef { get; set; }
         public float LocQualityIssueSeverity { get; set; }
+        public string LocQualityIssuesRef { get; set; }
         public string LocQualityIssueType { get; set; }
+
         [JsonProperty("its_locQualityRatingProfileRef")]
-		public string LocQualityRatingProfileRef { get; set; }
+        public string LocQualityRatingProfileRef { get; set; }
+
         [JsonProperty("its_locQualityRatingScore")]
-		public float LocQualityRatingScore { get; set; }
+        public float LocQualityRatingScore { get; set; }
+
         [JsonProperty("its_locQualityRatingScoreThreshold")]
-		public float LocQualityRatingScoreThreshold { get; set; }
+        public float LocQualityRatingScoreThreshold { get; set; }
+
         [JsonProperty("its_locQualityRatingVote")]
-		public int LocQualityRatingScoreVote { get; set; }
+        public int LocQualityRatingScoreVote { get; set; }
+
         [JsonProperty("its_locQualityRatingVoteThreshold")]
-		public int LocQualityRatingScoreVoteThreshold { get; set; }
+        public int LocQualityRatingScoreVoteThreshold { get; set; }
+
         public float MtConfidence { get; set; }
+
         [JsonProperty("its_org")]
-		public string Org { get; set; }
+        public string Org { get; set; }
+
         [JsonProperty("its_orgRef")]
-		public string OrgRef { get; set; }
+        public string OrgRef { get; set; }
+
         [JsonProperty("its_person")]
-		public string Person { get; set; }
+        public string Person { get; set; }
+
         [JsonProperty("its_personRef")]
-		public string PersonRef { get; set; }
-        public string ProfileStorageRestriction { get; set; }
+        public string PersonRef { get; set; }
+
         public string ProfileSizeRestriction { get; set; }
+        public string ProfileStorageRestriction { get; set; }
 
         [JsonProperty("its_provenanceRecordsRef")]
-		public Iri ProvenanceRecordsRef { get; set; } = new Iri();
+        public Iri ProvenanceRecordsRef { get; set; } = new Iri();
+
         public Iri Ref { get; set; }
+
         [JsonProperty("its_revOrg")]
-		public string RevOrg { get; set; }
+        public string RevOrg { get; set; }
+
         [JsonProperty("its_revOrgRef")]
-		public string RevOrgRef { get; set; }
+        public string RevOrgRef { get; set; }
+
         [JsonProperty("its_revPerson")]
-		public string RevPerson { get; set; }
+        public string RevPerson { get; set; }
+
         [JsonProperty("its_revPersonRef")]
-		public string RevPersonRef { get; set; }
+        public string RevPersonRef { get; set; }
+
         [JsonProperty("its_revTool")]
-		public string RevTool { get; set; }
+        public string RevTool { get; set; }
+
         [JsonProperty("its_revToolRef")]
-		public string RevToolRef { get; set; }
-		[JsonProperty("fs_subFs")]
-		public string SubFs { get; set; }
-		[JsonProperty("its_taClassRef")]
-		public string TaClassRef { get; set; }
-		[JsonProperty("its_taConfidence")]
-		public float TaConfidence { get; set; }
-		[JsonProperty("its_taIdent")]
+        public string RevToolRef { get; set; }
+
+        [JsonProperty("fs_subFs")]
+        public string SubFs { get; set; }
+
+        [JsonProperty("its_taClassRef")]
+        public string TaClassRef { get; set; }
+
+        [JsonProperty("its_taConfidence")]
+        public float TaConfidence { get; set; }
+
+        [JsonProperty("its_taIdent")]
         public string TaIdent { get; set; }
-		[JsonProperty("its_taIdentRef")]
+
+        [JsonProperty("its_taIdentRef")]
         public string TaIdentRef { get; set; }
-		[JsonProperty("its_taSource")]
-		public string TaSource { get; set; }
-        public bool Translate { get; set; }
+
+        [JsonProperty("its_taSource")]
+        public string TaSource { get; set; }
+
         public float TermConfidence { get; set; }
-		[JsonProperty("its_tool")]
-		public string Tool { get; set; }
-		[JsonProperty("its_toolRef")]
-		public string ToolRef { get; set; }
+
+        [JsonProperty("its_tool")]
+        public string Tool { get; set; }
+
+        [JsonProperty("its_toolRef")]
+        public string ToolRef { get; set; }
+
+        public bool Translate { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
 
@@ -173,26 +203,25 @@ namespace Localization.Jliff.Graph
             return null;
         }
 
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
         public void ReadXml(XmlReader reader)
         {
             throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return $"{Convert.ToChar(OPENINGTAG).ToString()}{Id}{Convert.ToChar(OPENINGTAG).ToString()}";
         }
 
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
             writer.WriteAttributeString("type", Type);
-            
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
+        public override string ToString()
+        {
+            return $"{Convert.ToChar(OPENINGTAG).ToString()}{Id}{Convert.ToChar(OPENINGTAG).ToString()}";
         }
     }
 }

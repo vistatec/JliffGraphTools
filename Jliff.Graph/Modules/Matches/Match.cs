@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,6 +28,7 @@
  */
 
 
+using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -41,16 +42,22 @@ namespace Jliff.Graph.Modules.Matches
     {
         public string Domains { get; set; }
         public string Id { get; set; }
+
         [JsonProperty("its_locQualityRatingProfileRef")]
         public string LocQualityRatingProfileRef { get; set; }
+
         [JsonProperty("its_locQualityRatingScore")]
         public float LocQualityRatingScore { get; set; }
+
         [JsonProperty("its_locQualityRatingScoreThreshold")]
         public float LocQualityRatingScoreThreshold { get; set; }
+
         [JsonProperty("its_locQualityRatingVote")]
         public int LocQualityRatingScoreVote { get; set; }
+
         [JsonProperty("its_locQualityRatingVoteThreshold")]
         public int LocQualityRatingScoreVoteThreshold { get; set; }
+
         public int MatchQuality { get; set; }
         public int MatchSuitability { get; set; }
         public Metadata Metadata { get; set; }
@@ -72,7 +79,7 @@ namespace Jliff.Graph.Modules.Matches
 
         public void ReadXml(XmlReader reader)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void WriteXml(XmlWriter writer)

@@ -207,7 +207,7 @@ namespace Jliff.Graph
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
                 .ForMember(m => m.DataRef,
-                    o => o.MapFrom(s => 
+                    o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("dataRefStart")).Value))
                 .ForMember(m => m.Type,
                     o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))

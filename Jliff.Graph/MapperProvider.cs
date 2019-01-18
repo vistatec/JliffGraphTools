@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration;
-
-namespace Jliff.Graph
+﻿namespace Jliff.Graph
 {
     public class MapperProvider
     {
