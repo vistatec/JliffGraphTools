@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -40,6 +40,7 @@ namespace Localization.Jliff.Graph
 
         private static XmlReader xmlReader;
         private static string currentLqiRef = string.Empty;
+        private static string dataRef = string.Empty;
 
         public void Filter(TextReader reader)
         {
@@ -92,10 +93,18 @@ namespace Localization.Jliff.Graph
                     case XmlReader r when r.Name.Equals("pc"):
                         XlfEventArgs pcArgs = XlfEventArgs.FromReader(r);
                         pcArgs.sourceOrTarget = sourceOrTarget;
-                        if (r.NodeType == XmlNodeType.Element)
+                        if (!pcArgs.IsEndElement)
+                        {
+                            if (pcArgs.Attributes.ContainsKey("dataRefEnd"))
+                                dataRef = pcArgs.Attributes["dataRefEnd"];
                             OnXlfScElement(pcArgs);
+                        }
                         else
+                        {
+                            pcArgs.Attributes.Add("dataRef", dataRef);
                             OnXlfEcElement(pcArgs);
+                        }
+
                         break;
                     case XmlReader r when r.Name.Equals("sc"):
                         XlfEventArgs scArgs = XlfEventArgs.FromReader(r);
@@ -166,20 +175,20 @@ namespace Localization.Jliff.Graph
                         transArgs.Text = r.Value;
                         OnModGlossTranslation(transArgs);
                         break;
-                    case XmlReader r when r.Name.Equals("md:metadata"):
+                    case XmlReader r when r.Name.Equals("mda:metadata"):
                         OnModMetadata(XlfEventArgs.FromReader(r));
                         break;
-                    case XmlReader r when r.Name.Equals("md:metaGroup"):
+                    case XmlReader r when r.Name.Equals("mda:metaGroup"):
                         OnModMetaGroup(XlfEventArgs.FromReader(r));
                         break;
-                    case XmlReader r when r.Name.Equals("md:meta"):
+                    case XmlReader r when r.Name.Equals("mda:meta"):
                         XlfEventArgs metaArgs = XlfEventArgs.FromReader(r);
                         r.Read();
                         metaArgs.Text = r.Value;
                         OnModMetaitem(metaArgs);
                         break;
                     case XmlReader r when r.Name.Equals("mtc:match"):
-                        OnModTransCandMatch(XlfEventArgs.FromReader(r));
+                        OnModMtcMatch(XlfEventArgs.FromReader(r));
                         break;
                     case XmlReader r when r.Name.Equals("its:locQualityIssues"):
                         XlfEventArgs lqiFilterEventArgs = XlfEventArgs.FromReader(r);
@@ -220,13 +229,13 @@ namespace Localization.Jliff.Graph
         public event XlfEvent ModGlsTranslationEvent;
         public event XlfEvent ModItsLocQualityIssue;
         public event XlfEvent ModItsLocQualityIssues;
-        public event XlfEvent ModMetadataEvent;
-        public event XlfEvent ModMetaGroupEvent;
-        public event XlfEvent ModMetaitemEvent;
+        public event XlfEvent ModMdaMetadataEvent;
+        public event XlfEvent ModMdaMetaGroupEvent;
+        public event XlfEvent ModMdaMetaitemEvent;
+        public event XlfEvent ModMtcMatchEvent;
         public event XlfEvent ModResResourceDataEvent;
         public event XlfEvent ModResResourceItemEvent;
         public event XlfEvent ModResSourceEvent;
-        public event XlfEvent ModTransCandMatchEvent;
 
         public virtual void OnItsLocQualityIssue(XlfEventArgs xeArgs)
         {
@@ -280,17 +289,22 @@ namespace Localization.Jliff.Graph
 
         public virtual void OnModMetadata(XlfEventArgs xeArgs)
         {
-            ModMetadataEvent?.Invoke(xeArgs);
+            ModMdaMetadataEvent?.Invoke(xeArgs);
         }
 
         private void OnModMetaGroup(XlfEventArgs xeArgs)
         {
-            ModMetaGroupEvent?.Invoke(xeArgs);
+            ModMdaMetaGroupEvent?.Invoke(xeArgs);
         }
 
         private void OnModMetaitem(XlfEventArgs xeArgs)
         {
-            ModMetaitemEvent?.Invoke(xeArgs);
+            ModMdaMetaitemEvent?.Invoke(xeArgs);
+        }
+
+        public virtual void OnModMtcMatch(XlfEventArgs xeArgs)
+        {
+            ModMtcMatchEvent?.Invoke(xeArgs);
         }
 
         private void OnModResourceData(XlfEventArgs xeArgs)
@@ -306,11 +320,6 @@ namespace Localization.Jliff.Graph
         public virtual void OnModResourceSource(XlfEventArgs xeArgs)
         {
             ModResSourceEvent?.Invoke(xeArgs);
-        }
-
-        public virtual void OnModTransCandMatch(XlfEventArgs xeArgs)
-        {
-            ModTransCandMatchEvent?.Invoke(xeArgs);
         }
 
         public virtual void OnXlfEcElement(XlfEventArgs xeArgs)

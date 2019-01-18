@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -31,12 +31,30 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Localization.Jliff.Graph;
 
 namespace Jliff.Graph.Serialization
 {
     public class XlfEventArgs : EventArgs
     {
+        public XlfEventArgs()
+        {
+            NodeType = "Element";
+        }
+
+        public XlfEventArgs(string id)
+        {
+            Attributes["id"] = id;
+            NodeType = "Element";
+        }
+
+        public XlfEventArgs(string id, string text, Dictionary<string, string> attributes)
+        {
+            Text = text;
+            Attributes = attributes;
+            NodeType = "Element";
+            Attributes["id"] = id;
+        }
+
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         //public string Id { get; set; }
@@ -68,25 +86,5 @@ namespace Jliff.Graph.Serialization
 
             return args;
         }
-
-        public XlfEventArgs()
-        {
-            NodeType = "Element";
-        }
-
-        public XlfEventArgs(string id)
-        {
-            Attributes["id"] = id;
-            NodeType = "Element";
-        }
-
-        public XlfEventArgs(string id, string text, Dictionary<string, string> attributes)
-        {
-            Text = text;
-            Attributes = attributes;
-            NodeType = "Element";
-            Attributes["id"] = id;
-        }
-
     }
 }

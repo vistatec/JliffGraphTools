@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,14 +28,20 @@
  */
 
 
+using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class EmElement : JlfNode, IElement
+    public class EmElement : JlfNode, IElement, IXmlSerializable
     {
+        private static readonly int CLOSINGTAG = 0xe102;
+
         [JsonIgnore]
         public IDictionary<string, string> Attributes
         {
@@ -63,9 +69,28 @@ namespace Localization.Jliff.Graph
 
         public string StartRef { get; set; }
 
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+        }
+
         public override void Process(ICompositeVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public override string ToString()
+        {
+            return $"{new string(Convert.ToChar(CLOSINGTAG), 2)}";
         }
     }
 }

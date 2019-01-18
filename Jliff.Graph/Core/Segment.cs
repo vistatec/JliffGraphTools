@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -32,12 +32,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class Segment : JlfNode, ISubunit
+    /// <summary>
+    ///     Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
+    ///     TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits" />.
+    /// </summary>
+    public class Segment : JlfNode, ISubunit, IXmlSerializable
     {
         [JsonProperty(Order = 10)]
         public List<IElement> Source = new List<IElement>();
@@ -45,13 +53,17 @@ namespace Localization.Jliff.Graph
         [JsonProperty(Order = 20)]
         public List<IElement> Target = new List<IElement>();
 
+        private string targetText;
+
         public Segment()
         {
+            FragmentManager = new FragmentManager();
         }
 
         public Segment(string id)
         {
             Id = id;
+            FragmentManager = new FragmentManager();
         }
 
         [JsonConstructor]
@@ -69,49 +81,28 @@ namespace Localization.Jliff.Graph
 
         public string CanResegment { get; set; } = "no";
 
+
+        [JsonIgnore]
+        public FragmentManager FragmentManager { get; set; }
+
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.segment.ToString();
-
-        public string State { get; set; }
-
-        public string GetTargetTextAt(int index)
-        {
-            if (Target[index] is TextElement)
-                return (Target[index] as TextElement).Text;
-            throw new InvalidOperationException();
-        }
-
-        public override string Traverse(Func<string> func)
-        {
-            return $"{Id}/ ";
-        }
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-            //foreach (JlfNode node in Source)
-            //{
-            //    node.Process(visitor);
-            //}
-
-            //foreach (JlfNode node in Target)
-            //{
-                
-            //}
-        }
 
         [JsonIgnore]
         public string SourceText
         {
             get
             {
-                return Source.Where(t => t is TextElement)
-                    .Cast<TextElement>()
-                    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
-                    .ToString();
+                //return Source.Where(t => t is TextElement)
+                //    .Cast<TextElement>()
+                //    .Aggregate(new StringBuilder(), (sb, s) => sb.Append(s.Text))
+                //    .ToString();
+                return Source.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
             }
         }
+
+        public string State { get; set; }
 
         [JsonIgnore]
         public string TargetText
@@ -125,9 +116,128 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteStartElement("source");
+            foreach (IElement element in Source)
+                switch (element)
+                {
+                    case EcElement ec:
+                        writer.WriteStartElement("ec");
+                        (ec as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case EmElement em:
+                        writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case ScElement sc:
+                        writer.WriteStartElement("sc");
+                        (sc as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case SmElement sm:
+                        writer.WriteStartElement("sm");
+                        (sm as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case TextElement te:
+                        (te as IXmlSerializable).WriteXml(writer);
+                        break;
+                }
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("target");
+            foreach (IElement element in Target)
+                switch (element)
+                {
+                    case EcElement ec:
+                        writer.WriteStartElement("ec");
+                        (ec as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case EmElement em:
+                        writer.WriteStartElement("em");
+                        writer.WriteEndElement();
+                        break;
+                    case ScElement sc:
+                        writer.WriteStartElement("sc");
+                        (sc as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case SmElement sm:
+                        writer.WriteStartElement("sm");
+                        (sm as IXmlSerializable).WriteXml(writer);
+                        writer.WriteEndElement();
+                        break;
+                    case TextElement te:
+                        (te as IXmlSerializable).WriteXml(writer);
+                        break;
+                }
+            writer.WriteEndElement();
+        }
+
+        public string FlattenSource()
+        {
+            return FragmentManager.Flatten(Source);
+        }
+
+        public string FlattenTarget()
+        {
+            return FragmentManager.Flatten(Target);
+        }
+
+        public string GetTargetTextAt(int index)
+        {
+            if (Target[index] is TextElement)
+                return (Target[index] as TextElement).Text;
+            throw new InvalidOperationException();
+        }
+
+        public void ParseSource(string text)
+        {
+            Source = FragmentManager.Parse(text);
+        }
+
+        public void ParseTarget(string text)
+        {
+            Target = FragmentManager.Parse(text);
+            //Target.Parse();
+        }
+
+        public override void Process(ICompositeVisitor visitor)
+        {
+            visitor.Visit(this);
+            //foreach (JlfNode node in Source)
+            //{
+            //    node.Process(visitor);
+            //}
+
+            //foreach (JlfNode node in Target)
+            //{
+
+            //}
+        }
+
         public bool ShouldSerializeTarget()
         {
             return Target.Count > 0;
+        }
+
+        public override string Traverse(Func<string> func)
+        {
+            return $"{Id}/ ";
         }
     }
 }

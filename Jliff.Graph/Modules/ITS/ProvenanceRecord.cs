@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -36,10 +36,13 @@ namespace Jliff.Graph.Modules.ITS
     {
         [JsonProperty("its_person")]
         public string Person { get; set; }
+
         [JsonProperty("its_revPerson")]
         public string RevPerson { get; set; }
+
         [JsonProperty("its_tool")]
         public string Tool { get; set; }
+
         [JsonProperty("its_toolRef")]
         public string ToolRef { get; set; }
     }

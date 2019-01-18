@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,11 +28,15 @@
  */
 
 
+using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
-    public class Metaitem : Dictionary<string, string>, IMetadata
+    public class Metaitem : Dictionary<string, string>, IMetadata, IXmlSerializable
     {
         public Metaitem()
         {
@@ -41,6 +45,25 @@ namespace Localization.Jliff.Graph.Modules.Metadata
         public Metaitem(string type, string value)
         {
             Add(type, value);
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            foreach (string key in Keys)
+            {
+                writer.WriteAttributeString("type", key);
+                writer.WriteString(this[key]);
+            }
         }
     }
 }

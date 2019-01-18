@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,21 +28,40 @@
  */
 
 
-using System.Collections.Generic;
+using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
 {
-    public class ChangeTrack
+    public class ChangeTrack : IXmlSerializable
     {
-        public ChangeTrack()
-        {
-            
-        }
-
         [JsonProperty("its_annotatorsRef")]
         public AnnotatorsRef AnnotatorsRef { get; set; }
-        public Revisions Revisions { get; set; } 
+
+        public Revisions Revisions { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            if (Revisions != null)
+            {
+                writer.WriteStartElement("ctr:revisions");
+                (Revisions as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
     }
 }

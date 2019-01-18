@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -120,16 +120,20 @@ namespace Localization.Jliff.Graph
         public string Equiv { get; set; }
 
         public string EquivStorage { get; set; }
+
         [JsonProperty("fs_fs")]
-		public Enumerations.FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
+
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.ph.ToString();
         public string ProfileSizeInfo { get; set; }
         public string ProfileSizeInfoRef { get; set; }
         public string SubFlows { get; set; }
+
         [JsonProperty("fs_subFs")]
-		public string SubFs { get; set; }
+        public string SubFs { get; set; }
+
         public string SubType { get; set; }
         public string Type { get; set; }
 

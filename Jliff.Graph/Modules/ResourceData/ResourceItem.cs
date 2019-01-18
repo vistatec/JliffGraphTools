@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,16 +28,17 @@
  */
 
 
-using System.Collections.Generic;
-using Localization.Jliff.Graph;
+using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
-    public class ResourceItem
+    public class ResourceItem : IXmlSerializable
     {
         public ResourceItem()
         {
-            
         }
 
         public ResourceItem(string id, Source source)
@@ -46,9 +47,27 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
             Source = source;
         }
 
+        public Enumerations.YesNo Context { get; set; }
+
         public string Id { get; set; }
         public string MimeType { get; set; }
-        public Enumerations.YesNo Context { get; set; }
         public Source Source { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("res:source");
+            if (Source != null) (Source as IXmlSerializable).WriteXml(writer);
+            writer.WriteEndElement();
+        }
     }
 }

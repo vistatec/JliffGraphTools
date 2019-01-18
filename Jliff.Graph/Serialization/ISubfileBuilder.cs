@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,16 +28,14 @@
  */
 
 
-using System.Collections.Generic;
 using Localization.Jliff.Graph;
-using Localization.Jliff.Graph.Interfaces;
 
 namespace Jliff.Graph.Serialization
 {
     public interface ISubfileBuilder
     {
-        ISubfileBuilder AddUnit(XlfEventArgs args);
         ISubfileBuilder AddGroup(XlfEventArgs args);
+        ISubfileBuilder AddUnit(XlfEventArgs args);
         ISubUnitBuilder EndSubFiles();
     }
 }

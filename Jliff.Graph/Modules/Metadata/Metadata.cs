@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -28,19 +28,43 @@
  */
 
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
-    public class Metadata
+    public class Metadata : IXmlSerializable
     {
         public List<MetaGroup> Groups = new List<MetaGroup>();
         public string Id { get; set; }
 
         private string prefix => "mda";
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            if (Groups.Count > 0)
+                foreach (MetaGroup metaGroup in Groups)
+                {
+                    writer.WriteStartElement("mda:metaGroup");
+                    (metaGroup as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+        }
 
         [OnSerializing]
         internal void OnSerializing(StreamingContext context)

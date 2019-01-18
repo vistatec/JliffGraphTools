@@ -27,55 +27,29 @@
  * Also, see the full LGPL text here: <http://www.gnu.org/copyleft/lesser.html>
  */
 
-
 using System;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using Jliff.Graph.Interfaces;
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
+using Localization.Jliff.Graph;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Localization.Jliff.Graph
+namespace UnitTests
 {
-    public class TextElement : JlfNode, IElement, IXmlSerializable
+    [TestClass]
+    public class SmElementFixture
     {
-        public TextElement()
+        [TestMethod]
+        public void WritesStringWithAnnotationsCorrectly()
         {
-        }
+            Segment s = new Segment("s1");
+            s.Source.Add(new SmElement("mrk1"));
+            s.Source.Add(new TextElement("Ocelot"));
+            s.Source.Add(new EmElement());
+            s.Source.Add(new TextElement(" is a free, open source editor."));
 
-        public TextElement(string text)
-        {
-            Text = text;
-        }
+            string expected = "\ue101mrk1\ue101Ocelot\ue102\ue102 is a free, open source editor.";
 
-        [JsonIgnore]
-        public override string Kind => Enumerations.JlfNodeType.text.ToString();
-
-        public string Text { get; set; }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteString(Text);
-        }
-
-        public override void Process(ICompositeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
-        public override string ToString()
-        {
-            return Text;
+            Assert.AreEqual(expected, s.FlattenSource());
         }
     }
 }

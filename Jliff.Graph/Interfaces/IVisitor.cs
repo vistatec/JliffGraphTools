@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -35,7 +35,9 @@ namespace Jliff.Graph.Interfaces
     public interface IVisitor
     {
         void Visit(File file);
+
         void Visit(Group group);
+
         //void Visit(JlfNode node);
         void Visit(Unit unit);
     }

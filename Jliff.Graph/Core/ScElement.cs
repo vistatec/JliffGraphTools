@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -30,12 +30,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class ScElement : JlfNode, IElement
+    public class ScElement : JlfNode, IElement, IXmlSerializable
     {
         public ScElement()
         {
@@ -133,8 +136,10 @@ namespace Localization.Jliff.Graph
         public string Disp { get; set; }
         public string Equiv { get; set; }
         public string EquivStorage { get; set; }
+
         [JsonProperty("fs_fs")]
-		public Enumerations.FormatStyle Fs { get; set; }
+        public Enumerations.FormatStyle Fs { get; set; }
+
         public string Id { get; set; }
         public Enumerations.YesNo Isolated { get; set; }
 
@@ -144,10 +149,29 @@ namespace Localization.Jliff.Graph
         public string ProfileSizeInfo { get; set; }
         public string ProfileSizeInfoRef { get; set; }
         public string SubFlows { get; set; }
+
         [JsonProperty("fs_subFs")]
-		public string SubFs { get; set; }
+        public string SubFs { get; set; }
+
         public string SubType { get; set; }
         public string Type { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("id", Id);
+            writer.WriteAttributeString("type", Type);
+            writer.WriteAttributeString("dataRef", DataRef);
+        }
 
         public override void Process(ICompositeVisitor visitor)
         {

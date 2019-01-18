@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -84,9 +84,9 @@ namespace UnitTests
             fltr.XlfOriginalDataEvent += bldr.OriginalData;
             fltr.ModItsLocQualityIssues += bldr.LocQualityIssues;
             fltr.ModItsLocQualityIssue += bldr.LocQualityIssue;
-            fltr.ModMetadataEvent += bldr.Metadata;
-            fltr.ModMetaGroupEvent += bldr.MetaGroup;
-            fltr.ModMetaitemEvent += bldr.Metaitem;
+            fltr.ModMdaMetadataEvent += bldr.Metadata;
+            fltr.ModMdaMetaGroupEvent += bldr.MetaGroup;
+            fltr.ModMdaMetaitemEvent += bldr.Metaitem;
             fltr.ModResResourceDataEvent += bldr.ResourceData;
             fltr.ModResResourceItemEvent += bldr.ResourceItem;
             fltr.ModResSourceEvent += bldr.ResourceSource;
@@ -94,7 +94,7 @@ namespace UnitTests
             fltr.ModGlsDefinitionEvent += bldr.Definition;
             fltr.ModGlsTermEvent += bldr.Term;
             fltr.ModGlsTranslationEvent += bldr.Translation;
-            fltr.ModTransCandMatchEvent += bldr.Match;
+            fltr.ModMtcMatchEvent += bldr.Match;
             fltr.ModCtrChangeTrackEvent += bldr.ChangeTrack;
             fltr.ModCtrRevisionsEvent += bldr.Revisions;
             fltr.ModCtrRevisionEvent += bldr.Revision;

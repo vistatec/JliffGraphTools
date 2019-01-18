@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018, Vistatec or third-party contributors as indicated
+ * Copyright (C) 2018-2019, Vistatec or third-party contributors as indicated
  * by the @author tags or express copyright attribution statements applied by
  * the authors. All third-party contributions are distributed under license by
  * Vistatec.
@@ -30,13 +30,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
-    public class EcElement : JlfNode, IElement
+    public class EcElement : JlfNode, IElement, IXmlSerializable
     {
         public EcElement()
         {
@@ -63,7 +66,7 @@ namespace Localization.Jliff.Graph
                 atts.Add("Equiv", Equiv);
                 atts.Add("Id", Id);
                 atts.Add("Isolated", Isolated.ToString());
-                atts.Add("Kind", Kind.ToString());
+                atts.Add("Kind", Kind);
                 atts.Add("Subflows", SubFlows);
                 atts.Add("SubType", SubType);
                 return atts;
@@ -90,7 +93,7 @@ namespace Localization.Jliff.Graph
                         case "copyOf":
                             CopyOf = att.Value;
                             break;
-                        case "dataRefEnd":
+                        case "dataRef":
                             DataRef = att.Value;
                             break;
                         case "disp":
@@ -133,6 +136,21 @@ namespace Localization.Jliff.Graph
         public string SubFlows { get; set; }
         public string SubType { get; set; }
         public string Text { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("dataRef", DataRef);
+        }
 
         public override void Process(ICompositeVisitor visitor)
         {
