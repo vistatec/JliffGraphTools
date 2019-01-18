@@ -109,7 +109,7 @@ namespace Localization.Jliff.Graph
         public string LocQualityIssueComment { get; set; }
         public string LocQualityIssueEnabled { get; set; }
         public string LocQualityIssueProfileRef { get; set; }
-        public float LocQualityIssueSeverity { get; set; }
+        public float? LocQualityIssueSeverity { get; set; }
         public string LocQualityIssuesRef { get; set; }
         public string LocQualityIssueType { get; set; }
 
@@ -175,7 +175,7 @@ namespace Localization.Jliff.Graph
         public string TaClassRef { get; set; }
 
         [JsonProperty("its_taConfidence")]
-        public float TaConfidence { get; set; }
+        public float? TaConfidence { get; set; }
 
         [JsonProperty("its_taIdent")]
         public string TaIdent { get; set; }
@@ -212,6 +212,13 @@ namespace Localization.Jliff.Graph
         {
             writer.WriteAttributeString("id", Id);
             writer.WriteAttributeString("type", Type);
+            writer.WriteAttributeString("translate", Translate ? "yes" : "no");
+            if (!String.IsNullOrEmpty(LocQualityIssuesRef)) writer.WriteAttributeString("its:locQualityIssuesRef", LocQualityIssuesRef);
+            if (!String.IsNullOrEmpty(LocQualityIssueType)) writer.WriteAttributeString("its:locQualityIssueType", LocQualityIssueType);
+            if (LocQualityIssueSeverity != null) writer.WriteAttributeString("its:locQualityIssueSeverity", LocQualityIssueSeverity.ToString());
+            if (!String.IsNullOrEmpty(LocQualityIssueComment)) writer.WriteAttributeString("its:locQualityIssueComment", LocQualityIssueComment);
+            if (!String.IsNullOrEmpty(TaIdentRef)) writer.WriteAttributeString("its:taIdentRef", TaIdentRef);
+            if (TaConfidence != null) writer.WriteAttributeString("its:taConfidence", TaConfidence.ToString());
         }
 
         public override void Process(ICompositeVisitor visitor)

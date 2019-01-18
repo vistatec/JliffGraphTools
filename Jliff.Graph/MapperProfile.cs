@@ -96,6 +96,24 @@ namespace Jliff.Graph
                     i.Text))
                 .ForAllOtherMembers(o => o.Ignore());
 
+            CreateMap<XlfEventArgs, Note>()
+                .ForMember(m => m.AppliesTo,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                .ForMember(m => m.Category,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("category")).Value))
+                .ForMember(m => m.Id,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                .ForMember(m => m.Priority,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("priority")).Value))
+                .ForMember(m => m.Text,
+                    o => o.MapFrom(s =>
+                        s.Text))
+                .ForAllOtherMembers(o => o.Ignore());
+
             CreateMap<XlfEventArgs, LocQualityIssue>()
                 .ForMember(m => m.LocQualityIssueComment,
                     o => o.MapFrom(s =>
@@ -157,6 +175,9 @@ namespace Jliff.Graph
                 .ForMember(m => m.Id,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                .ForMember(m => m.State,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("state")).Value))
                 .ForAllOtherMembers(m => m.Ignore());
 
             CreateMap<XlfEventArgs, Term>()
@@ -241,6 +262,15 @@ namespace Jliff.Graph
                 .ForMember(m => m.ProvenanceRecordsRef,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.EndsWith("provenanceRecordsRef")).Value))
+                .ForMember(m => m.TaIdentRef,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.EndsWith("taIdentRef")).Value))
+                .ForMember(m => m.TaConfidence,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.EndsWith("taConfidence")).Value))
+                .ForMember(m => m.Translate,
+                    o => o.MapFrom(s =>
+                        s.Attributes.ContainsKey("translate")))
                 .ForMember(m => m.Type,
                     o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
                 .ForAllOtherMembers(m => m.Ignore());

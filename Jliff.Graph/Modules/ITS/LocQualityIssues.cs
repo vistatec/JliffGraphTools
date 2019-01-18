@@ -29,13 +29,36 @@
 
 
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Jliff.Graph.Core;
 
 namespace Jliff.Graph.Modules.ITS
 {
-    public class LocQualityIssues
+    public class LocQualityIssues : IXmlSerializable
     {
         public Nmtoken Id { get; set; }
         public List<LocQualityIssue> Items { get; set; } = new List<LocQualityIssue>();
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            foreach (LocQualityIssue item in Items)
+            {
+                writer.WriteStartElement("its:locQualityIssue");
+                (item as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+        }
     }
 }

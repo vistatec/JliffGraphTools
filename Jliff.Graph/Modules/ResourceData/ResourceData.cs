@@ -72,7 +72,7 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("id", Id);
+            if (!String.IsNullOrEmpty(Id)) writer.WriteAttributeString("id", Id);
             if (ResourceItems.Count > 0)
             {
                 writer.WriteStartElement("res:resourceItem");

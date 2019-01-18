@@ -28,14 +28,36 @@
  */
 
 
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace Jliff.Graph.Modules.ITS
 {
-    public class LocQualityIssue
+    public class LocQualityIssue : IXmlSerializable
     {
         public string LocQualityIssueComment { get; set; }
         public string LocQualityIssueEnabled { get; set; }
         public string LocQualityIssueProfileRef { get; set; }
         public float LocQualityIssueSeverity { get; set; }
         public string LocQualityIssueType { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            if (LocQualityIssueType != null) writer.WriteAttributeString("locQualityIssueType", LocQualityIssueType);
+            if (LocQualityIssueSeverity != null) writer.WriteAttributeString("locQualityIssueSeverity", LocQualityIssueSeverity.ToString());
+            if (LocQualityIssueComment != null) writer.WriteAttributeString("locQualityIssueComment", LocQualityIssueComment);
+            if (LocQualityIssueEnabled != null) writer.WriteAttributeString("locQualityIssueEnabled", LocQualityIssueEnabled);
+        }
     }
 }

@@ -96,7 +96,7 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.unit.ToString();
 
-        public LocQualityIssues LocQualityIssues { get; set; }
+        public LocQualityIssues LocQualityIssues { get; set; } = new LocQualityIssues();
 
         [JsonIgnore]
         public string LocQualityIssuesRef { get; set; }
@@ -118,7 +118,8 @@ namespace Localization.Jliff.Graph
 
         public Metadata Metadata { get; set; }
         public string Name { get; set; }
-        public string Notes { get; set; }
+
+        public List<Note> Notes { get; set; } = new List<Note>();
 
         [JsonProperty("its_org")]
         public string Org { get; set; }
@@ -253,6 +254,14 @@ namespace Localization.Jliff.Graph
                 writer.WriteEndElement();
             }
 
+            if (LocQualityIssues.Items.Count > 0)
+            {
+                writer.WriteStartElement("its:locQualityIssues");
+                writer.WriteAttributeString("xml:id", LocQualityIssues.Id.Token);
+                (LocQualityIssues as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+
             if (Matches.Count > 0)
             {
                 writer.WriteStartElement("mtc:matches");
@@ -263,6 +272,31 @@ namespace Localization.Jliff.Graph
                     writer.WriteEndElement();
                 }
 
+                writer.WriteEndElement();
+            }
+
+            if (Notes.Count > 0)
+            {
+                writer.WriteStartElement("notes");
+                foreach (Note note in Notes)
+                {
+                    writer.WriteStartElement("note");
+                    (note as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+
+            if (OriginalData.Count > 0)
+            {
+                writer.WriteStartElement("originalData");
+                foreach (KeyValuePair<string, string> keyValuePair in OriginalData)
+                {
+                    writer.WriteStartElement("data");
+                    writer.WriteAttributeString("id", keyValuePair.Key);
+                    writer.WriteString(keyValuePair.Value);
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
             }
 

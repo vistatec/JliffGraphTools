@@ -129,63 +129,71 @@ namespace Localization.Jliff.Graph
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
-            writer.WriteStartElement("source");
-            foreach (IElement element in Source)
-                switch (element)
-                {
-                    case EcElement ec:
-                        writer.WriteStartElement("ec");
-                        (ec as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case EmElement em:
-                        writer.WriteStartElement("em");
-                        writer.WriteEndElement();
-                        break;
-                    case ScElement sc:
-                        writer.WriteStartElement("sc");
-                        (sc as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case SmElement sm:
-                        writer.WriteStartElement("sm");
-                        (sm as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case TextElement te:
-                        (te as IXmlSerializable).WriteXml(writer);
-                        break;
-                }
-            writer.WriteEndElement();
+            if (!String.IsNullOrEmpty(State)) writer.WriteAttributeString("state", State);
+            if (Source.Count > 0)
+            {
+                writer.WriteStartElement("source");
+                foreach (IElement element in Source)
+                    switch (element)
+                    {
+                        case EcElement ec:
+                            writer.WriteStartElement("ec");
+                            (ec as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case EmElement em:
+                            writer.WriteStartElement("em");
+                            writer.WriteEndElement();
+                            break;
+                        case ScElement sc:
+                            writer.WriteStartElement("sc");
+                            (sc as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case SmElement sm:
+                            writer.WriteStartElement("sm");
+                            (sm as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case TextElement te:
+                            (te as IXmlSerializable).WriteXml(writer);
+                            break;
+                    }
+                writer.WriteEndElement();
+            }
 
-            writer.WriteStartElement("target");
-            foreach (IElement element in Target)
-                switch (element)
-                {
-                    case EcElement ec:
-                        writer.WriteStartElement("ec");
-                        (ec as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case EmElement em:
-                        writer.WriteStartElement("em");
-                        writer.WriteEndElement();
-                        break;
-                    case ScElement sc:
-                        writer.WriteStartElement("sc");
-                        (sc as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case SmElement sm:
-                        writer.WriteStartElement("sm");
-                        (sm as IXmlSerializable).WriteXml(writer);
-                        writer.WriteEndElement();
-                        break;
-                    case TextElement te:
-                        (te as IXmlSerializable).WriteXml(writer);
-                        break;
-                }
-            writer.WriteEndElement();
+            if (Target.Count > 0)
+            {
+                writer.WriteStartElement("target");
+                foreach (IElement element in Target)
+                    switch (element)
+                    {
+                        case EcElement ec:
+                            writer.WriteStartElement("ec");
+                            (ec as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case EmElement em:
+                            writer.WriteStartElement("em");
+                            writer.WriteEndElement();
+                            break;
+                        case ScElement sc:
+                            writer.WriteStartElement("sc");
+                            (sc as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case SmElement sm:
+                            writer.WriteStartElement("sm");
+                            (sm as IXmlSerializable).WriteXml(writer);
+                            writer.WriteEndElement();
+                            break;
+                        case TextElement te:
+                            (te as IXmlSerializable).WriteXml(writer);
+                            break;
+                    }
+                writer.WriteEndElement();
+                
+            }
         }
 
         public string FlattenSource()
