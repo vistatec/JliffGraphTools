@@ -118,7 +118,8 @@ namespace Localization.Jliff.Graph
 
         public Metadata Metadata { get; set; }
         public string Name { get; set; }
-        public string Notes { get; set; }
+
+        public List<Note> Notes { get; set; } = new List<Note>();
 
         [JsonProperty("its_org")]
         public string Org { get; set; }
@@ -263,6 +264,18 @@ namespace Localization.Jliff.Graph
                     writer.WriteEndElement();
                 }
 
+                writer.WriteEndElement();
+            }
+
+            if (Notes.Count > 0)
+            {
+                writer.WriteStartElement("notes");
+                foreach (Note note in Notes)
+                {
+                    writer.WriteStartElement("note");
+                    (note as IXmlSerializable).WriteXml(writer);
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
             }
 

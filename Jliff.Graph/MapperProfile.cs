@@ -96,6 +96,24 @@ namespace Jliff.Graph
                     i.Text))
                 .ForAllOtherMembers(o => o.Ignore());
 
+            CreateMap<XlfEventArgs, Note>()
+                .ForMember(m => m.AppliesTo,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("appliesTo")).Value))
+                .ForMember(m => m.Category,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("category")).Value))
+                .ForMember(m => m.Id,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                .ForMember(m => m.Priority,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("priority")).Value))
+                .ForMember(m => m.Text,
+                    o => o.MapFrom(s =>
+                        s.Text))
+                .ForAllOtherMembers(o => o.Ignore());
+
             CreateMap<XlfEventArgs, LocQualityIssue>()
                 .ForMember(m => m.LocQualityIssueComment,
                     o => o.MapFrom(s =>

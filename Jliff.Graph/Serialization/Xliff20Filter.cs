@@ -28,6 +28,7 @@
  */
 
 
+using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using Jliff.Graph.Serialization;
@@ -210,6 +211,12 @@ namespace Localization.Jliff.Graph
                     case XmlReader r when r.Name.Equals("res:source"):
                         OnModResourceSource(XlfEventArgs.FromReader(r));
                         break;
+                    case XmlReader r when r.Name.Equals("note"):
+                        XlfEventArgs noteArgs = XlfEventArgs.FromReader(r);
+                        r.Read();
+                        noteArgs.Text = r.Value;
+                        OnXlfNote(noteArgs);
+                        break;
                     default:
                         break;
                 }
@@ -349,6 +356,16 @@ namespace Localization.Jliff.Graph
             XlfIgnorableEvent?.Invoke(xeArgs);
         }
 
+        private void OnXlfNote(XlfEventArgs xlfEventArgs)
+        {
+            XlfNote?.Invoke(xlfEventArgs);
+        }
+
+        private void OnXlfNotes(XlfEventArgs xlfEventArgs)
+        {
+            XlfNotes?.Invoke(xlfEventArgs);
+        }
+
         public virtual void OnXlfOriginalData(XlfEventArgs xeArgs)
         {
             XlfOriginalDataEvent?.Invoke(xeArgs);
@@ -409,6 +426,8 @@ namespace Localization.Jliff.Graph
         public event XlfEvent XlfFileEvent;
         public event XlfEvent XlfGroupEvent;
         public event XlfEvent XlfIgnorableEvent;
+        public event XlfEvent XlfNote;
+        public event XlfEvent XlfNotes;
         public event XlfEvent XlfOriginalDataEvent;
         public event XlfEvent XlfPhElementEvent;
         public event XlfEvent XlfRootEvent;

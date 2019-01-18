@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using AutoMapper;
 using Jliff.Graph;
+using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.Matches;
@@ -460,6 +461,25 @@ namespace Localization.Jliff.Graph
                         Metaitem mi = mapper.Map<Metaitem>(args);
                         mg.Meta.Add(mi);
                         //stack.Push(mg);
+                        break;
+                }
+            }
+        }
+
+        public void Note(XlfEventArgs args)
+        {
+            if (args.IsEndElement)
+            {
+                //stack.Pop();
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        Note n = mapper.Map<Note>(args);
+                        u.Notes.Add(n);
                         break;
                 }
             }
