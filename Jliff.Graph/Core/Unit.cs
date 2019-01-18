@@ -96,7 +96,7 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.unit.ToString();
 
-        public LocQualityIssues LocQualityIssues { get; set; }
+        public LocQualityIssues LocQualityIssues { get; set; } = new LocQualityIssues();
 
         [JsonIgnore]
         public string LocQualityIssuesRef { get; set; }
@@ -251,6 +251,14 @@ namespace Localization.Jliff.Graph
             {
                 writer.WriteStartElement("mda:metadata");
                 (Metadata as IXmlSerializable).WriteXml(writer);
+                writer.WriteEndElement();
+            }
+
+            if (LocQualityIssues.Items.Count > 0)
+            {
+                writer.WriteStartElement("its:locQualityIssues");
+                writer.WriteAttributeString("xml:id", LocQualityIssues.Id.Token);
+                (LocQualityIssues as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
 

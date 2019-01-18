@@ -362,6 +362,9 @@ namespace Localization.Jliff.Graph
                 case LocQualityIssues lqis:
                     lqis.Items.Add(lqi);
                     break;
+                case Unit u:
+                    u.LocQualityIssues.Items.Add(lqi);
+                    break;
             }
         }
 
