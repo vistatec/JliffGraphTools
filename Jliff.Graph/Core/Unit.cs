@@ -279,6 +279,19 @@ namespace Localization.Jliff.Graph
                 writer.WriteEndElement();
             }
 
+            if (OriginalData.Count > 0)
+            {
+                writer.WriteStartElement("originalData");
+                foreach (KeyValuePair<string, string> keyValuePair in OriginalData)
+                {
+                    writer.WriteStartElement("data");
+                    writer.WriteAttributeString("id", keyValuePair.Key);
+                    writer.WriteString(keyValuePair.Value);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+
             foreach (ISubunit subunit in Subunits)
                 switch (subunit)
                 {

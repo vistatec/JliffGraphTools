@@ -217,6 +217,12 @@ namespace Localization.Jliff.Graph
                         noteArgs.Text = r.Value;
                         OnXlfNote(noteArgs);
                         break;
+                    case XmlReader r when r.Name.Equals("data"):
+                        XlfEventArgs dataArgs = XlfEventArgs.FromReader(r);
+                        r.Read();
+                        dataArgs.Text = r.Value;
+                        OnXlfData(dataArgs);
+                        break;
                     default:
                         break;
                 }
@@ -366,9 +372,9 @@ namespace Localization.Jliff.Graph
             XlfNotes?.Invoke(xlfEventArgs);
         }
 
-        public virtual void OnXlfOriginalData(XlfEventArgs xeArgs)
+        public virtual void OnXlfData(XlfEventArgs xeArgs)
         {
-            XlfOriginalDataEvent?.Invoke(xeArgs);
+            XlfDataEvent?.Invoke(xeArgs);
         }
 
         public virtual void OnXlfPhElement(XlfEventArgs fliterEventArgs)
@@ -428,7 +434,7 @@ namespace Localization.Jliff.Graph
         public event XlfEvent XlfIgnorableEvent;
         public event XlfEvent XlfNote;
         public event XlfEvent XlfNotes;
-        public event XlfEvent XlfOriginalDataEvent;
+        public event XlfEvent XlfDataEvent;
         public event XlfEvent XlfPhElementEvent;
         public event XlfEvent XlfRootEvent;
         public event XlfEvent XlfScElementEvent;

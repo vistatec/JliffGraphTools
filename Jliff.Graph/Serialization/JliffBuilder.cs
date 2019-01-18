@@ -485,8 +485,22 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public void OriginalData(XlfEventArgs args)
+        public void Data(XlfEventArgs args)
         {
+            if (args.IsEndElement)
+            {
+
+            }
+            else
+            {
+                object parent = stack.Peek();
+                switch (parent)
+                {
+                    case Unit u:
+                        u.OriginalData.Add(args.Attributes["id"], args.Text);
+                        break;
+                }
+            }
         }
 
         public void PhElement(XlfEventArgs args)
