@@ -64,7 +64,7 @@ namespace Localization.Jliff.Graph
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("id", Id);
+            if (!String.IsNullOrEmpty(Id)) writer.WriteAttributeString("id", Id);
             writer.WriteString(Text);
         }
     }

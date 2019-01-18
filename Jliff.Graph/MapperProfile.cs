@@ -175,6 +175,9 @@ namespace Jliff.Graph
                 .ForMember(m => m.Id,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.Equals("id")).Value))
+                .ForMember(m => m.State,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("state")).Value))
                 .ForAllOtherMembers(m => m.Ignore());
 
             CreateMap<XlfEventArgs, Term>()
@@ -259,6 +262,15 @@ namespace Jliff.Graph
                 .ForMember(m => m.ProvenanceRecordsRef,
                     o => o.MapFrom(s =>
                         s.Attributes.SingleOrDefault(a => a.Key.EndsWith("provenanceRecordsRef")).Value))
+                .ForMember(m => m.TaIdentRef,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.EndsWith("taIdentRef")).Value))
+                .ForMember(m => m.TaConfidence,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.EndsWith("taConfidence")).Value))
+                .ForMember(m => m.Translate,
+                    o => o.MapFrom(s =>
+                        s.Attributes.ContainsKey("translate")))
                 .ForMember(m => m.Type,
                     o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
                 .ForAllOtherMembers(m => m.Ignore());
