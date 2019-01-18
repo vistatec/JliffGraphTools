@@ -9,8 +9,35 @@ Technical Committee outputs such as schema definitions and example serialization
 ## Project status
 As with the OASIS project itself, this project is a work in progress. I have a short attention span so some features may not be completely implmented because I got distracted by another feature during implementation.
 
+Overall features should be complete with respect to XLIFF 2.0 Core. Implementation of module related features have to date been motivated by my own use cases.
+
 ## Latest ##
+As of 2019-01-18 it is possible to convert XLIFF 2.1 Core to JLIFF 2.1 Core and JLIFF 2.1 Core back to XLIFF 2.1 Core. Yes, that's pretty simple to do with a generic JSON to XML converter or XSLT but with the library it is done via the Object Model which you can interact with and manipulate!
+
 Added Builder Pattern graph construction:
+
+
+This is only good for relatively simple graphs though.
+
+Added Composite and Visitor Patterns so the whole graph can be traversed by creating a class that implements `ICompositeVisitor` and then calling `Process()` on the `JliffDocument.Files` property. This is how the `Segments` property is implemented.
+
+## Object Model Creation Modes ##
+
+### Fluent ###
+
+    JliffDocument jd = new JliffDocument("en-US", "it-IT",
+        new File("f1",
+            new Unit("u1",
+                new Segment(
+                    new List<IElement()
+                        { new SmElement(), new TextElement("Source text"), new EmElement() }),
+                    new List<IElement()
+                        { new SmElement(), new TextElement("Target text"), new EmElement() })
+    ));
+
+### Builder Pattern ###
+
+*This is still experimental.*
 
     JliffDocument jlb = new JliffDocument("en-US", "it-IT")
         .AddFile()
@@ -34,18 +61,19 @@ Added Builder Pattern graph construction:
         .AddTarget("Arrivederci")
         .Build();
 
-This is only good for relatively simple graphs though.
+### Event Driven ###
 
-Added Composite and Visitor Patterns so the whole graph can be traversed by creating a class that implements `ICompositeVisitor` and then calling `Process()` on the `JliffDocument.Files` property. This is how the `Segments` property is implemented.
+*Useful for building Extract Agents*
 
+    MyContentType.NewParagraphEvent += JlBuilder.Paragraph;
 
 ## Branches ##
 As of 2018-11-02 I have added a `dev` branch as a way of sharing bits of progress which have not been fully tested.
 
 ## Facilities
-* Beginnings of a fluentgraph creation syntax see [Fluent Test Method](Jliff.Tests/XliffBookModel.cs)
-* An XLIFF 2.0 filter which can be used to read XLIFF 2.0 Core XML files and raise events
-* A [JliffBuilder](Jliff.Graph/Serialization/JliffBuilder.cs) which has handlers for events raised by a filter to construct a JliffDocument graph.
+
+In addition to above I've also added:
+
 * Composition and Visitor Patterns.
 
 ## Licensing
