@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph
 {
@@ -60,7 +61,7 @@ namespace Localization.Jliff.Graph
             writer.WriteAttributeString("ref", Ref);
             if (Term != null)
             {
-                writer.WriteStartElement("gls:term");
+                writer.WriteStartElement("term", Namespaces.GLS);
                 (Term as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
@@ -68,14 +69,14 @@ namespace Localization.Jliff.Graph
             if (Translations.Count > 0)
                 foreach (Translation translation in Translations)
                 {
-                    writer.WriteStartElement("gls:translation");
+                    writer.WriteStartElement("translation", Namespaces.GLS);
                     (translation as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }
 
             if (Definition != null)
             {
-                writer.WriteStartElement("gls:definition");
+                writer.WriteStartElement("definition", Namespaces.GLS);
                 (Definition as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }

@@ -78,5 +78,14 @@ namespace UnitTests
             JliffDocument jd = JliffDocument.LoadXlf(Path.Combine(XlfFiles, "Ocelot.xlf"));
             jd.ToXlf(Path.Combine(OutputFolder, "OcelotSerializedFromModel.xlf"));
         }
+
+        [TestMethod]
+        public void XlfInXlfStringOutViaJliffModel()
+        {
+            JliffDocument jd = JliffDocument.LoadXlf(Path.Combine(XlfFiles, "Ocelot.xlf"));
+            jd.Segments[0].Target.Add(new TextElement("áíóú"));
+            string output = jd.ToXlf();
+            Assert.IsTrue(output.Contains("<res:source href=\"https://open.vistatec.com/ocelot\" />"));
+        }
     }
 }

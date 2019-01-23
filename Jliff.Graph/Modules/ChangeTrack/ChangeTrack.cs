@@ -33,6 +33,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Jliff.Graph.Modules.ITS;
+using Jliff.Graph.Serialization;
 using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
@@ -58,7 +59,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
         {
             if (Revisions != null)
             {
-                writer.WriteStartElement("ctr:revisions");
+                writer.WriteStartElement("revisions", Namespaces.CTR);
                 (Revisions as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }

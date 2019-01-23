@@ -213,12 +213,12 @@ namespace Localization.Jliff.Graph
             writer.WriteAttributeString("id", Id);
             writer.WriteAttributeString("type", Type);
             writer.WriteAttributeString("translate", Translate ? "yes" : "no");
-            if (!String.IsNullOrEmpty(LocQualityIssuesRef)) writer.WriteAttributeString("its:locQualityIssuesRef", LocQualityIssuesRef);
-            if (!String.IsNullOrEmpty(LocQualityIssueType)) writer.WriteAttributeString("its:locQualityIssueType", LocQualityIssueType);
-            if (LocQualityIssueSeverity != null) writer.WriteAttributeString("its:locQualityIssueSeverity", LocQualityIssueSeverity.ToString());
-            if (!String.IsNullOrEmpty(LocQualityIssueComment)) writer.WriteAttributeString("its:locQualityIssueComment", LocQualityIssueComment);
-            if (!String.IsNullOrEmpty(TaIdentRef)) writer.WriteAttributeString("its:taIdentRef", TaIdentRef);
-            if (TaConfidence != null) writer.WriteAttributeString("its:taConfidence", TaConfidence.ToString());
+            if (!String.IsNullOrEmpty(LocQualityIssuesRef)) writer.WriteAttributeString("its", "locQualityIssuesRef", null, LocQualityIssuesRef);
+            if (!String.IsNullOrEmpty(LocQualityIssueType)) writer.WriteAttributeString("its", "locQualityIssueType", null, LocQualityIssueType);
+            if (LocQualityIssueSeverity != null) writer.WriteAttributeString("its", "locQualityIssueSeverity", null, LocQualityIssueSeverity.ToString());
+            if (!String.IsNullOrEmpty(LocQualityIssueComment)) writer.WriteAttributeString("its", "locQualityIssueComment", null, LocQualityIssueComment);
+            if (!String.IsNullOrEmpty(TaIdentRef)) writer.WriteAttributeString("its", "taIdentRef", null, TaIdentRef);
+            if (TaConfidence != null) writer.WriteAttributeString("its", "taConfidence", null, TaConfidence.ToString());
         }
 
         public override void Process(ICompositeVisitor visitor)

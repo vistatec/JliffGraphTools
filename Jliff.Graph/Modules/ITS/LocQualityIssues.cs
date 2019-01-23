@@ -33,6 +33,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Jliff.Graph.Core;
+using Jliff.Graph.Serialization;
 
 namespace Jliff.Graph.Modules.ITS
 {
@@ -55,7 +56,7 @@ namespace Jliff.Graph.Modules.ITS
         {
             foreach (LocQualityIssue item in Items)
             {
-                writer.WriteStartElement("its:locQualityIssue");
+                writer.WriteStartElement("locQualityIssue", Namespaces.ITS);
                 (item as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }

@@ -38,8 +38,10 @@ using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ChangeTrack;
 using Jliff.Graph.Modules.ITS;
 using Jliff.Graph.Modules.Matches;
+using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
+using Localization.Jliff.Graph.Modules.ResourceData;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -142,7 +144,7 @@ namespace Localization.Jliff.Graph
         public Iri ProvenanceRecordsRef { get; set; }
 
         [JsonProperty("res_resourceData")]
-        public object ResourceData { get; set; }
+        public ResourceData ResourceData { get; set; }
 
         [JsonProperty("its_revOrg")]
         public string RevOrg { get; set; }
@@ -229,17 +231,17 @@ namespace Localization.Jliff.Graph
 
             if (ChangeTrack != null)
             {
-                writer.WriteStartElement("ctr:changeTrack");
+                writer.WriteStartElement("changeTrack", Namespaces.CTR);
                 (ChangeTrack as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
 
             if (Glossary.Count > 0)
             {
-                writer.WriteStartElement("gls:glossary");
+                writer.WriteStartElement("glossary", Namespaces.GLS);
                 foreach (GlossaryEntry glossaryEntry in Glossary)
                 {
-                    writer.WriteStartElement("gls:glossEntry");
+                    writer.WriteStartElement("glossEntry", Namespaces.GLS);
                     (glossaryEntry as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }
@@ -249,25 +251,25 @@ namespace Localization.Jliff.Graph
 
             if (Metadata != null)
             {
-                writer.WriteStartElement("mda:metadata");
+                writer.WriteStartElement("metadata", Namespaces.MDA);
                 (Metadata as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
 
             if (LocQualityIssues.Items.Count > 0)
             {
-                writer.WriteStartElement("its:locQualityIssues");
-                writer.WriteAttributeString("xml:id", LocQualityIssues.Id.Token);
+                writer.WriteStartElement("locQualityIssues", Namespaces.ITS);
+                writer.WriteAttributeString("xml", "id", null, LocQualityIssues.Id.Token);
                 (LocQualityIssues as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
             }
 
             if (Matches.Count > 0)
             {
-                writer.WriteStartElement("mtc:matches");
+                writer.WriteStartElement("matches", Namespaces.MTC);
                 foreach (Match match in Matches)
                 {
-                    writer.WriteStartElement("mtc:match");
+                    writer.WriteStartElement("match", Namespaces.MTC);
                     (match as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }

@@ -38,6 +38,7 @@ using Jliff.Graph.Interfaces;
 using Jliff.Graph.Modules.ITS;
 using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
+using Localization.Jliff.Graph.Modules.ResourceData;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -127,7 +128,7 @@ namespace Localization.Jliff.Graph
         public Iri ProvenanceRecordsRef { get; set; }
 
         [JsonProperty("res_resourceData")]
-        public object ResourceData { get; set; }
+        public ResourceData ResourceData { get; set; }
 
         [JsonProperty("its_revOrg")]
         public string RevOrg { get; set; }

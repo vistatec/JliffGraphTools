@@ -34,6 +34,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
@@ -60,7 +61,7 @@ namespace Localization.Jliff.Graph.Modules.Metadata
             if (Groups.Count > 0)
                 foreach (MetaGroup metaGroup in Groups)
                 {
-                    writer.WriteStartElement("mda:metaGroup");
+                    writer.WriteStartElement("metaGroup", Namespaces.MDA);
                     (metaGroup as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }

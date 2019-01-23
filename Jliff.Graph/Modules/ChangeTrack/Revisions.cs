@@ -35,6 +35,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using Jliff.Graph.Core;
 using Jliff.Graph.Modules.ITS;
+using Jliff.Graph.Serialization;
 using Newtonsoft.Json;
 
 namespace Jliff.Graph.Modules.ChangeTrack
@@ -66,7 +67,7 @@ namespace Jliff.Graph.Modules.ChangeTrack
             if (Items.Count > 0)
                 foreach (Revision revision in Items)
                 {
-                    writer.WriteStartElement("ctr:revision");
+                    writer.WriteStartElement("revision", Namespaces.CTR);
                     (revision as IXmlSerializable).WriteXml(writer);
                     writer.WriteEndElement();
                 }

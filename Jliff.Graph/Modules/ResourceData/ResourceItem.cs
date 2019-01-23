@@ -32,6 +32,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
@@ -65,7 +66,7 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("res:source");
+            writer.WriteStartElement("source", Namespaces.RES);
             if (Source != null) (Source as IXmlSerializable).WriteXml(writer);
             writer.WriteEndElement();
         }

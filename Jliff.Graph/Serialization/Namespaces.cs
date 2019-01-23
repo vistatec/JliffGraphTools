@@ -27,44 +27,16 @@
  * Also, see the full LGPL text here: <http://www.gnu.org/copyleft/lesser.html>
  */
 
-
-using System;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Serialization;
-
-namespace Jliff.Graph.Modules.ChangeTrack
+namespace Jliff.Graph.Serialization
 {
-    public class Revision : IXmlSerializable
+    public class Namespaces
     {
-        public string Author { get; set; }
-        public string DateTime { get; set; }
-        public RevisionItem Item { get; set; }
-        public Nmtoken Version { get; set; }
 
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("author", Author);
-            writer.WriteAttributeString("datetime", DateTime);
-            writer.WriteAttributeString("version", Version.Token);
-            if (Item != null)
-            {
-                writer.WriteStartElement("item", Namespaces.CTR);
-                (Item as IXmlSerializable).WriteXml(writer);
-                writer.WriteEndElement();
-            }
-        }
+        public static readonly string CTR = "urn:oasis:names:tc:xliff:changetrack:2.0";
+        public static readonly string GLS = "urn:oasis:names:tc:xliff:glossary:2.0";
+        public static readonly string ITS = "urn:oasis:names:tc:xliff:itsm:2.1";
+        public static readonly string MDA = "urn:oasis:names:tc:xliff:metadata:2.0";
+        public static readonly string MTC = "urn:oasis:names:tc:xliff:matches:2.0";
+        public static readonly string RES = "urn:oasis:names:tc:xliff:resourcedata:2.0";
     }
 }

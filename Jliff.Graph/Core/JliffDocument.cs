@@ -33,17 +33,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Jliff.Graph.Conversion;
 using Jliff.Graph.Core;
+using Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Localization.Jliff.Graph
 {
-    [XmlRoot(ElementName = "xliff", Namespace = "urn:oasis:names:tc:xliff:document:2.0")]
+    [XmlRoot(ElementName = "xliff", Namespace = "urn:oasis:names:tc:xliff:document:2.1")]
     public class JliffDocument : IXmlSerializable
     {
         private const string jliff = "2.1";
@@ -140,12 +145,12 @@ namespace Localization.Jliff.Graph
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("xmlns:ctr", "urn:oasis:names:tc:xliff:changetrack:2.0");
-            writer.WriteAttributeString("xmlns:gls", "urn:oasis:names:tc:xliff:glossary:2.0");
-            writer.WriteAttributeString("xmlns:its", "urn:oasis:names:tc:xliff:itsm:2.1");
-            writer.WriteAttributeString("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
-            writer.WriteAttributeString("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
-            writer.WriteAttributeString("xmlns:res", "urn:oasis:names:tc:xliff:resourcedata:2.0");
+            writer.WriteAttributeString("xmlns", "ctr", null, Namespaces.CTR);
+            writer.WriteAttributeString("xmlns", "gls", null, Namespaces.GLS);
+            writer.WriteAttributeString("xmlns", "its", null, Namespaces.ITS);
+            writer.WriteAttributeString("xmlns", "mda", null, Namespaces.MDA);
+            writer.WriteAttributeString("xmlns", "mtc", null, Namespaces.MTC);
+            writer.WriteAttributeString("xmlns", "res", null, Namespaces.RES);
             writer.WriteAttributeString("version", "2.0");
             writer.WriteAttributeString("srcLang", SrcLang);
             writer.WriteAttributeString("trgLang", TrgLang);
@@ -167,11 +172,37 @@ namespace Localization.Jliff.Graph
             return filenames;
         }
 
+        public static JliffDocument Load(Stream stream)
+        {
+            var set = new JsonSerializerSettings();
+            set.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            set.Formatting = Formatting.Indented;
+            set.NullValueHandling = NullValueHandling.Ignore;
+            set.DefaultValueHandling = DefaultValueHandling.Ignore;
+            set.Converters.Add(new ISubfileConverter());
+            set.Converters.Add(new ISubunitConverter());
+            set.Converters.Add(new IElementConverter());
+            set.Converters.Add(new IMetadataConverter());
+
+            using (StreamReader sr = new StreamReader(stream))
+            using (JsonTextReader jtr = new JsonTextReader(sr))
+            {
+                JsonSerializer js = JsonSerializer.Create(set);
+                return js.Deserialize<JliffDocument>(jtr);
+            }
+        }
+
         public static JliffDocument LoadXlf(string filename)
         {
             FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
             XlfConverter xlfc = new XlfConverter();
             return xlfc.ConvertXlf20Files(fileStream);
+        }
+
+        public static JliffDocument LoadXlf(Stream stream)
+        {
+            XlfConverter xlfc = new XlfConverter();
+            return xlfc.ConvertXlf20Files(stream);
         }
 
         public bool ShouldSerializeFiles()

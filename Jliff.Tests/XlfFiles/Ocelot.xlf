@@ -39,7 +39,7 @@
 				<source>
 					<mrk id="mrk1" type="term">Ocelot</mrk> is a free, open source editor with advanced features for reviewing and correcting translations.
 				</source>
-				<target/>
+				<target>áíóú</target>
 			</segment>
 			<segment id="s2">
 				<source>It is licensed under <pc id="pc1" type="link" dataRefStart="hlstart" dataRefEnd="hlend">LGPL 3.0.</pc>

@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
@@ -64,12 +65,12 @@ namespace Localization.Jliff.Graph.Modules.Metadata
                 switch (metadata)
                 {
                     case MetaGroup mg:
-                        writer.WriteStartElement("mda:metaGroup");
+                        writer.WriteStartElement("metaGroup", Namespaces.MDA);
                         (mg as IXmlSerializable).WriteXml(writer);
                         writer.WriteEndElement();
                         break;
                     case Metaitem mi:
-                        writer.WriteStartElement("mda:meta");
+                        writer.WriteStartElement("meta", Namespaces.MDA);
                         (mi as IXmlSerializable).WriteXml(writer);
                         writer.WriteEndElement();
                         break;

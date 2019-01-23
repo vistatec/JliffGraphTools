@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
@@ -75,7 +76,7 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
             if (!String.IsNullOrEmpty(Id)) writer.WriteAttributeString("id", Id);
             if (ResourceItems.Count > 0)
             {
-                writer.WriteStartElement("res:resourceItem");
+                writer.WriteStartElement("resourceItem", Namespaces.RES);
                 foreach (ResourceItem resourceItem in ResourceItems)
                     (resourceItem as IXmlSerializable).WriteXml(writer);
                 writer.WriteEndElement();
