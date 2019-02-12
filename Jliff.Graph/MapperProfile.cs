@@ -274,6 +274,13 @@ namespace Jliff.Graph
                 .ForMember(m => m.Type,
                     o => o.MapFrom(s => s.Attributes.SingleOrDefault(a => a.Key.Equals("type")).Value))
                 .ForAllOtherMembers(m => m.Ignore());
+
+            CreateMap<XlfEventArgs, EmElement>()
+                .ForMember(m => m.StartRef,
+                    o => o.MapFrom(s =>
+                        s.Attributes.SingleOrDefault(a => a.Key.Equals("startRef")).Value))
+                .ForAllOtherMembers(m => m.Ignore());
+
         }
 
         public override string ProfileName => "GeneralMappings";

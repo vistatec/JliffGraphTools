@@ -230,8 +230,7 @@ namespace Localization.Jliff.Graph
             switch (parent)
             {
                 case Segment s:
-                    EcElement ecElement = new EcElement();
-                    ecElement.Attributes = args.Attributes;
+                    EcElement ecElement = mapper.Map<EcElement>(args);
                     if (args.sourceOrTarget.Equals("source"))
                         s.Source.Add(ecElement);
                     else
@@ -249,8 +248,7 @@ namespace Localization.Jliff.Graph
             switch (parent)
             {
                 case Segment s:
-                    EmElement emElement = new EmElement();
-                    emElement.Attributes = args.Attributes;
+                    EmElement emElement = mapper.Map<EmElement>(args);
                     if (args.sourceOrTarget.Equals("source"))
                         s.Source.Add(emElement);
                     else
@@ -715,9 +713,7 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Segment s:
-                        //SmElement smElement = new SmElement();
                         SmElement smElement = mapper.Map<SmElement>(args);
-                        //smElement.Attributes = args.Attributes;
                         if (args.sourceOrTarget.Equals("source"))
                             s.Source.Add(smElement);
                         else

@@ -27,47 +27,33 @@
  * Also, see the full LGPL text here: <http://www.gnu.org/copyleft/lesser.html>
  */
 
-
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph;
+using Localization.Jliff.Graph.Modules.Metadata;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using File = Localization.Jliff.Graph.File;
 
-namespace Localization.Jliff.Graph.Modules.Metadata
+namespace UnitTests
 {
-    public class Metaitem : IMetadata, IXmlSerializable
+    [DeploymentItem(OutputFolder)]
+    [DeploymentItem(XlfFiles)]
+    [TestClass]
+    public class JlfSerializationFixture
     {
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        private const string OutputFolder = "Output";
+        private const string XlfFiles = "XlfFiles";
 
-        public string Value { get; set; }
-
-        public Metaitem()
+        [TestMethod]
+        public void SerializeModelAsJlf()
         {
-        }
-
-        public Metaitem(string type, string value)
-        {
-            Type = type;
-            Value = value;
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("type", Type);
-            writer.WriteString(Value);
+            JliffDocument jd = JliffDocument.LoadXlf(Path.Combine(XlfFiles, "PlatformTest.xlf"));
+            Converter.Serialize(Path.Combine(OutputFolder, "PlatformTest.json"), jd);
         }
     }
 }

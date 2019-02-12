@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>JliffGraphTools.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -46,6 +46,9 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// Unit is a container for aligned <see cref="Segment"/>s of translatable <see cref="Source"/> and <see cref="Target"/> text.
+    /// </summary>
     public class Unit : JlfNode, ISubfile, IJlfNode, IXmlSerializable
     {
         [JsonProperty("gls_glossary")]

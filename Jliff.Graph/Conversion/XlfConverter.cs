@@ -109,6 +109,9 @@ namespace Jliff.Graph.Conversion
                 xliff20Filter.XlfScElementEvent += builder.ScElement;
                 xliff20Filter.XlfEcElementEvent += builder.EcElement;
                 xliff20Filter.ModItsLocQualityIssue += builder.LocQualityIssue;
+                xliff20Filter.ModMdaMetadataEvent += builder.Metadata;
+                xliff20Filter.ModMdaMetaGroupEvent += builder.MetaGroup;
+                xliff20Filter.ModMdaMetaitemEvent += builder.Metaitem;
                 xliff20Filter.Filter(new StreamReader(stream, Encoding.UTF8));
                 JliffDocument jd = builder.Jliff;
                 List<Segment> segments = jd.Segments;

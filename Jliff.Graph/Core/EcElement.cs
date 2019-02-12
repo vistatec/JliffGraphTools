@@ -39,15 +39,24 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// An ending element of an original spannig code.
+    /// </summary>
     public class EcElement : JlfNode, IElement, IXmlSerializable
     {
         public EcElement()
         {
         }
 
-        public EcElement(string text)
+        public EcElement(string startRef)
         {
-            Text = text;
+            StartRef = new Nmtoken(startRef);
+        }
+
+        public EcElement(string id, string disp)
+        {
+            Id = id;
+            Disp = disp;
         }
 
         [JsonIgnore]

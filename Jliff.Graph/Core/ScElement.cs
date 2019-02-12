@@ -38,6 +38,12 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// A starting element of an original spannig code.
+    /// <note type="tip">
+    /// It should be paired with an <see cref="EcElement"/>
+    /// </note>
+    /// </summary>
     public class ScElement : JlfNode, IElement, IXmlSerializable
     {
         public ScElement()
@@ -47,6 +53,12 @@ namespace Localization.Jliff.Graph
         public ScElement(string id)
         {
             Id = id;
+        }
+
+        public ScElement(string id, string disp)
+        {
+            Id = id;
+            Disp = disp;
         }
 
         [JsonIgnore]

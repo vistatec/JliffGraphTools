@@ -38,6 +38,9 @@
     <None Update="XlfFiles\Ocelot.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="XlfFiles\PlatformTest.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

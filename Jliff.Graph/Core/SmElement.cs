@@ -40,6 +40,12 @@ using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// A starting element of an annotation marker.
+    /// <note type="tip">
+    /// It should be paired with an <see cref="EmElement"/>
+    /// </note>
+    /// </summary>
     public class SmElement : JlfNode, IElement, IXmlSerializable
     {
         private static readonly int OPENINGTAG = 0xe101;

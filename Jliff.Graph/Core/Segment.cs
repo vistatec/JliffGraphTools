@@ -42,8 +42,12 @@ using Newtonsoft.Json;
 namespace Localization.Jliff.Graph
 {
     /// <summary>
+    /// A container for individual aligned <see cref="Segment"/>'s of translatable text and inline markup (<see cref="IElement"/>'s) and their translated equivalents.
+    /// <see cref="IElement"/> is implemented by <see cref="TextElement"/>, <see cref="SmElement"/>, and <see cref="ScElement"/>.
+    /// <note type="tip">
     ///     Much of the way in which source and target text is stored and manipulated is inspired by the Okpai Framework
-    ///     TextFragment class and encoding <see cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits" />.
+    ///     TextFragment class and encoding <seealso cref="http://okapiframework.org/devguide/gettingstarted.html#textUnits" />.
+    /// </note>
     /// </summary>
     public class Segment : JlfNode, ISubunit, IXmlSerializable
     {
@@ -75,6 +79,13 @@ namespace Localization.Jliff.Graph
 
         public Segment(IElement source, IElement target = null)
         {
+            Source.Add(source);
+            if (target != null) Target.Add(target);
+        }
+
+        public Segment(string id, IElement source, IElement target = null)
+        {
+            Id = id;
             Source.Add(source);
             if (target != null) Target.Add(target);
         }

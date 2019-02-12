@@ -33,14 +33,28 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Jliff.Graph.Core;
 using Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
+    /// <summary>
+    /// An ending element for an annotation marker.
+    /// </summary>
     public class EmElement : JlfNode, IElement, IXmlSerializable
     {
         private static readonly int CLOSINGTAG = 0xe102;
+
+        public EmElement()
+        {
+            
+        }
+
+        public EmElement(string startRef)
+        {
+            StartRef = new Nmtoken(startRef);
+        }
 
         [JsonIgnore]
         public IDictionary<string, string> Attributes
@@ -48,7 +62,7 @@ namespace Localization.Jliff.Graph
             get
             {
                 Dictionary<string, string> atts = new Dictionary<string, string>();
-                atts.Add("startRef", StartRef);
+                atts.Add("startRef", StartRef.Token);
                 return atts;
             }
 
@@ -59,7 +73,7 @@ namespace Localization.Jliff.Graph
                     switch (att.Key)
                     {
                         case "startRef":
-                            StartRef = att.Value;
+                            StartRef.Token = att.Value;
                             break;
                     }
             }
@@ -67,7 +81,7 @@ namespace Localization.Jliff.Graph
 
         public override string Kind => Enumerations.JlfNodeType.em.ToString();
 
-        public string StartRef { get; set; }
+        public Nmtoken StartRef { get; set; }
 
         public XmlSchema GetSchema()
         {
