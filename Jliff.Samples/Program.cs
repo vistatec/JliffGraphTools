@@ -90,6 +90,11 @@ namespace Jliff.Samples
             xliff12Filter.Filter(new StreamReader(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\ocelot12.xlf"));
             bldr.Serialize("Xliff12ToJliff.json");
 
+            JliffDocument jd = new JliffDocument();
+            Segment s1 = new Segment("segment-1");
+            s1.Source.Add(new TextElement("This is a minimal jliff document."));
+            jd.Subunits.Add(s1);
+            Converter.Serialize(@"e:\ExtDev\DotNet\JliffGraphTools\Jliff.Tests\XlfFiles\minimal.json", jd);
         }
     }
 }

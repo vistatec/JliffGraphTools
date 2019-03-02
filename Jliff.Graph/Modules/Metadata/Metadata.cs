@@ -40,7 +40,7 @@ namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class Metadata : IXmlSerializable
     {
-        public List<MetaGroup> Groups = new List<MetaGroup>();
+        public List<MetaGroup> MetaGroups = new List<MetaGroup>();
         public string Id { get; set; }
 
         private string prefix => "mda";
@@ -58,8 +58,8 @@ namespace Localization.Jliff.Graph.Modules.Metadata
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("id", Id);
-            if (Groups.Count > 0)
-                foreach (MetaGroup metaGroup in Groups)
+            if (MetaGroups.Count > 0)
+                foreach (MetaGroup metaGroup in MetaGroups)
                 {
                     writer.WriteStartElement("metaGroup", Namespaces.MDA);
                     (metaGroup as IXmlSerializable).WriteXml(writer);

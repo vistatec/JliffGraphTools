@@ -440,7 +440,7 @@ namespace Localization.Jliff.Graph
                 {
                     case Metadata m:
                         MetaGroup mg = mapper.Map<MetaGroup>(args);
-                        m.Groups.Add(mg);
+                        m.MetaGroups.Add(mg);
                         stack.Push(mg);
                         break;
                 }

@@ -121,6 +121,7 @@ namespace Localization.Jliff.Graph
         [JsonProperty("mtc_matches")]
         public List<Match> Matches { get; set; } = new List<Match>();
 
+        [JsonProperty("mda_metadata")]
         public Metadata Metadata { get; set; }
         public string Name { get; set; }
 

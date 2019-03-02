@@ -332,14 +332,17 @@ namespace UnitTests
             var version = new Metaitem("version", "3");
 
             var grp2 = new MetaGroup();
+            grp2.Category = "subgroup";
             grp2.Meta.Add(breakfast);
 
             var grp1 = new MetaGroup();
+            grp1.Category = "document";
+            grp1.AppliesTo = "source";
             grp1.Meta.Add(version);
             grp1.Meta.Add(phase);
             grp1.Meta.Add(grp2);
 
-            md.Groups.Add(grp1);
+            md.MetaGroups.Add(grp1);
 
 
             var model = new JliffDocument("en-US", "ja-JP");
@@ -347,9 +350,8 @@ namespace UnitTests
             var test = new Metaitem("key", "value");
             var test1 = new MetaGroup();
             test1.Meta.Add(test);
-            var list = new List<MetaGroup>();
-            list.Add(test1);
-            model.Files[0].Metadata = list;
+            model.Files[0].Metadata = new Metadata();
+            model.Files[0].Metadata.MetaGroups.Add(test1);
             model.Files[0].Skeleton = new Skeleton("Graphic Example.psd.skl");
             model.Files[0].Subfiles = new List<ISubfile>
             {

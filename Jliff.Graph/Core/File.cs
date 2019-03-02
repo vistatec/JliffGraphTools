@@ -110,7 +110,9 @@ namespace Localization.Jliff.Graph
 
         public float LocQualityRatingVote { get; set; }
         public float LocQualityRatingVoteThreshold { get; set; }
-        public List<MetaGroup> Metadata { get; set; } = new List<MetaGroup>();
+
+        [JsonProperty("mda_metadata")]
+        public Metadata Metadata { get; set; } 
 
         [JsonProperty("its_org")]
         public string Org { get; set; }
