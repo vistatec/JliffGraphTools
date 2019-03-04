@@ -98,11 +98,17 @@ namespace Localization.Jliff.Graph
             }
         }
 
-        public static string Serialize(JliffDocument model)
+        /// <summary>
+        /// Serializes a <see cref="JliffDocument"/> to a string using the necessary custom <see cref="JsonConverter"/>'s.
+        /// </summary>
+        /// <param name="model">The <see cref="JliffDocument"/> to serialize.</param>
+        /// <param name="formatted">Specifies whether to use formatting during serialization. Default is true.</param>
+        /// <returns>A <see cref="string"/> representation of the <see cref="JliffDocument"/>.</returns>
+        public static string Serialize(JliffDocument model, bool formatted = true)
         {
             var set = new JsonSerializerSettings();
             set.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            set.Formatting = Formatting.Indented;
+            set.Formatting = formatted ? Formatting.Indented : Formatting.None;
             set.NullValueHandling = NullValueHandling.Ignore;
             set.DefaultValueHandling = DefaultValueHandling.Ignore;
             set.Converters.Add(new ISubfileConverter());
