@@ -151,6 +151,19 @@ namespace Localization.Jliff.Graph
 
         public Iri RevToolRef { get; set; }
 
+        [JsonIgnore]
+        public List<Segment> Segments
+        {
+            get
+            {
+                List<Segment> segments = new List<Segment>();
+                SegmentVisitor v = new SegmentVisitor();
+                foreach (JlfNode node in Subfiles) node.Process(v);
+                segments.AddRange(v.Segments);
+                return segments;
+            }
+        }
+
         [JsonProperty("slr_sizeInfo")]
         public string SizeInfo { get; set; }
 
