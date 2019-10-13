@@ -55,5 +55,19 @@ namespace UnitTests
             JliffDocument jd = JliffDocument.LoadXlf(Path.Combine(XlfFiles, "PlatformTest.xlf"));
             Converter.Serialize(Path.Combine(OutputFolder, "PlatformTest.json"), jd);
         }
+
+        [TestMethod]
+        public void Round()
+        {
+            var f = new JliffDocument("en-US", "it-IT",
+                new File("f1",
+                    new Unit("u1",
+                        new Segment(new TextElement("Hello!"),
+                            new TextElement("!Ola!")))));
+
+            string s = Converter.Serialize(f, false);
+
+            var g = Converter.Deserialize(s);
+        }
     }
 }

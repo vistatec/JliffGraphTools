@@ -553,5 +553,34 @@ namespace UnitTests
             var obGraph = JObject.FromObject(jd);
             Assert.IsTrue(obGraph.IsValid(schema));
         }
+
+        [TestMethod]
+        public void OnlyGetChildSegments()
+        {
+            JliffDocument jd = new JliffDocument("en-US", "es-ES");
+            Localization.Jliff.Graph.File f1 = new Localization.Jliff.Graph.File("f1",
+                new Unit("u1",
+                    new Segment(
+                        new TextElement("A"),
+                        new TextElement("A")),
+                    new Segment(
+                        new TextElement("B"),
+                        new TextElement("B")))
+            );
+            Localization.Jliff.Graph.File f2 = new Localization.Jliff.Graph.File("f2",
+                new Unit("u1",
+                    new Segment(
+                        new TextElement("Y"),
+                        new TextElement("Y")),
+                    new Segment(
+                        new TextElement("Z"),
+                        new TextElement("Z")))
+            );
+            jd.Files.Add(f1);
+            jd.Files.Add(f2);
+
+            Assert.AreEqual<int>(2, jd.Files[1].Segments.Count);
+            Assert.AreEqual<string>("Z", jd.Files[1].Segments[1].TargetText);
+        }
     }
 }
