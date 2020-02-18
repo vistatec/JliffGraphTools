@@ -19,7 +19,7 @@ namespace Jliff.Graph.Core
         [JsonProperty("fs_subFs")]
         public string SubFs { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("note")]
         public string Text { get; set; }
 
         public XmlSchema GetSchema()
