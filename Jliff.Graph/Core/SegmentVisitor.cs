@@ -29,10 +29,11 @@
 
 
 using System.Collections.Generic;
-using Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph;
+using Localization.Jliff.Graph.BaseClasses;
 
-namespace Jliff.Graph.Core
+namespace Localization.Jliff.Graph.Core
 {
     public class SegmentVisitor : ICompositeVisitor
     {

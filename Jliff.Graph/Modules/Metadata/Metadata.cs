@@ -34,13 +34,17 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
+using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class Metadata : IXmlSerializable
     {
+        [JsonProperty("mda_metaGroups")]
         public List<MetaGroup> MetaGroups = new List<MetaGroup>();
+        
+        [JsonProperty("mda_id")]
         public string Id { get; set; }
 
         private string prefix => "mda";

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 using Localization.Jliff.Graph;
 using Newtonsoft.Json;
 
-namespace Jliff.Graph.Core
+namespace Localization.Jliff.Graph.Core
 {
     public class Note : IXmlSerializable
     {

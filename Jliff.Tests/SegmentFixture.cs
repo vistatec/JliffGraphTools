@@ -32,7 +32,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using Jliff.Graph.Core;
+using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

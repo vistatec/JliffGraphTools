@@ -36,9 +36,10 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Conversion;
-using Jliff.Graph.Core;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.BaseClasses;
+using Localization.Jliff.Graph.Conversion;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Serialization;
@@ -61,6 +62,8 @@ namespace Localization.Jliff.Graph
 
         [JsonProperty(Order = 20)]
         public List<ISubfile> Subfiles = new List<ISubfile>();
+
+        public List<ISubfile> Subgroups { get; set; } = new List<ISubfile>();
 
         [JsonProperty(Order = 30)]
         public List<ISubunit> Subunits = new List<ISubunit>();
@@ -124,9 +127,13 @@ namespace Localization.Jliff.Graph
             }
         }
 
+        public string SrcDir { get; set; }
+        
         [JsonProperty(Order = 2)]
         public string SrcLang { get; set; }
 
+        public string TrgDir { get; set; }
+        
         [JsonProperty(Order = 3)]
         public string TrgLang { get; set; }
 

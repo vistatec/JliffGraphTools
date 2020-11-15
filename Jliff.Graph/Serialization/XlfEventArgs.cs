@@ -32,7 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Jliff.Graph.Serialization
+namespace Localization.Jliff.Graph.Serialization
 {
     public class XlfEventArgs : EventArgs
     {

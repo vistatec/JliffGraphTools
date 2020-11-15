@@ -33,9 +33,10 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Interfaces;
-using Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.BaseClasses;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Modules.ITS;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
@@ -71,7 +72,7 @@ namespace Localization.Jliff.Graph
         public string AllowedCharacters { get; set; }
 
         [JsonProperty("its_annotatorsRef")]
-        public AnnotatorsRef AnnotatorsRef { get; set; }
+        public string AnnotatorsRef { get; set; }
 
         [JsonIgnore]
         public IDictionary<string, string> Attributes
@@ -203,6 +204,9 @@ namespace Localization.Jliff.Graph
         public bool Translate { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+
+        [JsonProperty("itsm_lang")]
+        public string Lang { get; set; }
 
         public XmlSchema GetSchema()
         {

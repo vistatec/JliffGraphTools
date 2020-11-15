@@ -19,7 +19,6 @@
     <Folder Include="Modules\FormatStyle\" />
     <Folder Include="Modules\Metadata\" />
     <Folder Include="Modules\TranslationCandidates\" />
-    <Folder Include="Modules\Validation\" />
   </ItemGroup>
 
 </Project>

@@ -32,14 +32,17 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Serialization;
+using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.ITS
+namespace Localization.Jliff.Graph.Modules.ITS
 {
     public class LocQualityIssues : IXmlSerializable
     {
+        [JsonProperty("its_id")]
         public Nmtoken Id { get; set; }
+        
         public List<LocQualityIssue> Items { get; set; } = new List<LocQualityIssue>();
 
         public XmlSchema GetSchema()

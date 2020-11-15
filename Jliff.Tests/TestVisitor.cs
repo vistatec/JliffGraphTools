@@ -29,7 +29,7 @@
 
 
 using System.Text;
-using Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

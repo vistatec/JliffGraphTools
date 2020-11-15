@@ -28,7 +28,7 @@
  */
 
 
-namespace Jliff.Graph.Interfaces
+namespace Localization.Jliff.Graph.Interfaces
 {
     public interface IJlfNode
     {

@@ -33,7 +33,7 @@ using AutoMapper;
 using Localization.Jliff.Graph;
 using File = Localization.Jliff.Graph.File;
 
-namespace Jliff.Samples
+namespace Localization.Jliff.Samples
 {
     internal class Program
     {

@@ -29,14 +29,16 @@
 
 
 using System;
-using Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Interfaces;
 
-namespace Localization.Jliff.Graph
+namespace Localization.Jliff.Graph.BaseClasses
 {
     public abstract class JlfNode
     {
         public virtual bool HasChildren { get; }
+        
         public abstract string Kind { get; }
+        
         public abstract void Process(ICompositeVisitor visitor);
 
         public virtual string Traverse(Func<string> func)

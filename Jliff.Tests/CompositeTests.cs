@@ -31,7 +31,7 @@
 using System;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

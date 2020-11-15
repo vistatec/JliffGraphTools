@@ -28,7 +28,7 @@
  */
 
 
-namespace Jliff.Graph.Serialization
+namespace Localization.Jliff.Graph.Serialization
 {
     public interface IJliffBuilder
     {

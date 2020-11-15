@@ -33,7 +33,8 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
+using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
@@ -41,8 +42,14 @@ namespace Localization.Jliff.Graph
     {
         public List<Translation> Translations = new List<Translation>();
         public Definition Definition { get; set; }
+        
+        [JsonProperty("gls_id")]
         public string Id { get; set; }
+
+        [JsonProperty("gls_ref")]
         public string Ref { get; set; }
+        
+        [JsonProperty("gls_term")]
         public Term Term { get; set; }
 
         public XmlSchema GetSchema()

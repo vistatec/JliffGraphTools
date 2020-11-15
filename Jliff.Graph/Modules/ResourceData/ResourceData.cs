@@ -33,7 +33,8 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
+using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {
@@ -57,8 +58,13 @@ namespace Localization.Jliff.Graph.Modules.ResourceData
                     throw new ArgumentException();
         }
 
+        [JsonProperty("res_id")]
         public string Id { get; set; }
+        
+        [JsonProperty("res_resourceItemsRefs")]
         public List<ResourceItemRef> ResourceItemRefs { get; set; } = new List<ResourceItemRef>();
+        
+        [JsonProperty("res_resourceItems")]
         public List<ResourceItem> ResourceItems { get; set; } = new List<ResourceItem>();
 
         public XmlSchema GetSchema()

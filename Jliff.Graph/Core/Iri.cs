@@ -31,7 +31,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Jliff.Graph.Core
+namespace Localization.Jliff.Graph.Core
 {
     public class Iri
     {

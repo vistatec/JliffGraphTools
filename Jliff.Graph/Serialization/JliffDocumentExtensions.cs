@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Serialization
+namespace Localization.Jliff.Graph.Serialization
 {
     public static class JliffDocumentExtensions
     {

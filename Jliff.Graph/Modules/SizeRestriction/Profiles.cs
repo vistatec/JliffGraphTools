@@ -28,11 +28,19 @@
  */
 
 
-namespace Jliff.Graph.Modules.SizeRestriction
+using Newtonsoft.Json;
+
+namespace Localization.Jliff.Graph.Modules.SizeRestriction
 {
     public class Profiles
     {
+        [JsonProperty("slr_generalProfile")]
         public string GeneralProfile { get; set; }
+        
+        [JsonProperty("slr_storageProfile")]
         public string StorageProfile { get; set; }
+
+        [JsonProperty("slr_normalization")]
+        public Normalization Normalization { get; set; }
     }
 }

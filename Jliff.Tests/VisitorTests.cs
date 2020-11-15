@@ -29,8 +29,8 @@
 
 
 using System.Collections.Generic;
-using Jliff.Graph.Core;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Modules.ResourceData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

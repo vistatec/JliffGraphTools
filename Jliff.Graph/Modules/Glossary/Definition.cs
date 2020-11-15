@@ -32,12 +32,17 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph
 {
     public class Definition : IXmlSerializable
     {
+        
+        [JsonProperty("gls_source")]
         public string Source { get; set; }
+        
+        [JsonProperty("gls_text")]
         public string Text { get; set; }
 
         public XmlSchema GetSchema()

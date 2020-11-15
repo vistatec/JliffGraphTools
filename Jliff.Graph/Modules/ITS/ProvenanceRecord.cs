@@ -30,15 +30,39 @@
 
 using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.ITS
+namespace Localization.Jliff.Graph.Modules.ITS
 {
     public class ProvenanceRecord
     {
+        [JsonProperty("its_org")]
+        public string Org { get; set; }
+
+        [JsonProperty("its_orgRef")]
+        public string OrgRef { get; set; }
+
         [JsonProperty("its_person")]
         public string Person { get; set; }
 
+        [JsonProperty("its_personRef")]
+        public string PersonRef { get; set; }
+
+        [JsonProperty("its_revOrg")]
+        public string RevOrg { get; set; }
+
+        [JsonProperty("its_revOrgRef")]
+        public string RevOrgRef { get; set; }
+
         [JsonProperty("its_revPerson")]
         public string RevPerson { get; set; }
+
+        [JsonProperty("its_revPersonRef")]
+        public string RevPersonRef { get; set; }
+
+        [JsonProperty("its_revTool")]
+        public string RevTool { get; set; }
+
+        [JsonProperty("its_revToolRef")]
+        public string RevToolRef { get; set; }
 
         [JsonProperty("its_tool")]
         public string Tool { get; set; }

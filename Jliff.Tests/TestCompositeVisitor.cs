@@ -29,8 +29,9 @@
 
 
 using System.Text;
-using Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph;
+using Localization.Jliff.Graph.BaseClasses;
 
 namespace UnitTests
 {

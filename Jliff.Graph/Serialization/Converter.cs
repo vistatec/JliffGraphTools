@@ -55,6 +55,7 @@ namespace Localization.Jliff.Graph
             set.Converters.Add(new ISubunitConverter());
             set.Converters.Add(new IElementConverter());
             set.Converters.Add(new IMetadataConverter());
+            set.Converters.Add(new NmtokenConverter());
 
             var model = JsonConvert.DeserializeObject<JliffDocument>(json, set);
 
@@ -72,6 +73,7 @@ namespace Localization.Jliff.Graph
             set.Converters.Add(new ISubunitConverter());
             set.Converters.Add(new IElementConverter());
             set.Converters.Add(new IMetadataConverter());
+            set.Converters.Add(new NmtokenConverter());
 
             var model = JsonConvert.DeserializeObject<JliffDocument>(json, set);
 
@@ -89,6 +91,7 @@ namespace Localization.Jliff.Graph
             set.Converters.Add(new ISubunitConverter());
             set.Converters.Add(new IElementConverter());
             set.Converters.Add(new IMetadataConverter());
+            set.Converters.Add(new NmtokenConverter());
 
             var output = JsonConvert.SerializeObject(model, set);
 
@@ -115,6 +118,7 @@ namespace Localization.Jliff.Graph
             set.Converters.Add(new ISubunitConverter());
             set.Converters.Add(new IElementConverter());
             set.Converters.Add(new IMetadataConverter());
+            set.Converters.Add(new NmtokenConverter());
 
             var output = JsonConvert.SerializeObject(model, set);
 

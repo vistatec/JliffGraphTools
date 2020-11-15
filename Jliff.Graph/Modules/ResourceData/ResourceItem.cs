@@ -32,7 +32,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph.Modules.ResourceData
 {

@@ -28,22 +28,13 @@
  */
 
 
-using Localization.Jliff.Graph.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Localization.Jliff.Graph.Core
 {
-    public class Context21
+    public class Ncname
     {
-        public string Ctr => "urn:oasis:names:tc:xliff:changetracking:2.0";
-        public string Fs => "urn:oasis:names:tc:xliff:fs:2.0";
-        public string Gls => Namespaces.GLS;
-        public string Its => "https://www.w3.org/2005/11/its/";
-        public string Itsm => Namespaces.ITS;
-        public string Md => Namespaces.MDA;
-        public string Mtc => Namespaces.MTC;
-        public string Res => Namespaces.RES;
-        public string Slr => "urn:oasis:names:tc:xliff:sizerestriction:2.0";
-        public string Val => "urn:oasis:names:tc:xliff:validation:2.0";
-        public string Xliff => "urn:oasis:names:tc:xliff:document:2.0";
     }
 }

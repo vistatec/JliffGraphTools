@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using AutoMapper;
-using Jliff.Graph.Core;
-using Jliff.Graph.Modules.ChangeTrack;
-using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Modules.Matches;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Modules.ChangeTrack;
+using Localization.Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.Modules.Matches;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
 
-namespace Jliff.Graph
+namespace Localization.Jliff.Graph
 {
     public class MapperProfile : Profile
     {

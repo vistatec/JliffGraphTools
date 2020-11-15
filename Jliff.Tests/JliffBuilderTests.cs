@@ -31,7 +31,7 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
-using Jliff.Graph.Modules.ChangeTrack;
+using Localization.Jliff.Graph.Modules.ChangeTrack;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -113,6 +113,60 @@ namespace UnitTests
             Assert.IsNotNull(ct);
             Assert.IsTrue(ct.Revisions.Items[1].Author.Equals("phil"));
             Assert.IsTrue(ct.Revisions.Items[1].Item.Text.StartsWith("Quando un segmento è selezionato nella Vista segmento"));
+        }
+
+        [TestMethod]
+        public void XlfWithOneUnitTowSegmentsAndIts()
+        {
+            JliffBuilder bldr = new JliffBuilder("en-US", "it-IT");
+            Xliff20Filter fltr = new Xliff20Filter();
+            fltr.XlfRootEvent += bldr.XlfRoot;
+            fltr.XlfFileEvent += bldr.File;
+            fltr.XlfUnitEvent += bldr.Unit;
+            fltr.XlfGroupEvent += bldr.Group;
+            fltr.XlfSegmentEvent += bldr.Segment;
+            fltr.XlfSourceEvent += bldr.Source;
+            fltr.XlfTargetEvent += bldr.Target;
+            fltr.XlfIgnorableEvent += bldr.Ignorable;
+            fltr.XlfPhElementEvent += bldr.PhElement;
+            fltr.XlfSkeletonEvent += bldr.Skeleton;
+            fltr.XlfTextEvent += bldr.Text;
+            fltr.XlfSmElementEvent += bldr.SmElement;
+            fltr.XlfEmElementEvent += bldr.EmElement;
+            fltr.XlfScElementEvent += bldr.ScElement;
+            fltr.XlfEcElementEvent += bldr.EcElement;
+            fltr.XlfDataEvent += bldr.Data;
+            fltr.XlfNote += bldr.Note;
+            fltr.ModItsLocQualityIssues += bldr.LocQualityIssues;
+            fltr.ModItsLocQualityIssue += bldr.LocQualityIssue;
+            fltr.ModMdaMetadataEvent += bldr.Metadata;
+            fltr.ModMdaMetaGroupEvent += bldr.MetaGroup;
+            fltr.ModMdaMetaitemEvent += bldr.Metaitem;
+            fltr.ModResResourceDataEvent += bldr.ResourceData;
+            fltr.ModResResourceItemEvent += bldr.ResourceItem;
+            fltr.ModResSourceEvent += bldr.ResourceSource;
+            fltr.ModGlsEntryEvent += bldr.GlossaryEntry;
+            fltr.ModGlsDefinitionEvent += bldr.Definition;
+            fltr.ModGlsTermEvent += bldr.Term;
+            fltr.ModGlsTranslationEvent += bldr.Translation;
+            fltr.ModMtcMatchEvent += bldr.Match;
+            fltr.ModCtrChangeTrackEvent += bldr.ChangeTrack;
+            fltr.ModCtrRevisionsEvent += bldr.Revisions;
+            fltr.ModCtrRevisionEvent += bldr.Revision;
+            fltr.ModCtrRevisionItemEvent += bldr.RevisionItem;
+            fltr.Filter(new StreamReader(Path.Combine(XlfFiles, "OneUnitTwoSegmentsPlusIts.xlf")));
+            bldr.Serialize(Path.Combine(XlfFiles, "OneUnitTwoSegmentsPlusItsOutput.json"));
+
+            var jd = bldr.Jliff;
+
+            Unit u = jd.Files[0].Subfiles[0] as Unit;
+            int x = u.LocQualityIssuesArray.Count;
+            string id1 = u.LocQualityIssuesArray[0].Id.Token;
+            string id2 = u.LocQualityIssuesArray[1].Id.Token;
+
+            Assert.AreEqual(x, 2);
+            Assert.AreEqual(id1, "lqi22");
+            Assert.AreEqual(id2, "lqi44");
         }
     }
 }

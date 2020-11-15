@@ -30,13 +30,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
-using Jliff.Graph;
-using Jliff.Graph.Core;
-using Jliff.Graph.Modules.ChangeTrack;
-using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Modules.Matches;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Modules.ChangeTrack;
+using Localization.Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.Modules.Matches;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
 
@@ -361,7 +362,7 @@ namespace Localization.Jliff.Graph
                     lqis.Items.Add(lqi);
                     break;
                 case Unit u:
-                    u.LocQualityIssues.Items.Add(lqi);
+                    //u.LocQualityIssuesArray..Items.Add(lqi);
                     break;
             }
         }
@@ -380,7 +381,18 @@ namespace Localization.Jliff.Graph
                 switch (parent)
                 {
                     case Unit u:
-                        u.LocQualityIssues = lqis;
+                        LocQualityIssues issues = u.LocQualityIssuesArray.SingleOrDefault(lqi => lqi.Id.Token.Equals(lqis.Id.Token));
+                        if (issues == null)
+                        {
+                            //LocQualityIssues newStandoffGroup = new LocQualityIssues();
+                            //newStandoffGroup.Id = new Nmtoken(lqis.Id.Token);
+                            u.LocQualityIssuesArray.Add(lqis);
+                        }
+                        //else
+                        //{
+                        //    issues.
+                        //}
+                        //u.LocQualityIssues = lqis;
                         stack.Push(lqis);
                         break;
                 }
@@ -460,7 +472,7 @@ namespace Localization.Jliff.Graph
                 {
                     case MetaGroup mg:
                         Metaitem mi = mapper.Map<Metaitem>(args);
-                        mg.Meta.Add(mi);
+                        mg.Items.Add(mi);
                         //stack.Push(mg);
                         break;
                 }

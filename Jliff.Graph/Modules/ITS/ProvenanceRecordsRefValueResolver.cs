@@ -31,7 +31,7 @@
 using AutoMapper;
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Modules.ITS
+namespace Localization.Jliff.Graph.Modules.ITS
 {
     public class ProvenanceRecordsRefValueResolver : IValueResolver<FilterEventArgs, IElement, string>
     {

@@ -1,4 +1,4 @@
-﻿namespace Jliff.Graph
+﻿namespace Localization.Jliff.Graph
 {
     public class MapperProvider
     {

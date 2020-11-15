@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Core
+namespace Localization.Jliff.Graph.Core
 {
     /// <summary>
     ///     A class to facilitate conversion from a <code>List&lt;IElement&gt;</code> to a flat representation

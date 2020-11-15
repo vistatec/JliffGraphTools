@@ -34,9 +34,9 @@ namespace Localization.Jliff.Graph
     {
         public Skeleton(string reference)
         {
-            Ref = reference;
+            Href = reference;
         }
 
-        public string Ref { get; set; }
+        public string Href { get; set; }
     }
 }

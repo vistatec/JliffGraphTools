@@ -30,7 +30,8 @@
 
 using System;
 using System.Collections.Generic;
-using Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.BaseClasses;
+using Localization.Jliff.Graph.Interfaces;
 using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph

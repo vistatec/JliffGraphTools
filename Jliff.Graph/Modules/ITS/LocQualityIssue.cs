@@ -31,15 +31,25 @@
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.ITS
+namespace Localization.Jliff.Graph.Modules.ITS
 {
     public class LocQualityIssue : IXmlSerializable
     {
+        [JsonProperty("its_locQualityIssueComment")]
         public string LocQualityIssueComment { get; set; }
+        
+        [JsonProperty("its_locQualityIssueEnabled")]
         public string LocQualityIssueEnabled { get; set; }
+        
+        [JsonProperty("its_locQualityIssueProfileRef")]
         public string LocQualityIssueProfileRef { get; set; }
+        
+        [JsonProperty("its_locQualityIssueSeverity")]
         public float LocQualityIssueSeverity { get; set; }
+        
+        [JsonProperty("its_locQualityIssueType")]
         public string LocQualityIssueType { get; set; }
 
         public XmlSchema GetSchema()

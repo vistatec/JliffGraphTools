@@ -28,9 +28,9 @@
  */
 
 
-using Localization.Jliff.Graph;
+using Localization.Jliff.Graph.BaseClasses;
 
-namespace Jliff.Graph.Interfaces
+namespace Localization.Jliff.Graph.Interfaces
 {
     public interface ICompositeVisitor
     {

@@ -33,7 +33,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace Jliff.Graph.Modules.ChangeTrack
+namespace Localization.Jliff.Graph.Modules.ChangeTrack
 {
     public class RevisionItem : IXmlSerializable
     {

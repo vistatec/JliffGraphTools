@@ -27,7 +27,7 @@
  * Also, see the full LGPL text here: <http://www.gnu.org/copyleft/lesser.html>
  */
 
-namespace Jliff.Graph.Serialization
+namespace Localization.Jliff.Graph.Serialization
 {
     public class Namespaces
     {

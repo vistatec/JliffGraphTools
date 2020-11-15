@@ -33,9 +33,11 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Interfaces;
-using Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.BaseClasses;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.Modules.Matches;
 using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
@@ -85,11 +87,14 @@ namespace Localization.Jliff.Graph
         [JsonProperty("slr_data")]
         public object Data { get; set; }
 
-        [JsonProperty("its_domains")]
+        [JsonProperty("itsm_domains")]
         public object Domains { get; set; }
 
         public string Id { get; set; }
         public override string Kind => Enumerations.JlfNodeType.group.ToString();
+
+        [JsonProperty("fs_fs")]
+        public string Fs { get; set; }
 
         [JsonProperty("its_locQualityRatingProfileRef")]
         public string LocQualityRatingProfileRef { get; set; }
@@ -103,6 +108,9 @@ namespace Localization.Jliff.Graph
         public float LocQualityRatingVote { get; set; }
         public float LocQualityRatingVoteThreshold { get; set; }
 
+        [JsonProperty("mtc_matches")]
+        public List<Match> Matches { get; set; } = new List<Match>();
+        
         [JsonProperty("mda_metadata")]
         public Metadata Metadata { get; set; }
 

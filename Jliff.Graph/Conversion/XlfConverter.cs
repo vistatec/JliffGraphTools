@@ -34,7 +34,7 @@ using System.IO;
 using System.Text;
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Conversion
+namespace Localization.Jliff.Graph.Conversion
 {
     public class XlfConverter
     {

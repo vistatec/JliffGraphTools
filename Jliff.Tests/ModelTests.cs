@@ -35,8 +35,8 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
-using Jliff.Graph.Core;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Core;
 using Localization.Jliff.Graph.Interfaces;
@@ -333,14 +333,14 @@ namespace UnitTests
 
             var grp2 = new MetaGroup();
             grp2.Category = "subgroup";
-            grp2.Meta.Add(breakfast);
+            grp2.Items.Add(breakfast);
 
             var grp1 = new MetaGroup();
             grp1.Category = "document";
             grp1.AppliesTo = "source";
-            grp1.Meta.Add(version);
-            grp1.Meta.Add(phase);
-            grp1.Meta.Add(grp2);
+            grp1.Items.Add(version);
+            grp1.Items.Add(phase);
+            grp1.Items.Add(grp2);
 
             md.MetaGroups.Add(grp1);
 
@@ -349,7 +349,7 @@ namespace UnitTests
             model.Files.Add(new Localization.Jliff.Graph.File("f1"));
             var test = new Metaitem("key", "value");
             var test1 = new MetaGroup();
-            test1.Meta.Add(test);
+            test1.Items.Add(test);
             model.Files[0].Metadata = new Metadata();
             model.Files[0].Metadata.MetaGroups.Add(test1);
             model.Files[0].Skeleton = new Skeleton("Graphic Example.psd.skl");

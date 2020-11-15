@@ -28,7 +28,7 @@
  */
 
 
-namespace Jliff.Graph.Modules.SizeRestriction
+namespace Localization.Jliff.Graph.Modules.SizeRestriction
 {
     public class Data
     {

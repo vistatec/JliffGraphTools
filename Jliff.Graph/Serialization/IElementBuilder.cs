@@ -30,7 +30,7 @@
 
 using Localization.Jliff.Graph;
 
-namespace Jliff.Graph.Serialization
+namespace Localization.Jliff.Graph.Serialization
 {
     public interface IElementBuilder
     {

@@ -30,7 +30,7 @@
 
 using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.ITS
+namespace Localization.Jliff.Graph.Modules.ITS
 {
     public class AnnotatorsRef
     {

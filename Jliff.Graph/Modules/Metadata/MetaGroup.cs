@@ -33,17 +33,23 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
+using Newtonsoft.Json;
 
 namespace Localization.Jliff.Graph.Modules.Metadata
 {
     public class MetaGroup : IMetadata, IXmlSerializable
     {
         [XmlIgnore]
-        public List<IMetadata> Meta = new List<IMetadata>();
+        public List<IMetadata> Items = new List<IMetadata>();
 
+        [JsonProperty("mda_appliesTo")]
         public string AppliesTo { get; set; }
+        
+        [JsonProperty("mda_category")]
         public string Category { get; set; }
+        
+        [JsonProperty("mda_id")]
         public string Id { get; set; }
 
         public XmlSchema GetSchema()
@@ -61,7 +67,7 @@ namespace Localization.Jliff.Graph.Modules.Metadata
             writer.WriteAttributeString("id", Id);
             writer.WriteAttributeString("category", Category);
             writer.WriteAttributeString("appliesTo", AppliesTo);
-            foreach (IMetadata metadata in Meta)
+            foreach (IMetadata metadata in Items)
                 switch (metadata)
                 {
                     case MetaGroup mg:

@@ -36,11 +36,13 @@ using Localization.Jliff.Graph;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.Matches
+namespace Localization.Jliff.Graph.Modules.Matches
 {
     public class Match : IXmlSerializable
     {
         public string Domains { get; set; }
+        
+        [JsonProperty("mtc_id")]
         public string Id { get; set; }
 
         [JsonProperty("its_locQualityRatingProfileRef")]
@@ -58,18 +60,31 @@ namespace Jliff.Graph.Modules.Matches
         [JsonProperty("its_locQualityRatingVoteThreshold")]
         public int LocQualityRatingScoreVoteThreshold { get; set; }
 
+        [JsonProperty("mtc_matchQuality")]
         public int MatchQuality { get; set; }
         public int MatchSuitability { get; set; }
-        public Metadata Metadata { get; set; }
+        public Metadata.Metadata Metadata { get; set; }
+        
+        [JsonProperty("mtc_origin")]
         public string Origin { get; set; }
         public string OriginalData { get; set; }
+        
+        [JsonProperty("mtc_ref")]
         public string Ref { get; set; }
         public Enumerations.YesNo Reference { get; set; }
+        
+        [JsonProperty("mtc_similarity")]
         public int Similarity { get; set; }
         public IElement Source { get; set; }
         public string SubType { get; set; }
+        
+        [JsonProperty("mtc_matchSuitability")]
+        public int Suitability { get; set; }
+
         public IElement Target { get; set; }
         public Enumerations.YesNo Translate { get; set; }
+        
+        [JsonProperty("mtc_type")]
         public Enumerations.MatchType Type { get; set; }
 
         public XmlSchema GetSchema()

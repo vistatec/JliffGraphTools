@@ -33,10 +33,11 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Interfaces;
-using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.BaseClasses;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Interfaces;
+using Localization.Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.Serialization;
 using Localization.Jliff.Graph.Interfaces;
 using Localization.Jliff.Graph.Modules.Metadata;
 using Localization.Jliff.Graph.Modules.ResourceData;
@@ -79,10 +80,9 @@ namespace Localization.Jliff.Graph
         }
 
         [JsonProperty("its_annotatorsRef")]
-        public AnnotatorsRef AnnotatorsRef { get; set; }
+        public string AnnotatorsRef { get; set; }
 
-        [JsonProperty("ctr_changeTrack")]
-        public object ChangeTrack { get; set; }
+        public Enumerations.YesNo CanResegment { get; set; }
 
         [JsonProperty("slr_data")]
         public object Data { get; set; }
@@ -98,6 +98,9 @@ namespace Localization.Jliff.Graph
         public string Id { get; set; }
 
         public override string Kind => Enumerations.JlfNodeType.file.ToString();
+
+        [JsonProperty("itsm_domains")]
+        public string[] ItsmDomains { get; set; }
 
         [JsonProperty("its_locQualityRatingProfileRef")]
         public string LocQualityRatingProfileRef { get; set; }

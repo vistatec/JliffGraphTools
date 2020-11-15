@@ -30,7 +30,7 @@
 
 using System.IO;
 using System.Xml;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Serialization;
 
 namespace Localization.Jliff.Graph
 {

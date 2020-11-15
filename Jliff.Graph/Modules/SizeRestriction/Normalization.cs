@@ -29,12 +29,16 @@
 
 
 using Localization.Jliff.Graph;
+using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.SizeRestriction
+namespace Localization.Jliff.Graph.Modules.SizeRestriction
 {
     public class Normalization
     {
+        [JsonProperty("slr_general")]
         public Enumerations.Normalization General { get; set; }
+        
+        [JsonProperty("slr_storage")]
         public Enumerations.Normalization Storage { get; set; }
     }
 }

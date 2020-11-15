@@ -33,12 +33,12 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Jliff.Graph.Core;
-using Jliff.Graph.Modules.ITS;
-using Jliff.Graph.Serialization;
+using Localization.Jliff.Graph.Core;
+using Localization.Jliff.Graph.Modules.ITS;
+using Localization.Jliff.Graph.Serialization;
 using Newtonsoft.Json;
 
-namespace Jliff.Graph.Modules.ChangeTrack
+namespace Localization.Jliff.Graph.Modules.ChangeTrack
 {
     public class Revisions : IXmlSerializable
     {
